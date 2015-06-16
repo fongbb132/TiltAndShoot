@@ -4,8 +4,10 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Rectangle;
 import com.fong.game.gameobjects.Bullet;
 import com.fong.game.gameobjects.Enemy;
+import com.fong.game.gameobjects.GeneralEnemy;
 import com.fong.game.gameobjects.ScrollHandler;
 import com.fong.game.gameobjects.Tilt;
+import com.fong.game.gameobjects.Weapon;
 import com.fong.game.gameobjects.WeaponBall;
 
 import java.util.ArrayList;
@@ -15,7 +17,7 @@ import java.util.ArrayList;
  */
 public class GameWorld {
 
-    public static int gameWidth = 136;
+    public static int gameWidth = 124;
     public static int gameHeight = 88;
     public enum GameState{
         READY, RUNNING, GAMEOVER, HIGHSCORE
@@ -30,6 +32,7 @@ public class GameWorld {
     public ArrayList<Bullet> bullets ;
     public ArrayList<Enemy> enemies;
     public ArrayList<WeaponBall> weaponBalls;
+    public ArrayList<ArrayList<WeaponBall>> weaponList;
 
     private ScrollHandler scroller;
     private Rectangle ground;
@@ -42,6 +45,11 @@ public class GameWorld {
         currentState = GameState.READY;
         bullets = new ArrayList<Bullet>();
         this.weaponBalls = new ArrayList<WeaponBall>();
+        this.weaponList = new ArrayList<ArrayList<WeaponBall>>(5);
+        for(int i = 0; i< 5;i++){
+            ArrayList arrayList = new ArrayList();
+            weaponList.add(arrayList);
+        }
     }
 
     public void update(float delta){
@@ -107,17 +115,35 @@ public class GameWorld {
 
         }
 
-        if(tracking%30==0){
-            enemies.add(new Enemy((float)(Math.random()*136),(float)(Math.random()*88)));
+        if(tracking%40==0){
+            double prob = Math.random();
+            Enemy a;
+            if(prob<0.25){
+                a = new Enemy((float)Math.random()*GameWorld.gameWidth-5, (float)Math.random()*GameWorld.gameHeight);
+            }else{
+                a = new GeneralEnemy((float)Math.random()*GameWorld.gameWidth-5, (float)Math.random()*GameWorld.gameHeight);
+            }
+            enemies.add(a);
         }
+
         if (!enemies.isEmpty()){
             for(int i = 0;i<enemies.size();i++){
+                for(int numBul = 0; numBul<bullets.size();numBul++){
+                    enemies.get(i).isOverlap(bullets.get(numBul).getCircle());
+                    if(!enemies.get(i).isExisted()){
+                        bullets.get(numBul).setIsExisted();
+                    }
+                }
                 enemies.get(i).update(delta, tilt.getX(), tilt.getY());
+                if(!enemies.get(i).isExisted()){
+                    enemies.remove(i);
+                    i--;
+                }
             }
         }
 
-        if(weaponBalls.size()<6) {
-            if (Math.random() < 0.3) {
+        if(weaponBalls.size()<4 ) {
+            if (Math.random() < 0.4 && tracking%120==0) {
                 weaponBalls.add(new WeaponBall((float) (Math.random() * 50)));
             }
         }
@@ -132,16 +158,34 @@ public class GameWorld {
             }
         }
 
+        //weaponball detection
         if(!weaponBalls.isEmpty()){
             for(int i = 0; i<weaponBalls.size();i++){
-
                 weaponBalls.get(i).setHit(tilt);
                 for(int numBullet = 0; numBullet<bullets.size();numBullet++){
                     weaponBalls.get(i).setShot(bullets.get(numBullet));
+                    if(weaponBalls.get(i).isShot){
+                        bullets.get(numBullet).setIsExisted();
+                    }
                 }
                 weaponBalls.get(i).update(delta);
                 if(weaponBalls.get(i).isPassed||weaponBalls.get(i).isShot||weaponBalls.get(i).isHit){
-                    weaponBalls.remove(i);
+                    WeaponBall ball = weaponBalls.remove(i);
+                    if(ball.isShot) {
+                        ArrayList<WeaponBall> list = null;
+                        for (int num = 0; num < weaponList.size(); num++) {
+                            if (weaponList.get(num).isEmpty()) {
+                                list = weaponList.get(num);
+                                break;
+                            } else {
+                                if ((weaponList.get(num).get(0).getType() == ball.getType())) {
+                                    list = weaponList.get(num);
+                                    break;
+                                }
+                            }
+                        }
+                        list.add(ball);
+                    }
                     i--;
                 }
             }
@@ -177,5 +221,9 @@ public class GameWorld {
             return true;
         else
             return false;
+    }
+
+    public ArrayList getWeaponList(){
+        return weaponList;
     }
 }

@@ -43,7 +43,7 @@ public class Tilt {
         float accelY = Gdx.input.getAccelerometerX();
         float accelX = Gdx.input.getAccelerometerY();
 
-        acceleration.set(accelX*200, accelY*200);
+        acceleration.set(accelX*80, accelY*80);
 
         velocity.add(acceleration.cpy().scl(delta));
 

@@ -1,5 +1,6 @@
 package com.fong.game.gameobjects;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Vector2;
@@ -17,13 +18,20 @@ public class WeaponBall {
     private Circle myCirle;
 
     public WeaponBall(float velocity){
-        this.type = (int)Math.random()*5;
-        if(Math.random()>0.5){
+        this.type = (int)(Math.random()*5);
+        double prob = Math.random();
+        if(prob>0.25){
             position = new Vector2(0, (float)(Math.random()* GameWorld.gameHeight));
             this.velocity = new Vector2(velocity, 0);
-        }else {
+        }else if(prob>0.5){
             position = new Vector2((float)(Math.random()*GameWorld.gameWidth), 0);
             this.velocity = new Vector2(0, velocity);
+        }else if(prob>0.75){
+            position = new Vector2(114, (float)(Math.random()* GameWorld.gameHeight));
+            this.velocity = new Vector2(-velocity, 0);
+        }else{
+            position = new Vector2((float)(Math.random()*GameWorld.gameWidth), GameWorld.gameHeight);
+            this.velocity = new Vector2(0, -velocity);
         }
         isPassed = false;
         isShot = false;
@@ -58,13 +66,16 @@ public class WeaponBall {
 
     public void setShot(Bullet bullet){
         if(myCirle.overlaps(bullet.getCircle())) {
-            isHit = true;
-            Gdx.app.log("Weaponball", "shot");
+            isShot = true;
         }
     }
 
     public void setHit(Tilt tile){
         if(myCirle.overlaps(tile.getCircle()))
             isHit = true;
+    }
+
+    public int getType(){
+        return this.type;
     }
 }

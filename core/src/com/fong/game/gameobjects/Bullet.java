@@ -39,6 +39,9 @@ public class Bullet {
         return circle;
     }
 
+    public void setIsExisted(){
+        isExisted = false;
+    }
     public boolean isExisted(){
         return isExisted;
     }
