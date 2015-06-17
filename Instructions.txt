@@ -1,0 +1,20 @@
+all the resources go to android/assets/data
+all the codes are in core/src/com/fong/game
+
+GameRenderer is for display
+GameWorld is where all the works are
+
+
+user can shoot the balls then it becomes weaponball and is stored on the
+weaponList on the right side. User can hit it to use it.
+
+User can also hit the ball directly with cursor, however, the weaponball will
+be used right when the cursor is hit the ball.
+
+The game will be over if the cursor is hit by any of the enemies(purple dots
+for now)
+
+- more constraints will be add
+- adjustment for accelerometer and speed will be add
+- scores and high score will be added
+- 

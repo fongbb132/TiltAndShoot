@@ -81,12 +81,12 @@ public class GameRenderer {
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         //rotation circles
         shapeRenderer.setColor(153 / 255.0f, 153 / 255.0f, 153 / 255.0f, 0.6f);
-        shapeRenderer.circle(10, GameWorld.gameHeight - 100, 100, 50);
-        shapeRenderer.circle(10, GameWorld.gameHeight - 300, 100, 50);
+        shapeRenderer.circle(10, GameWorld.gameHeight - 100*gameHeight/768, 100, 50*gameHeight/768);
+        shapeRenderer.circle(10, GameWorld.gameHeight - 300*gameHeight/768, 100, 50*gameHeight/768);
 
         //bullet circle
         shapeRenderer.setColor(255 / 255.0f, 255 / 255.0f, 255 / 255.0f, 0.3f);
-        shapeRenderer.circle(GameWorld.gameWidth-60, GameWorld.gameHeight - 60, 60, 20);
+        shapeRenderer.circle(GameWorld.gameWidth-60, GameWorld.gameHeight - 60*gameHeight/768, 60, 20*gameHeight/768);
 
             if (!myWorld.enemies.isEmpty()) {
                 for (int i = 0; i < myWorld.enemies.size(); i++) {
