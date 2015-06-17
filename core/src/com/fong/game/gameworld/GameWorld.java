@@ -6,7 +6,6 @@ import com.badlogic.gdx.math.Rectangle;
 import com.fong.game.gameobjects.Bullet;
 import com.fong.game.gameobjects.Enemy;
 import com.fong.game.gameobjects.GeneralEnemy;
-import com.fong.game.gameobjects.ScrollHandler;
 import com.fong.game.gameobjects.ShootWeaponBall;
 import com.fong.game.gameobjects.Tilt;
 import com.fong.game.gameobjects.Weapon;
@@ -185,6 +184,7 @@ public class GameWorld {
             }
         }
 
+        //update Bullets
         if (!bullets.isEmpty()) {
             for (int i = 0; i < bullets.size(); i++) {
                 bullets.get(i).update(delta);
@@ -195,47 +195,15 @@ public class GameWorld {
             }
         }
 
+        //Update the weapons at that time
         for(int numShootWeapon = 0; numShootWeapon<shootWeaponBallArrayList.size();numShootWeapon++){
             shootWeaponBallArrayList.get(numShootWeapon).update(delta,tilt);
             if(!shootWeaponBallArrayList.get(numShootWeapon).isExisted()){
                 shootWeaponBallArrayList.remove(numShootWeapon);
             }
         }
-        //weaponball detection
-        if(!weaponBalls.isEmpty()){
-            for(int i = 0; i<weaponBalls.size();i++){
-                weaponBalls.get(i).setHit(tilt);
-                for(int numBullet = 0; numBullet<bullets.size();numBullet++){
-                    weaponBalls.get(i).setShot(bullets.get(numBullet));
-                    if(weaponBalls.get(i).isShot){
-                        bullets.get(numBullet).setIsExisted();
-                    }
-                }
-                weaponBalls.get(i).update(delta);
-                if(weaponBalls.get(i).isPassed||weaponBalls.get(i).isShot||weaponBalls.get(i).isHit){
-                    WeaponBall ball = weaponBalls.remove(i);
-                    if(ball.isShot) {
-                        ArrayList<WeaponBall> list = null;
-                        for (int num = 0; num < weaponList.size(); num++) {
-                            if (weaponList.get(num).isEmpty()) {
-                                list = weaponList.get(num);
-                                break;
-                            } else {
-                                if ((weaponList.get(num).get(0).getType() == ball.getType())) {
-                                    list = weaponList.get(num);
-                                    break;
-                                }
-                            }
-                        }
-                        list.add(ball);
-                    }
-                    if(ball.isHit){
-                        shootWeaponBallArrayList.add(new ShootWeaponBall(ball.getType(), tilt.getX(), tilt.getY(),tilt));
-                    }
-                    i--;
-                }
-            }
-        }
+
+        weaponBallDetection(delta);
 
         EnemiesCollision(delta);
 
@@ -289,6 +257,44 @@ public class GameWorld {
                 if(!enemies.get(i).isExisted()){
                     enemies.remove(i);
                     score++;
+                    i--;
+                }
+            }
+        }
+    }
+
+    public void weaponBallDetection(float delta){
+
+        if(!weaponBalls.isEmpty()){
+            for(int i = 0; i<weaponBalls.size();i++){
+                weaponBalls.get(i).setHit(tilt);
+                for(int numBullet = 0; numBullet<bullets.size();numBullet++){
+                    weaponBalls.get(i).setShot(bullets.get(numBullet));
+                    if(weaponBalls.get(i).isShot){
+                        bullets.get(numBullet).setIsExisted();
+                    }
+                }
+                weaponBalls.get(i).update(delta);
+                if(weaponBalls.get(i).isPassed||weaponBalls.get(i).isShot||weaponBalls.get(i).isHit){
+                    WeaponBall ball = weaponBalls.remove(i);
+                    if(ball.isShot) {
+                        ArrayList<WeaponBall> list = null;
+                        for (int num = 0; num < weaponList.size(); num++) {
+                            if (weaponList.get(num).isEmpty()) {
+                                list = weaponList.get(num);
+                                break;
+                            } else {
+                                if ((weaponList.get(num).get(0).getType() == ball.getType())) {
+                                    list = weaponList.get(num);
+                                    break;
+                                }
+                            }
+                        }
+                        list.add(ball);
+                    }
+                    if(ball.isHit){
+                        shootWeaponBallArrayList.add(new ShootWeaponBall(ball.getType(), tilt.getX(), tilt.getY(),tilt));
+                    }
                     i--;
                 }
             }

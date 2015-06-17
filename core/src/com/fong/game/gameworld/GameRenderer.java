@@ -10,7 +10,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.fong.game.gameobjects.Bullet;
-import com.fong.game.gameobjects.ScrollHandler;
 import com.fong.game.InputHelpers.AssetLoader;
 import com.fong.game.gameobjects.ShootWeaponBall;
 import com.fong.game.gameobjects.Tilt;
@@ -35,7 +34,6 @@ public class GameRenderer {
     private TextureRegion bg, grass;
     private Animation birdAnimation;
     private TextureRegion cursor,bullet;
-    private ScrollHandler scroller;
 
     private ArrayList<Bullet> bullets;
     private ArrayList<WeaponBall> weaponBalls;

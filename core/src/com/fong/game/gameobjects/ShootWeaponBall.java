@@ -12,9 +12,10 @@ import com.fong.game.gameworld.GameWorld;
 public class ShootWeaponBall {
 
     private int type;
-    private Vector2 position, velocity;
+    private Vector2 position, velocity, tiltPosition;
     private Circle circle;
     private boolean isExisted;
+    float angle = 0;
 
     private float time = 0;
     public ShootWeaponBall(int type, float posX, float posY,Tilt tilt){
@@ -23,6 +24,7 @@ public class ShootWeaponBall {
         this.circle = new Circle(position.x, position.y, 0);
         this.isExisted = true;
         float angle = tilt.getRotation();
+        this.tiltPosition = new Vector2(tilt.getX(), tilt.getY());
         this.velocity = new Vector2((450* MathUtils.cos((float) (angle / 180 * Math.PI))), 450*(MathUtils.sin(((float)(angle / 180 * Math.PI)))));
     }
 
@@ -77,7 +79,18 @@ public class ShootWeaponBall {
                 }
                 break;
             case 3:
-                circle.radius = 150*time-40*time*time;
+                if(time<0.01){
+                    angle = tilt.getRotation();
+                    tiltPosition.set(tilt.getX(), tilt.getY());
+                }
+                angle = (angle+time)%360;
+                float radius = 10 + 20 * time;
+                if (position.x > Gdx.graphics.getWidth() - 100 || position.x < -1 || position.y > Gdx.graphics.getHeight() || position.y < -1) {
+                    circle.radius = -1;
+                    break;
+                }
+                position.set(tiltPosition.x+radius*MathUtils.cos(angle/180*MathUtils.PI),tiltPosition.y+radius*MathUtils.sin(angle/180*MathUtils.PI));
+                circle.set(position.x, position.y, 20);
                 break;
             case 4:
                 circle.radius = 150*time-40*time*time;
