@@ -37,7 +37,7 @@ public class WeaponBall {
         isPassed = false;
         isShot = false;
         isHit = false;
-        myCirle = new Circle(position.x, position.y, 25);
+        myCirle = new Circle(position.x, position.y, 25*GameWorld.gameHeight/768);
     }
 
     public void update(float delta){
@@ -45,7 +45,7 @@ public class WeaponBall {
         if(position.x> GameWorld.gameWidth-120||position.x < -1||position.y>Gdx.graphics.getHeight()||position.y<-1){
             isPassed = true;
         }
-        myCirle.set(position.x, position.y, 25);
+        myCirle.set(position.x, position.y, 25*GameWorld.gameHeight/768);
 
     }
 

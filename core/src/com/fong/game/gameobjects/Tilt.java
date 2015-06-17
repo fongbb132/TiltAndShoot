@@ -76,7 +76,7 @@ public class Tilt {
             velocity.y = 0;
         }
 
-        myCircle.set(position.x, position.y, 35);
+        myCircle.set(position.x, position.y, 35*GameWorld.gameHeight/768);
     }
 
     public Circle getCircle() {

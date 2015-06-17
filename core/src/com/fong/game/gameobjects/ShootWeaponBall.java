@@ -50,21 +50,21 @@ public class ShootWeaponBall {
 
         switch (type){
             case 0:
-                circle.radius = 150*time-40*time*time;
+                circle.radius = (150*time-40*time*time)*GameWorld.gameHeight/768;
                 break;
             case 1:
                 if(time<3) {
                     position.set(tilt.getX()+35, tilt.getY()+35);
-                    circle.set(tilt.getX()+35, tilt.getY()+35, 40*time*time);
+                    circle.set(tilt.getX()+35, tilt.getY()+35, 40*time*time*GameWorld.gameHeight/768);
                 }else {
                     position.set(tilt.getX()+35, tilt.getY()+35);
-                    circle.set(tilt.getX()+35, tilt.getY()+35, (circle.radius-1*time*time));
+                    circle.set(tilt.getX()+35, tilt.getY()+35, (circle.radius-1*time*time)*GameWorld.gameHeight/768);
                 }
                 break;
             case 2:
                 if(time < 1.5){
                     position.set(tilt.getX()+35, tilt.getY()+35);
-                    circle.set(position.x, position.y, 35);
+                    circle.set(position.x, position.y, 35*GameWorld.gameHeight/768);
                     if(time > 1.3){
                         float angle = tilt.getRotation();
                         this.velocity = new Vector2((450* MathUtils.cos((float) (angle / 180 * Math.PI))), 450*(MathUtils.sin(((float)(angle / 180 * Math.PI)))));
@@ -75,7 +75,7 @@ public class ShootWeaponBall {
                         circle.radius = -1;
                         break;
                     }
-                    circle.set(position.x, position.y, 150 * (time-1.5f));
+                    circle.set(position.x, position.y, 150 * (time-1.5f)*GameWorld.gameHeight/768);
                 }
                 break;
             case 3:
@@ -84,16 +84,16 @@ public class ShootWeaponBall {
                     tiltPosition.set(tilt.getX(), tilt.getY());
                 }
                 angle = (angle+time)%360;
-                float radius = 10 + 20 * time;
+                float radius = (10 + 20 * time)*GameWorld.gameHeight/768;
                 if (position.x > Gdx.graphics.getWidth() - 100 || position.x < -1 || position.y > Gdx.graphics.getHeight() || position.y < -1) {
                     circle.radius = -1;
                     break;
                 }
                 position.set(tiltPosition.x+radius*MathUtils.cos(angle/180*MathUtils.PI),tiltPosition.y+radius*MathUtils.sin(angle/180*MathUtils.PI));
-                circle.set(position.x, position.y, 20);
+                circle.set(position.x, position.y, 20*GameWorld.gameHeight/768);
                 break;
             case 4:
-                circle.radius = 150*time-40*time*time;
+                circle.radius = (150*time-40*time*time)*GameWorld.gameHeight/768;
                 break;
             default:
 

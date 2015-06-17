@@ -37,7 +37,7 @@ public class GameRenderer {
 
     private ArrayList<Bullet> bullets;
     private ArrayList<WeaponBall> weaponBalls;
-    private int gameHeight, midPointY;
+    private int gameHeight, gameWidth;
     private ArrayList<ArrayList<WeaponBall>> weaponList;
     private BitmapFont font;
 
@@ -45,7 +45,8 @@ public class GameRenderer {
 
         this.myWorld = world;
         bullets = myWorld.bullets;
-
+        this.gameHeight = gameHeight;
+        gameWidth = GameWorld.gameWidth;
         cam = new OrthographicCamera();
         //first argument: whether the orthographic projection is used or not
         //what the width should be
@@ -81,17 +82,17 @@ public class GameRenderer {
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         //rotation circles
         shapeRenderer.setColor(153 / 255.0f, 153 / 255.0f, 153 / 255.0f, 0.6f);
-        shapeRenderer.circle(10, GameWorld.gameHeight - 100*gameHeight/768, 100, 50*gameHeight/768);
-        shapeRenderer.circle(10, GameWorld.gameHeight - 300*gameHeight/768, 100, 50*gameHeight/768);
+        shapeRenderer.circle(100*gameWidth/1196, GameWorld.gameHeight - (100*gameHeight/768), 100,50);
+        shapeRenderer.circle(100*gameWidth/1196, GameWorld.gameHeight - (300*gameHeight/768), 100,50);
 
         //bullet circle
         shapeRenderer.setColor(255 / 255.0f, 255 / 255.0f, 255 / 255.0f, 0.3f);
-        shapeRenderer.circle(GameWorld.gameWidth-60, GameWorld.gameHeight - 60*gameHeight/768, 60, 20*gameHeight/768);
+        shapeRenderer.circle(GameWorld.gameWidth-60*gameWidth/1196, GameWorld.gameHeight - 60*gameHeight/768, 60*gameHeight/768, 50);
 
             if (!myWorld.enemies.isEmpty()) {
                 for (int i = 0; i < myWorld.enemies.size(); i++) {
                     shapeRenderer.setColor(130 / 255.0f, 30 / 255.0f, 160 / 255.0f, 1);
-                    shapeRenderer.rect(myWorld.enemies.get(i).getX(), myWorld.enemies.get(i).getY(), 20, 20);
+                    shapeRenderer.rect(myWorld.enemies.get(i).getX(), myWorld.enemies.get(i).getY(), 20*gameWidth/1196, 20*gameHeight/768);
                 }
             }
             if (!weaponBalls.isEmpty()) {
@@ -117,7 +118,7 @@ public class GameRenderer {
                             break;
 
                     }
-                    shapeRenderer.circle(weaponBalls.get(i).getX(), weaponBalls.get(i).getY(), 25);
+                    shapeRenderer.circle(weaponBalls.get(i).getX(), weaponBalls.get(i).getY(), 25*gameHeight/768);
                 }
             }
         releaseWeaponBall();
@@ -138,12 +139,12 @@ public class GameRenderer {
 
             batcher.draw(cursor, tilt.getX(),
                     tilt.getY(), 35,
-                    35, 70, 70,
+                    35*gameHeight/768, 70, 70*gameHeight/768,
                     1, 1, tilt.getRotation());
 
             if (!bullets.isEmpty()) {
                 for (int i = 0; i < bullets.size(); i++) {
-                    batcher.draw(bullet, bullets.get(i).getX(), bullets.get(i).getY(), 10,10, 20,20, 1, 1, 0f);
+                    batcher.draw(bullet, bullets.get(i).getX(), bullets.get(i).getY(), 10*gameWidth/1196,10*gameHeight/768, 20*gameWidth/1196,20*gameHeight/768, 1, 1, 0f);
                 }
             }
             batcher.end();
@@ -182,7 +183,7 @@ public class GameRenderer {
                 default:
                     break;
             }
-            shapeRenderer.circle(ball.getX() , ball.getY() , ball.getCircle().radius,40 );
+            shapeRenderer.circle(ball.getX() , ball.getY() , ball.getCircle().radius*gameHeight/768,40 );
         }
     }
 
@@ -212,19 +213,19 @@ public class GameRenderer {
                 }
                 switch (num) {
                     case 0:
-                        shapeRenderer.circle(GameWorld.gameWidth-60, GameWorld.gameHeight - 180,60, 20);
+                        shapeRenderer.circle(GameWorld.gameWidth-60*gameWidth/1196, GameWorld.gameHeight - 180*gameHeight/768,60*gameHeight/768, 20);
                         break;
                     case 1:
-                        shapeRenderer.circle(GameWorld.gameWidth-60, GameWorld.gameHeight - 300, 60, 20);
+                        shapeRenderer.circle(GameWorld.gameWidth-60*gameWidth/1196, GameWorld.gameHeight - 300*gameHeight/768, 60*gameHeight/768, 20);
                         break;
                     case 2:
-                        shapeRenderer.circle(GameWorld.gameWidth-60, GameWorld.gameHeight - 420, 60, 20);
+                        shapeRenderer.circle(GameWorld.gameWidth-60*gameWidth/1196, GameWorld.gameHeight - 420*gameHeight/768, 60*gameHeight/768, 20);
                         break;
                     case 3:
-                        shapeRenderer.circle(GameWorld.gameWidth-60, GameWorld.gameHeight - 540, 60, 20);
+                        shapeRenderer.circle(GameWorld.gameWidth-60*gameWidth/1196, GameWorld.gameHeight - 540*gameHeight/768, 60*gameHeight/768, 20);
                         break;
                     case 4:
-                        shapeRenderer.circle(GameWorld.gameWidth-60, GameWorld.gameHeight - 660, 60, 20);
+                        shapeRenderer.circle(GameWorld.gameWidth-60*gameWidth/1196, GameWorld.gameHeight - 660*gameHeight/768, 60*gameHeight/768, 20);
                         break;
                     default:
 

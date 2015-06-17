@@ -101,14 +101,14 @@ public class GameWorld {
         for(int a = 0; a< 3; a++) {
             //rotation
             //Gdx.app.log("Game Word",Gdx.input.getX()+" "+Gdx.input.getY()+"down");
-            if (isInBorder(Gdx.input.getX(a), Gdx.input.getY(a), 0, Gdx.graphics.getHeight() - 400*gameHeight/768, 200, 200*gameHeight/768)&&Gdx.input.isTouched(a)) {
+            if (isInBorder(Gdx.input.getX(a), Gdx.input.getY(a), 0, Gdx.graphics.getHeight() - 400*gameHeight/768, 200*gameWidth/768, 200*gameHeight/768)&&Gdx.input.isTouched(a)) {
                 tilt.setRotation(5);
             }
-            if (isInBorder(Gdx.input.getX(a), Gdx.input.getY(a), 0, Gdx.graphics.getHeight() - 200*gameHeight/768, 200, 200*gameHeight/768)&&Gdx.input.isTouched(a)) {
+            if (isInBorder(Gdx.input.getX(a), Gdx.input.getY(a), 0, Gdx.graphics.getHeight() - 200*gameHeight/768, 200*gameWidth/768, 200*gameHeight/768)&&Gdx.input.isTouched(a)) {
                 tilt.setRotation(-5);
             }
             //the weapon balls
-            if (isInBorder(Gdx.input.getX(a), Gdx.input.getY(a), Gdx.graphics.getWidth() - 120, Gdx.graphics.getHeight() - 240*gameHeight/768, 140, 140*gameHeight/768)&&Gdx.input.isTouched(a)) {
+            if (isInBorder(Gdx.input.getX(a), Gdx.input.getY(a), Gdx.graphics.getWidth() - 120*gameWidth/768, Gdx.graphics.getHeight() - 240*gameHeight/768, 140*gameWidth/768, 140*gameHeight/768)&&Gdx.input.isTouched(a)) {
                 if(!weaponList.get(0).isEmpty()&&tracking%7 == 0) {
                     WeaponBall weaponBall = weaponList.get(0).remove(0);
                     shootWeaponBallArrayList.add(new ShootWeaponBall(weaponBall.getType(), tilt.getX(), tilt.getY(), tilt));
@@ -118,7 +118,7 @@ public class GameWorld {
                     weaponList.add(new ArrayList<WeaponBall>());
                 }
             }
-            if (isInBorder(Gdx.input.getX(a), Gdx.input.getY(a), Gdx.graphics.getWidth() - 120, Gdx.graphics.getHeight() - 360*gameHeight/768, 140, 140*gameHeight/768)&&Gdx.input.isTouched(a)) {
+            if (isInBorder(Gdx.input.getX(a), Gdx.input.getY(a), Gdx.graphics.getWidth() - 120*gameWidth/768, Gdx.graphics.getHeight() - 360*gameHeight/768, 140*gameWidth/768, 140*gameHeight/768)&&Gdx.input.isTouched(a)) {
                 if(!weaponList.get(1).isEmpty()&&tracking%7 == 0) {
                     WeaponBall weaponBall = weaponList.get(1).remove(0);
                     shootWeaponBallArrayList.add(new ShootWeaponBall(weaponBall.getType(), tilt.getX(), tilt.getY(), tilt));
@@ -128,7 +128,7 @@ public class GameWorld {
                     weaponList.add(new ArrayList<WeaponBall>());
                 }
             }
-            if (isInBorder(Gdx.input.getX(a), Gdx.input.getY(a), Gdx.graphics.getWidth() - 120, Gdx.graphics.getHeight() - 480*gameHeight/768, 140, 140*gameHeight/768)&&Gdx.input.isTouched(a)) {
+            if (isInBorder(Gdx.input.getX(a), Gdx.input.getY(a), Gdx.graphics.getWidth() - 120*gameWidth/768, Gdx.graphics.getHeight() - 480*gameHeight/768, 140*gameWidth/768, 140*gameHeight/768)&&Gdx.input.isTouched(a)) {
                 if(!weaponList.get(2).isEmpty()&&tracking%7 == 0) {
                 WeaponBall weaponBall = weaponList.get(2).remove(0);
                 shootWeaponBallArrayList.add(new ShootWeaponBall(weaponBall.getType(), tilt.getX(), tilt.getY(), tilt));
@@ -138,7 +138,7 @@ public class GameWorld {
                     weaponList.add(new ArrayList<WeaponBall>());
                 }
             }
-            if (isInBorder(Gdx.input.getX(a), Gdx.input.getY(a), Gdx.graphics.getWidth() - 140, Gdx.graphics.getHeight() - 600*gameHeight/768, 140, 140*gameHeight/768)&&Gdx.input.isTouched(a)) {
+            if (isInBorder(Gdx.input.getX(a), Gdx.input.getY(a), Gdx.graphics.getWidth() - 140*gameWidth/768, Gdx.graphics.getHeight() - 600*gameHeight/768, 140*gameWidth/768, 140*gameHeight/768)&&Gdx.input.isTouched(a)) {
                 if (!weaponList.get(3).isEmpty() && tracking % 7 == 0) {
                     WeaponBall weaponBall = weaponList.get(3).remove(0);
                     shootWeaponBallArrayList.add(new ShootWeaponBall(weaponBall.getType(), tilt.getX(), tilt.getY(), tilt));
@@ -148,7 +148,7 @@ public class GameWorld {
                     weaponList.add(new ArrayList<WeaponBall>());
                 }
             }
-            if (isInBorder(Gdx.input.getX(a), Gdx.input.getY(a), Gdx.graphics.getWidth() - 140, Gdx.graphics.getHeight() - 720*gameHeight/768, 140, 140*gameHeight/768)&&Gdx.input.isTouched(a)) {
+            if (isInBorder(Gdx.input.getX(a), Gdx.input.getY(a), Gdx.graphics.getWidth() - 140*gameWidth/768, Gdx.graphics.getHeight() - 720*gameHeight/768, 140*gameWidth/768, 140*gameHeight/768)&&Gdx.input.isTouched(a)) {
                 if (!weaponList.get(4).isEmpty() && tracking % 7 == 0) {
                     WeaponBall weaponBall = weaponList.get(4).remove(0);
                     shootWeaponBallArrayList.add(new ShootWeaponBall(weaponBall.getType(), tilt.getX(), tilt.getY(), tilt));
@@ -160,7 +160,7 @@ public class GameWorld {
             }
             //End of weaponballs
 
-            if (isInBorder(Gdx.input.getX(a), Gdx.input.getY(a), Gdx.graphics.getWidth() - 140, Gdx.graphics.getHeight() - 120*gameHeight/768, 140, 140*gameHeight/768)&&Gdx.input.isTouched(a)) {
+            if (isInBorder(Gdx.input.getX(a), Gdx.input.getY(a), Gdx.graphics.getWidth() - 140*gameWidth/768, Gdx.graphics.getHeight() - 120*gameHeight/768, 140*gameWidth/768, 140*gameHeight/768)&&Gdx.input.isTouched(a)) {
                 if (tracking % 10 == 0) {
                     bullets.add(new Bullet(tilt.getRotation(), tilt.getX(), tilt.getY()));
                 }

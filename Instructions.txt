@@ -17,4 +17,4 @@ for now)
 - more constraints will be add
 - adjustment for accelerometer and speed will be add
 - scores and high score will be added
-- 
+-

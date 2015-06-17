@@ -21,7 +21,7 @@ public class GeneralEnemy extends Enemy {
         if (position.y < 1 || position.y > GameWorld.gameHeight) {
             velocity.y = -velocity.y;
         }
-        myCircle.set(position.x+0.5f, position.y+0.5f, 1);
+        myCircle.set(position.x+10, position.y+10, 10*GameWorld.gameHeight/768);
         position.add(velocity.cpy().scl(delta));
     }
 }
