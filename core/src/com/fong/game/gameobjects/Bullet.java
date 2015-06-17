@@ -2,6 +2,7 @@ package com.fong.game.gameobjects;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Circle;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 
 /**
@@ -14,24 +15,23 @@ public class Bullet {
     private boolean isExisted;
 
     public Bullet(float angle, float posX, float posY) {
-        int v = 120;
+        int v = 600;
         isExisted = true;
-        int accX = (Math.cos(angle)>0)?-4:4;
-        int accY = (Math.sin(angle)>0)?-4:4;
+        int accX = (MathUtils.cos(angle)>0)?-4:4;
+        int accY = (MathUtils.sin(angle)>0)?-4:4;
         this.acceleration = new Vector2(accX, accY);
-        velocity = new Vector2((float)(v*Math.cos(angle/180*Math.PI)), (float)(v*Math.sin(angle/180*Math.PI)));
-        position = new Vector2(posX+2, posY+2);
-        circle = new Circle(position.x, position.y, 1.5f);
+        velocity = new Vector2((v*MathUtils.cos((float)(angle / 180 * Math.PI))), v*(MathUtils.sin(((float)(angle / 180 * Math.PI)))));
+        position = new Vector2(posX+35, posY+35);
+        circle = new Circle(position.x, position.y, 10);
         isHitTarget = false;
     }
 
     public void update(float delta) {
-
         position.add(velocity.cpy().scl(delta));
-        if(position.x>116||position.x < -1||position.y> Gdx.graphics.getHeight()||position.y<-1){
+        if(position.x>Gdx.graphics.getWidth()-100||position.x < -1||position.y> Gdx.graphics.getHeight()||position.y<-1){
             isExisted = false;
         }
-        circle.set(position.x, position.y, 1.5f);
+        circle.set(position.x, position.y, 10);
     }
 
 

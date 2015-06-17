@@ -13,6 +13,7 @@ public class ShootWeaponBall {
     private Circle circle;
     private boolean isExisted;
 
+    private float time = 0;
     public ShootWeaponBall(int type, float posX, float posY){
         this.type = type;
         this.position = new Vector2(posX, posY);
@@ -37,6 +38,16 @@ public class ShootWeaponBall {
     }
 
     public boolean isExisted(){
-        return circle.radius>4;
+        return !(circle.radius<0);
+    }
+
+    public void update(float delta) {
+        time += delta;
+
+        circle.radius = 150*time-40*time*time;
+    }
+
+    public int getType() {
+        return type;
     }
 }

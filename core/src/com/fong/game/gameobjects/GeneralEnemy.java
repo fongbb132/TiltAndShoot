@@ -15,7 +15,7 @@ public class GeneralEnemy extends Enemy {
     @Override
     public void update(float delta, float posX, float posY) {
         position.add(velocity.cpy().scl(delta));
-        if (position.x < 1 || position.x > GameWorld.gameWidth) {
+        if (position.x < 1 || position.x > GameWorld.gameWidth-140) {
             velocity.x = -velocity.x;
         }
         if (position.y < 1 || position.y > GameWorld.gameHeight) {

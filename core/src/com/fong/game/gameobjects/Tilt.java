@@ -3,6 +3,7 @@ package com.fong.game.gameobjects;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Vector2;
+import com.fong.game.gameworld.GameWorld;
 
 /**
  * Created by wing on 6/13/15.
@@ -19,7 +20,7 @@ public class Tilt {
         this.acceleration = new Vector2(0,0);
         this.velocity = new Vector2(0,0);
         this.position = new Vector2(Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()/2);
-        myCircle = new Circle(position.x, position.y, 3);
+        myCircle = new Circle(position.x+35, position.y+35, 35);
     }
 
     public float getX(){
@@ -43,17 +44,17 @@ public class Tilt {
         float accelY = Gdx.input.getAccelerometerX();
         float accelX = Gdx.input.getAccelerometerY();
 
-        acceleration.set(accelX*80, accelY*80);
+        acceleration.set(accelX*1000, accelY*1000);
 
         velocity.add(acceleration.cpy().scl(delta));
 
-        if(velocity.y>500)
-            velocity.y = 500;
-        if(velocity.x>500)
-            velocity.x = 500;
-        if(velocity.y<-500)
-            velocity.y = -500;
-        if(velocity.x<-500)
+        if(velocity.y>2500)
+            velocity.y = 2500;
+        if(velocity.x>2500)
+            velocity.x = 2500;
+        if(velocity.y<-2500)
+            velocity.y = -2500;
+        if(velocity.x<-2500)
             velocity.x = -500;
 
         position.add(velocity.cpy().scl(delta));
@@ -62,20 +63,20 @@ public class Tilt {
             position.x = 2;
             velocity.x = 0;
         }
-        if(position.x>114) {
-            position.x = 114;
+        if(position.x> GameWorld.gameWidth-140) {
+            position.x = GameWorld.gameWidth-140;
             velocity.x = 0;
         }
         if(position.y < 2 ) {
             position.y = 2;
             velocity.y = 0;
         }
-        if(position.y>80) {
-            position.y = 80;
+        if(position.y > GameWorld.gameHeight-40) {
+            position.y = GameWorld.gameHeight-40;
             velocity.y = 0;
         }
 
-        myCircle.set(position.x, position.y, 3);
+        myCircle.set(position.x, position.y, 35);
     }
 
     public Circle getCircle() {

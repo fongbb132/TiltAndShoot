@@ -1,11 +1,13 @@
 package com.fong.game.gameworld;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.fong.game.gameobjects.Bullet;
 import com.fong.game.gameobjects.Enemy;
 import com.fong.game.gameobjects.GeneralEnemy;
 import com.fong.game.gameobjects.ScrollHandler;
+import com.fong.game.gameobjects.ShootWeaponBall;
 import com.fong.game.gameobjects.Tilt;
 import com.fong.game.gameobjects.Weapon;
 import com.fong.game.gameobjects.WeaponBall;
@@ -17,8 +19,9 @@ import java.util.ArrayList;
  */
 public class GameWorld {
 
-    public static int gameWidth = 124;
-    public static int gameHeight = 88;
+    public static int score=0;
+    public static int gameWidth = Gdx.graphics.getWidth();
+    public static int gameHeight = Gdx.graphics.getHeight();
     public enum GameState{
         READY, RUNNING, GAMEOVER, HIGHSCORE
     }
@@ -26,16 +29,13 @@ public class GameWorld {
     private int tracking;
     private Tilt tilt;
     private GameState currentState;
-    private int score = 0;
     private int midPointY;
 
     public ArrayList<Bullet> bullets ;
     public ArrayList<Enemy> enemies;
     public ArrayList<WeaponBall> weaponBalls;
     public ArrayList<ArrayList<WeaponBall>> weaponList;
-
-    private ScrollHandler scroller;
-    private Rectangle ground;
+    public ArrayList<ShootWeaponBall> shootWeaponBallArrayList;
     private boolean isPlay = true;
 
 
@@ -50,6 +50,7 @@ public class GameWorld {
             ArrayList arrayList = new ArrayList();
             weaponList.add(arrayList);
         }
+        shootWeaponBallArrayList = new ArrayList<ShootWeaponBall>();
     }
 
     public void update(float delta){
@@ -84,7 +85,6 @@ public class GameWorld {
     public void restart() {
         currentState = GameState.READY;
         score = 0;
-        scroller.onRestart();
         currentState = GameState.READY;
     }
 
@@ -107,7 +107,60 @@ public class GameWorld {
             if (isInBorder(Gdx.input.getX(a), Gdx.input.getY(a), 0, Gdx.graphics.getHeight() - 200, 200, 200)&&Gdx.input.isTouched(a)) {
                 tilt.setRotation(-5);
             }
-            if (isInBorder(Gdx.input.getX(a), Gdx.input.getY(a), Gdx.graphics.getWidth() - 140, Gdx.graphics.getHeight() - 140, 140, 140)&&Gdx.input.isTouched(a)) {
+            //the weapon balls
+            if (isInBorder(Gdx.input.getX(a), Gdx.input.getY(a), Gdx.graphics.getWidth() - 120, Gdx.graphics.getHeight() - 240, 140, 140)&&Gdx.input.isTouched(a)) {
+                if(!weaponList.get(0).isEmpty()&&tracking%7 == 0) {
+                    WeaponBall weaponBall = weaponList.get(0).remove(0);
+                    shootWeaponBallArrayList.add(new ShootWeaponBall(weaponBall.getType(), tilt.getX(), tilt.getY()));
+                }
+                if(weaponList.get(0).isEmpty()) {
+                    weaponList.remove(0);
+                    weaponList.add(new ArrayList<WeaponBall>());
+                }
+            }
+            if (isInBorder(Gdx.input.getX(a), Gdx.input.getY(a), Gdx.graphics.getWidth() - 120, Gdx.graphics.getHeight() - 360, 140, 140)&&Gdx.input.isTouched(a)) {
+                if(!weaponList.get(1).isEmpty()&&tracking%7 == 0) {
+                    WeaponBall weaponBall = weaponList.get(1).remove(0);
+                    shootWeaponBallArrayList.add(new ShootWeaponBall(weaponBall.getType(), tilt.getX(), tilt.getY()));
+                }
+                if(weaponList.get(1).isEmpty()) {
+                    weaponList.remove(1);
+                    weaponList.add(new ArrayList<WeaponBall>());
+                }
+            }
+            if (isInBorder(Gdx.input.getX(a), Gdx.input.getY(a), Gdx.graphics.getWidth() - 120, Gdx.graphics.getHeight() - 480, 140, 140)&&Gdx.input.isTouched(a)) {
+                if(!weaponList.get(2).isEmpty()&&tracking%7 == 0) {
+                WeaponBall weaponBall = weaponList.get(2).remove(0);
+                shootWeaponBallArrayList.add(new ShootWeaponBall(weaponBall.getType(), tilt.getX(), tilt.getY()));
+                }
+                if(weaponList.get(2).isEmpty()) {
+                    weaponList.remove(2);
+                    weaponList.add(new ArrayList<WeaponBall>());
+                }
+            }
+            if (isInBorder(Gdx.input.getX(a), Gdx.input.getY(a), Gdx.graphics.getWidth() - 140, Gdx.graphics.getHeight() - 600, 140, 140)&&Gdx.input.isTouched(a)) {
+                if (!weaponList.get(3).isEmpty() && tracking % 7 == 0) {
+                    WeaponBall weaponBall = weaponList.get(3).remove(0);
+                    shootWeaponBallArrayList.add(new ShootWeaponBall(weaponBall.getType(), tilt.getX(), tilt.getY()));
+                }
+                if(weaponList.get(3).isEmpty()) {
+                    weaponList.remove(3);
+                    weaponList.add(new ArrayList<WeaponBall>());
+                }
+            }
+            if (isInBorder(Gdx.input.getX(a), Gdx.input.getY(a), Gdx.graphics.getWidth() - 140, Gdx.graphics.getHeight() - 720, 140, 140)&&Gdx.input.isTouched(a)) {
+                if (!weaponList.get(4).isEmpty() && tracking % 7 == 0) {
+                    WeaponBall weaponBall = weaponList.get(4).remove(0);
+                    shootWeaponBallArrayList.add(new ShootWeaponBall(weaponBall.getType(), tilt.getX(), tilt.getY()));
+                }
+                if(weaponList.get(4).isEmpty()) {
+                    weaponList.remove(4);
+                    weaponList.add(new ArrayList<WeaponBall>());
+                }
+            }
+            //End of weaponballs
+
+            if (isInBorder(Gdx.input.getX(a), Gdx.input.getY(a), Gdx.graphics.getWidth() - 140, Gdx.graphics.getHeight() - 120, 140, 140)&&Gdx.input.isTouched(a)) {
                 if (tracking % 10 == 0) {
                     bullets.add(new Bullet(tilt.getRotation(), tilt.getX(), tilt.getY()));
                 }
@@ -116,12 +169,12 @@ public class GameWorld {
         }
 
         if(tracking%40==0){
-            double prob = Math.random();
+            double prob = MathUtils.random();
             Enemy a;
             if(prob<0.25){
-                a = new Enemy((float)Math.random()*GameWorld.gameWidth-5, (float)Math.random()*GameWorld.gameHeight);
+                a = new Enemy((float)MathUtils.random()*GameWorld.gameWidth-140, (float)MathUtils.random()*GameWorld.gameHeight);
             }else{
-                a = new GeneralEnemy((float)Math.random()*GameWorld.gameWidth-5, (float)Math.random()*GameWorld.gameHeight);
+                a = new GeneralEnemy((float)MathUtils.random()*GameWorld.gameWidth-140, (float)MathUtils.random()*GameWorld.gameHeight);
             }
             enemies.add(a);
         }
@@ -134,17 +187,22 @@ public class GameWorld {
                         bullets.get(numBul).setIsExisted();
                     }
                 }
+
+                for(int numBall = 0; numBall < shootWeaponBallArrayList.size();numBall++){
+                    enemies.get(i).isOverlap(shootWeaponBallArrayList.get(numBall).getCircle());
+                }
                 enemies.get(i).update(delta, tilt.getX(), tilt.getY());
                 if(!enemies.get(i).isExisted()){
                     enemies.remove(i);
+                    score++;
                     i--;
                 }
             }
         }
 
         if(weaponBalls.size()<4 ) {
-            if (Math.random() < 0.4 && tracking%120==0) {
-                weaponBalls.add(new WeaponBall((float) (Math.random() * 50)));
+            if (MathUtils.random() < 0.4 && tracking%120==0) {
+                weaponBalls.add(new WeaponBall((float) (MathUtils.random() * 300)));
             }
         }
 
@@ -158,6 +216,12 @@ public class GameWorld {
             }
         }
 
+        for(int numShootWeapon = 0; numShootWeapon<shootWeaponBallArrayList.size();numShootWeapon++){
+            shootWeaponBallArrayList.get(numShootWeapon).update(delta);
+            if(!shootWeaponBallArrayList.get(numShootWeapon).isExisted()){
+                shootWeaponBallArrayList.remove(numShootWeapon);
+            }
+        }
         //weaponball detection
         if(!weaponBalls.isEmpty()){
             for(int i = 0; i<weaponBalls.size();i++){
@@ -186,6 +250,9 @@ public class GameWorld {
                         }
                         list.add(ball);
                     }
+                    if(ball.isHit){
+                        shootWeaponBallArrayList.add(new ShootWeaponBall(ball.getType(), tilt.getX(), tilt.getY()));
+                    }
                     i--;
                 }
             }
@@ -194,10 +261,6 @@ public class GameWorld {
 
         tilt.update(delta);
 
-    }
-
-    public ScrollHandler getScroller() {
-        return scroller;
     }
 
     public Tilt getTilt(){
