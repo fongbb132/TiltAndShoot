@@ -111,7 +111,7 @@ public class GameWorld {
             if (isInBorder(Gdx.input.getX(a), Gdx.input.getY(a), Gdx.graphics.getWidth() - 120, Gdx.graphics.getHeight() - 240, 140, 140)&&Gdx.input.isTouched(a)) {
                 if(!weaponList.get(0).isEmpty()&&tracking%7 == 0) {
                     WeaponBall weaponBall = weaponList.get(0).remove(0);
-                    shootWeaponBallArrayList.add(new ShootWeaponBall(weaponBall.getType(), tilt.getX(), tilt.getY()));
+                    shootWeaponBallArrayList.add(new ShootWeaponBall(weaponBall.getType(), tilt.getX(), tilt.getY(), tilt));
                 }
                 if(weaponList.get(0).isEmpty()) {
                     weaponList.remove(0);
@@ -121,7 +121,7 @@ public class GameWorld {
             if (isInBorder(Gdx.input.getX(a), Gdx.input.getY(a), Gdx.graphics.getWidth() - 120, Gdx.graphics.getHeight() - 360, 140, 140)&&Gdx.input.isTouched(a)) {
                 if(!weaponList.get(1).isEmpty()&&tracking%7 == 0) {
                     WeaponBall weaponBall = weaponList.get(1).remove(0);
-                    shootWeaponBallArrayList.add(new ShootWeaponBall(weaponBall.getType(), tilt.getX(), tilt.getY()));
+                    shootWeaponBallArrayList.add(new ShootWeaponBall(weaponBall.getType(), tilt.getX(), tilt.getY(), tilt));
                 }
                 if(weaponList.get(1).isEmpty()) {
                     weaponList.remove(1);
@@ -131,7 +131,7 @@ public class GameWorld {
             if (isInBorder(Gdx.input.getX(a), Gdx.input.getY(a), Gdx.graphics.getWidth() - 120, Gdx.graphics.getHeight() - 480, 140, 140)&&Gdx.input.isTouched(a)) {
                 if(!weaponList.get(2).isEmpty()&&tracking%7 == 0) {
                 WeaponBall weaponBall = weaponList.get(2).remove(0);
-                shootWeaponBallArrayList.add(new ShootWeaponBall(weaponBall.getType(), tilt.getX(), tilt.getY()));
+                shootWeaponBallArrayList.add(new ShootWeaponBall(weaponBall.getType(), tilt.getX(), tilt.getY(), tilt));
                 }
                 if(weaponList.get(2).isEmpty()) {
                     weaponList.remove(2);
@@ -141,7 +141,7 @@ public class GameWorld {
             if (isInBorder(Gdx.input.getX(a), Gdx.input.getY(a), Gdx.graphics.getWidth() - 140, Gdx.graphics.getHeight() - 600, 140, 140)&&Gdx.input.isTouched(a)) {
                 if (!weaponList.get(3).isEmpty() && tracking % 7 == 0) {
                     WeaponBall weaponBall = weaponList.get(3).remove(0);
-                    shootWeaponBallArrayList.add(new ShootWeaponBall(weaponBall.getType(), tilt.getX(), tilt.getY()));
+                    shootWeaponBallArrayList.add(new ShootWeaponBall(weaponBall.getType(), tilt.getX(), tilt.getY(), tilt));
                 }
                 if(weaponList.get(3).isEmpty()) {
                     weaponList.remove(3);
@@ -151,7 +151,7 @@ public class GameWorld {
             if (isInBorder(Gdx.input.getX(a), Gdx.input.getY(a), Gdx.graphics.getWidth() - 140, Gdx.graphics.getHeight() - 720, 140, 140)&&Gdx.input.isTouched(a)) {
                 if (!weaponList.get(4).isEmpty() && tracking % 7 == 0) {
                     WeaponBall weaponBall = weaponList.get(4).remove(0);
-                    shootWeaponBallArrayList.add(new ShootWeaponBall(weaponBall.getType(), tilt.getX(), tilt.getY()));
+                    shootWeaponBallArrayList.add(new ShootWeaponBall(weaponBall.getType(), tilt.getX(), tilt.getY(), tilt));
                 }
                 if(weaponList.get(4).isEmpty()) {
                     weaponList.remove(4);
@@ -179,27 +179,6 @@ public class GameWorld {
             enemies.add(a);
         }
 
-        if (!enemies.isEmpty()){
-            for(int i = 0;i<enemies.size();i++){
-                for(int numBul = 0; numBul<bullets.size();numBul++){
-                    enemies.get(i).isOverlap(bullets.get(numBul).getCircle());
-                    if(!enemies.get(i).isExisted()){
-                        bullets.get(numBul).setIsExisted();
-                    }
-                }
-
-                for(int numBall = 0; numBall < shootWeaponBallArrayList.size();numBall++){
-                    enemies.get(i).isOverlap(shootWeaponBallArrayList.get(numBall).getCircle());
-                }
-                enemies.get(i).update(delta, tilt.getX(), tilt.getY());
-                if(!enemies.get(i).isExisted()){
-                    enemies.remove(i);
-                    score++;
-                    i--;
-                }
-            }
-        }
-
         if(weaponBalls.size()<4 ) {
             if (MathUtils.random() < 0.4 && tracking%120==0) {
                 weaponBalls.add(new WeaponBall((float) (MathUtils.random() * 300)));
@@ -217,7 +196,7 @@ public class GameWorld {
         }
 
         for(int numShootWeapon = 0; numShootWeapon<shootWeaponBallArrayList.size();numShootWeapon++){
-            shootWeaponBallArrayList.get(numShootWeapon).update(delta);
+            shootWeaponBallArrayList.get(numShootWeapon).update(delta,tilt);
             if(!shootWeaponBallArrayList.get(numShootWeapon).isExisted()){
                 shootWeaponBallArrayList.remove(numShootWeapon);
             }
@@ -251,13 +230,14 @@ public class GameWorld {
                         list.add(ball);
                     }
                     if(ball.isHit){
-                        shootWeaponBallArrayList.add(new ShootWeaponBall(ball.getType(), tilt.getX(), tilt.getY()));
+                        shootWeaponBallArrayList.add(new ShootWeaponBall(ball.getType(), tilt.getX(), tilt.getY(),tilt));
                     }
                     i--;
                 }
             }
         }
 
+        EnemiesCollision(delta);
 
         tilt.update(delta);
 
@@ -288,5 +268,30 @@ public class GameWorld {
 
     public ArrayList getWeaponList(){
         return weaponList;
+    }
+
+    public void EnemiesCollision(float delta){
+
+        if (!enemies.isEmpty()){
+            for(int i = 0;i<enemies.size();i++){
+                for(int numBul = 0; numBul<bullets.size();numBul++){
+                    enemies.get(i).isOverlap(bullets.get(numBul).getCircle());
+                    if(!enemies.get(i).isExisted()){
+                        bullets.get(numBul).setIsExisted();
+                    }
+                }
+
+                for(int numBall = 0; numBall < shootWeaponBallArrayList.size();numBall++){
+                    enemies.get(i).isOverlap(shootWeaponBallArrayList.get(numBall).getCircle());
+                }
+
+                enemies.get(i).update(delta, tilt.getX(), tilt.getY());
+                if(!enemies.get(i).isExisted()){
+                    enemies.remove(i);
+                    score++;
+                    i--;
+                }
+            }
+        }
     }
 }

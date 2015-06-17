@@ -184,7 +184,7 @@ public class GameRenderer {
                 default:
                     break;
             }
-            shapeRenderer.circle(ball.getX(), ball.getY(), ball.getCircle().radius,40 );
+            shapeRenderer.circle(ball.getX() , ball.getY() , ball.getCircle().radius,40 );
         }
     }
 
