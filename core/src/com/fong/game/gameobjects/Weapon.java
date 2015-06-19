@@ -2,6 +2,7 @@ package com.fong.game.gameobjects;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
+import com.fong.game.gameworld.GameWorld;
 
 /**
  * Created by wing on 6/14/15.
@@ -18,7 +19,7 @@ public class Weapon {
         int accY = (Math.sin(angle)>0)?-4:4;
         this.acceleration = new Vector2(accX, accY);
         velocity = new Vector2((float)(v*Math.cos(angle/180*Math.PI)), (float)(v*Math.sin(angle/180*Math.PI)));
-        position = new Vector2(posX+2, posY+2);
+        position = new Vector2(posX+2* GameWorld.gameWidth/1196, posY+2*GameWorld.gameHeight/768);
         isExisted = true;
     }
 

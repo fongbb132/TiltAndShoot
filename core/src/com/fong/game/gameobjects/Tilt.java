@@ -20,7 +20,7 @@ public class Tilt {
         this.acceleration = new Vector2(0,0);
         this.velocity = new Vector2(0,0);
         this.position = new Vector2(Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()/2);
-        myCircle = new Circle(position.x+35, position.y+35, 35);
+        myCircle = new Circle(position.x+35*GameWorld.gameWidth/1196, position.y+35*GameWorld.gameHeight/768, 35*GameWorld.gameWidth/1196);
     }
 
     public float getX(){
@@ -44,7 +44,7 @@ public class Tilt {
         float accelY = Gdx.input.getAccelerometerX();
         float accelX = Gdx.input.getAccelerometerY();
 
-        acceleration.set(accelX*1000, accelY*1000);
+        acceleration.set(accelX*500, accelY*500);
 
         velocity.add(acceleration.cpy().scl(delta));
 

@@ -14,7 +14,8 @@ public class ShootWeaponBall {
     private int type;
     private Vector2 position, velocity, tiltPosition;
     private Circle circle;
-    private boolean isExisted;
+    private boolean isExploded;
+
     float angle = 0;
 
     private float time = 0;
@@ -22,7 +23,7 @@ public class ShootWeaponBall {
         this.type = type;
         this.position = new Vector2(posX, posY);
         this.circle = new Circle(position.x, position.y, 0);
-        this.isExisted = true;
+        this.isExploded = false;
         float angle = tilt.getRotation();
         this.tiltPosition = new Vector2(tilt.getX(), tilt.getY());
         this.velocity = new Vector2((450* MathUtils.cos((float) (angle / 180 * Math.PI))), 450*(MathUtils.sin(((float)(angle / 180 * Math.PI)))));
@@ -54,16 +55,16 @@ public class ShootWeaponBall {
                 break;
             case 1:
                 if(time<3) {
-                    position.set(tilt.getX()+35, tilt.getY()+35);
-                    circle.set(tilt.getX()+35, tilt.getY()+35, 40*time*time*GameWorld.gameHeight/768);
+                    position.set(tilt.getX()+35*GameWorld.gameWidth/1196, tilt.getY()+35*GameWorld.gameHeight/768);
+                    circle.set(tilt.getX()+35*GameWorld.gameWidth/1196, tilt.getY()+35*GameWorld.gameHeight/768, 30*time*time*GameWorld.gameHeight/768);
                 }else {
-                    position.set(tilt.getX()+35, tilt.getY()+35);
-                    circle.set(tilt.getX()+35, tilt.getY()+35, (circle.radius-1*time*time)*GameWorld.gameHeight/768);
+                    position.set(tilt.getX()+35*GameWorld.gameWidth/1196, tilt.getY()+35*GameWorld.gameHeight/768);
+                    circle.set(tilt.getX()+35*GameWorld.gameWidth/1196, tilt.getY()+35*GameWorld.gameHeight/768, (circle.radius-1*time*time)*GameWorld.gameHeight/768);
                 }
                 break;
             case 2:
                 if(time < 1.5){
-                    position.set(tilt.getX()+35, tilt.getY()+35);
+                    position.set(tilt.getX()+35*GameWorld.gameWidth/1196, tilt.getY()+35*GameWorld.gameHeight/768);
                     circle.set(position.x, position.y, 35*GameWorld.gameHeight/768);
                     if(time > 1.3){
                         float angle = tilt.getRotation();
@@ -71,19 +72,23 @@ public class ShootWeaponBall {
                     }
                 }else {
                     position.add(velocity.cpy().scl(delta));
-                    if (position.x > Gdx.graphics.getWidth() - 100 || position.x < -1 || position.y > Gdx.graphics.getHeight() || position.y < -1) {
+                    if (position.x > Gdx.graphics.getWidth() - 100*GameWorld.gameWidth/1196 || position.x < -1 || position.y > Gdx.graphics.getHeight() || position.y < -1) {
                         circle.radius = -1;
                         break;
                     }
-                    circle.set(position.x, position.y, 150 * (time-1.5f)*GameWorld.gameHeight/768);
+                    circle.set(position.x, position.y, 140 * (time-1.5f)*GameWorld.gameHeight/768);
                 }
                 break;
             case 3:
+                float angleTime = time;
                 if(time<0.01){
                     angle = tilt.getRotation();
                     tiltPosition.set(tilt.getX(), tilt.getY());
                 }
-                angle = (angle+time)%360;
+                if(time>2){
+                    angleTime = 2;
+                }
+                angle = (angle+angleTime)%360;
                 float radius = (10 + 20 * time)*GameWorld.gameHeight/768;
                 if (position.x > Gdx.graphics.getWidth() - 100 || position.x < -1 || position.y > Gdx.graphics.getHeight() || position.y < -1) {
                     circle.radius = -1;
@@ -93,11 +98,27 @@ public class ShootWeaponBall {
                 circle.set(position.x, position.y, 20*GameWorld.gameHeight/768);
                 break;
             case 4:
-                circle.radius = (150*time-40*time*time)*GameWorld.gameHeight/768;
+                int i;
+                if(time < 1){
+                    i = (int)(time*25);
+                    if(i%2==0){
+                        velocity.set(-velocity.x, -velocity.y);
+                    }
+                    circle.set(position.x, position.y,25*GameWorld.gameHeight/768);
+                }else {
+                    isExploded = true;
+                    Gdx.app.log("ShootWeaponBall", "Ball");
+                    circle.radius = -1;
+                }
+                position.add(velocity.cpy().scl(delta));
                 break;
             default:
 
         }
+    }
+
+    public boolean isExploded(){
+        return isExploded;
     }
 
     public int getType() {

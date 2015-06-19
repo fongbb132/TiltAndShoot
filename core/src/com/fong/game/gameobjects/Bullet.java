@@ -22,7 +22,7 @@ public class Bullet {
         int accY = (MathUtils.sin(angle)>0)?-4:4;
         this.acceleration = new Vector2(accX, accY);
         velocity = new Vector2((v*MathUtils.cos((float)(angle / 180 * Math.PI))), v*(MathUtils.sin(((float)(angle / 180 * Math.PI)))));
-        position = new Vector2(posX+35, posY+35);
+        position = new Vector2(posX+35*GameWorld.gameWidth/1196, posY+35*GameWorld.gameHeight/768);
         circle = new Circle(position.x, position.y, 10*GameWorld.gameHeight/768);
         isHitTarget = false;
     }

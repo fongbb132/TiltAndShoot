@@ -11,15 +11,17 @@ import com.fong.game.gameworld.GameWorld;
  */
 public class Enemy {
 
-    public Vector2 velocity, position, acceleration;
+    public Vector2 velocity, position;
     private boolean isExisted;
     public Circle myCircle;
+    private float velX = MathUtils.random()*200;
+    private float velY = MathUtils.random()*200;
 
     public Enemy(float posX, float posY){
-        velocity = new Vector2((float)(MathUtils.random()*200),(float)(MathUtils.random()*200));
+        velocity = new Vector2(velX, velY);
         position = new Vector2(posX+10, posY+10);
         isExisted = true;
-        myCircle = new Circle(position.x+10, position.y+10, 1);
+        myCircle = new Circle(position.x+10*GameWorld.gameWidth/1196, position.y+10*GameWorld.gameWidth/1196, 1);
     }
 
     public void update(float delta, float posX, float posY){
@@ -32,7 +34,7 @@ public class Enemy {
         if (position.y < 1 || position.y > GameWorld.gameHeight) {
             velocity.y = -velocity.y;
         }
-        myCircle.set(position.x+10*GameWorld.gameHeight/768, position.y+10*GameWorld.gameHeight/768, 10*GameWorld.gameHeight/768);
+        myCircle.set(position.x+10*GameWorld.gameWidth/1196, position.y+10*GameWorld.gameHeight/768, 10*GameWorld.gameHeight/768);
         position.add(velocity.cpy().scl(delta));
 
     }
@@ -53,4 +55,9 @@ public class Enemy {
     public float getY(){
         return position.y;
     }
+
+    public void setVelocity(float velX, float velY){
+        velocity.set(velX, velY);
+    }
+
 }

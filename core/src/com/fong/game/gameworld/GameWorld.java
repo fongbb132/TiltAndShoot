@@ -6,6 +6,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.fong.game.gameobjects.Bullet;
 import com.fong.game.gameobjects.Enemy;
 import com.fong.game.gameobjects.GeneralEnemy;
+import com.fong.game.gameobjects.MiniAbsorbBall;
 import com.fong.game.gameobjects.ShootWeaponBall;
 import com.fong.game.gameobjects.Tilt;
 import com.fong.game.gameobjects.Weapon;
@@ -35,6 +36,7 @@ public class GameWorld {
     public ArrayList<WeaponBall> weaponBalls;
     public ArrayList<ArrayList<WeaponBall>> weaponList;
     public ArrayList<ShootWeaponBall> shootWeaponBallArrayList;
+    public ArrayList<MiniAbsorbBall> absorbBallsList;
     private boolean isPlay = true;
 
 
@@ -50,6 +52,7 @@ public class GameWorld {
             weaponList.add(arrayList);
         }
         shootWeaponBallArrayList = new ArrayList<ShootWeaponBall>();
+        absorbBallsList = new ArrayList<MiniAbsorbBall>();
     }
 
     public void update(float delta){
@@ -93,7 +96,6 @@ public class GameWorld {
 
     public void updateRunning(float delta) {
         tracking++;
-        Gdx.app.log("GameWorld", gameWidth + " "+gameHeight);
         if(delta > .15f){
             delta = .15f;
         }
@@ -198,13 +200,23 @@ public class GameWorld {
 
         //Update the weapons at that time
         for(int numShootWeapon = 0; numShootWeapon<shootWeaponBallArrayList.size();numShootWeapon++){
-            shootWeaponBallArrayList.get(numShootWeapon).update(delta,tilt);
-            if(!shootWeaponBallArrayList.get(numShootWeapon).isExisted()){
+            ShootWeaponBall ball = shootWeaponBallArrayList.get(numShootWeapon);
+            ball.update(delta, tilt);
+            if(!ball.isExisted()){
+                if(ball.getType()==4){
+                    if(ball.isExploded()){
+                        for(int numExBall = 0; numExBall <6; numExBall++){
+                            absorbBallsList.add(new MiniAbsorbBall(ball.getX(), ball.getY(), 360 / 6 * numExBall));
+                        }
+                    }
+                }
                 shootWeaponBallArrayList.remove(numShootWeapon);
             }
         }
 
         weaponBallDetection(delta);
+
+        updateAbsorbingBalls(delta);
 
         EnemiesCollision(delta);
 
@@ -255,11 +267,33 @@ public class GameWorld {
                 }
 
                 enemies.get(i).update(delta, tilt.getX(), tilt.getY());
+
+                for(int numball = 0; numball<absorbBallsList.size();numball++){
+                    MiniAbsorbBall ball = absorbBallsList.get(numball);
+                    Enemy enemy = enemies.get(i);
+                    if(ball.isInRange(enemies.get(i))){
+                        float velX = (enemy.getX() < ball.getPosX()+15)? Math.abs(150):-Math.abs(150);
+                        float velY = (enemy.getY()<ball.getPosY())? Math.abs(150):-Math.abs(150);
+                        enemies.get(i).setVelocity(velX, velY);
+                    }
+                    enemies.get(i).isOverlap(ball.getCircle());
+                }
                 if(!enemies.get(i).isExisted()){
                     enemies.remove(i);
                     score++;
                     i--;
                 }
+            }
+        }
+    }
+
+    public void updateAbsorbingBalls(float delta){
+        for(int i = 0; i < absorbBallsList.size(); i++){
+            absorbBallsList.get(i).update(delta);
+
+            if(!absorbBallsList.get(i).isExisted()){
+                absorbBallsList.remove(i);
+                i--;
             }
         }
     }

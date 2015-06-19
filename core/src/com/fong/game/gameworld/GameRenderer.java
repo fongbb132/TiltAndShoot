@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.fong.game.gameobjects.Bullet;
 import com.fong.game.InputHelpers.AssetLoader;
+import com.fong.game.gameobjects.MiniAbsorbBall;
 import com.fong.game.gameobjects.ShootWeaponBall;
 import com.fong.game.gameobjects.Tilt;
 import com.fong.game.gameobjects.Weapon;
@@ -39,6 +40,7 @@ public class GameRenderer {
     private ArrayList<WeaponBall> weaponBalls;
     private int gameHeight, gameWidth;
     private ArrayList<ArrayList<WeaponBall>> weaponList;
+    private ArrayList<MiniAbsorbBall> absorbBallArrayList;
     private BitmapFont font;
 
     public GameRenderer(GameWorld world, int gameHeight, int midPointY) {
@@ -123,6 +125,8 @@ public class GameRenderer {
             }
         releaseWeaponBall();
 
+        drawAbsorbingBalls();
+
         drawWeaponCircles();
 
             //weapon circles
@@ -159,6 +163,16 @@ public class GameRenderer {
         //bg = AssetLoader.bg;
         cursor = AssetLoader.cursor;
         bullet = AssetLoader.bullet;
+    }
+
+    private void drawAbsorbingBalls(){
+        absorbBallArrayList = myWorld.absorbBallsList;
+        for(int i = 0; i<absorbBallArrayList.size();i++){
+            MiniAbsorbBall ball = absorbBallArrayList.get(i);
+            shapeRenderer.setColor(102 / 255.0f, 0 / 255.0f, 102 / 255.0f, 1);
+            shapeRenderer.circle(ball.getPosX(), ball.getPosY(), 25*GameWorld.gameHeight/768);
+        }
+
     }
 
     private void releaseWeaponBall(){
