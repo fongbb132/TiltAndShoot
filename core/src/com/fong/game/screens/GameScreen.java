@@ -6,6 +6,7 @@ import com.fong.game.gameworld.BeginningRenderer;
 import com.fong.game.gameworld.GameRenderer;
 import com.fong.game.gameworld.GameWorld;
 import com.fong.game.InputHelpers.InputHandler;
+import com.fong.game.gameworld.SetAccRenderer;
 
 /**
  * Created by wing on 6/3/15.
@@ -14,6 +15,7 @@ public class GameScreen implements Screen {
     private GameWorld world;
     private GameRenderer renderer;
     private BeginningRenderer beginningRenderer;
+    private SetAccRenderer setAccRenderer;
 
     private float runTime = 0;
     private static final String TAG = "GameScreen";
@@ -27,6 +29,7 @@ public class GameScreen implements Screen {
         world = new GameWorld(midPointY);
         renderer = new GameRenderer(world, (int)gameHeight, midPointY);
         beginningRenderer = new BeginningRenderer(world);
+        setAccRenderer = new SetAccRenderer(world);
 
         Gdx.input.setInputProcessor(new InputHandler(world));
 
@@ -41,17 +44,18 @@ public class GameScreen implements Screen {
         delta/=2;
         runTime += delta;
         world.update(delta);
-        if(world.getCurrentState()== GameWorld.GameState.READY){
+        if(world.getCurrentState().equals(GameWorld.GameState.READY)){
             beginningRenderer.render();
         }
-        else if(world.getCurrentState()== GameWorld.GameState.RUNNING) {
+        else if(world.getCurrentState().equals(GameWorld.GameState.RUNNING) ) {
             renderer.render(runTime);
+        }else if(world.getCurrentState().equals(GameWorld.GameState.SETACC)){
+            setAccRenderer.render();
         }
     }
 
     @Override
     public void resize(int width, int height) {
-        Gdx.app.log("GameScreen", "resizing");
     }
 
     @Override
@@ -62,12 +66,12 @@ public class GameScreen implements Screen {
 
     @Override
     public void resume() {
-        Gdx.app.log(TAG, "resume called");
+
     }
 
     @Override
     public void hide() {
-        Gdx.app.log(TAG, "hide called");
+
     }
 
     @Override

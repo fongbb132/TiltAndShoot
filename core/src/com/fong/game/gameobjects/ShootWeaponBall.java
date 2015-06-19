@@ -54,16 +54,20 @@ public class ShootWeaponBall {
                 circle.radius = (150*time-40*time*time)*GameWorld.gameHeight/768;
                 break;
             case 1:
-                if(time<3) {
+                if(time<2) {
                     position.set(tilt.getX()+35*GameWorld.gameWidth/1196, tilt.getY()+35*GameWorld.gameHeight/768);
                     circle.set(tilt.getX()+35*GameWorld.gameWidth/1196, tilt.getY()+35*GameWorld.gameHeight/768, 30*time*time*GameWorld.gameHeight/768);
+                }else if((time < 4.5 )){
+                    position.set(tilt.getX()+35*GameWorld.gameWidth/1196, tilt.getY()+35*GameWorld.gameHeight/768);
+                    circle.set(tilt.getX()+35*GameWorld.gameWidth/1196, tilt.getY()+35*GameWorld.gameHeight/768, circle.radius);
                 }else {
                     position.set(tilt.getX()+35*GameWorld.gameWidth/1196, tilt.getY()+35*GameWorld.gameHeight/768);
-                    circle.set(tilt.getX()+35*GameWorld.gameWidth/1196, tilt.getY()+35*GameWorld.gameHeight/768, (circle.radius-1*time*time)*GameWorld.gameHeight/768);
+                    circle.set(tilt.getX()+35*GameWorld.gameWidth/1196, tilt.getY()+35*GameWorld.gameHeight/768, circle.radius-(0.8f*time*time)*GameWorld.gameHeight/768);
                 }
                 break;
             case 2:
                 if(time < 1.5){
+                    tilt.setIsPressed(true);
                     position.set(tilt.getX()+35*GameWorld.gameWidth/1196, tilt.getY()+35*GameWorld.gameHeight/768);
                     circle.set(position.x, position.y, 35*GameWorld.gameHeight/768);
                     if(time > 1.3){

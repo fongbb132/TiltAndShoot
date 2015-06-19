@@ -34,7 +34,7 @@ public class GameRenderer {
 
     private TextureRegion bg, grass;
     private Animation birdAnimation;
-    private TextureRegion cursor,bullet;
+    private TextureRegion cursor1,cursor2,bullet;
 
     private ArrayList<Bullet> bullets;
     private ArrayList<WeaponBall> weaponBalls;
@@ -46,6 +46,7 @@ public class GameRenderer {
     public GameRenderer(GameWorld world, int gameHeight, int midPointY) {
 
         this.myWorld = world;
+
         bullets = myWorld.bullets;
         this.gameHeight = gameHeight;
         gameWidth = GameWorld.gameWidth;
@@ -141,11 +142,18 @@ public class GameRenderer {
 
         font.draw(batcher, GameWorld.score+"",40 , 40, 10, 4, true);
 
-            batcher.draw(cursor, tilt.getX(),
+        if(!tilt.getIsPressed()) {
+            batcher.draw(cursor1, tilt.getX(),
                     tilt.getY(), 35,
-                    35*gameHeight/768, 70, 70*gameHeight/768,
+                    35 * gameHeight / 768, 70, 70 * gameHeight / 768,
+                    1, 1, tilt.getRotation());
+        }else{
+            batcher.draw(cursor2, tilt.getX(),
+                    tilt.getY(), 35,
+                    35 * gameHeight / 768, 70, 70 * gameHeight / 768,
                     1, 1, tilt.getRotation());
 
+        }
             if (!bullets.isEmpty()) {
                 for (int i = 0; i < bullets.size(); i++) {
                     batcher.draw(bullet, bullets.get(i).getX(), bullets.get(i).getY(), 10*gameWidth/1196,10*gameHeight/768, 20*gameWidth/1196,20*gameHeight/768, 1, 1, 0f);
@@ -161,7 +169,8 @@ public class GameRenderer {
 
     private void initAssets(){
         //bg = AssetLoader.bg;
-        cursor = AssetLoader.cursor;
+        cursor1 = AssetLoader.cursorA;
+        cursor2 = AssetLoader.cursorB;
         bullet = AssetLoader.bullet;
     }
 

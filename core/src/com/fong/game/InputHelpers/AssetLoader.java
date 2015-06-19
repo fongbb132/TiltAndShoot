@@ -13,21 +13,27 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
  */
 public class AssetLoader {
 
-    public static Texture cursor1;
-    public static TextureRegion cursor, bullet;
+    public static Texture cursor1,cursor2;
+    public static TextureRegion cursorA,cursorB, bullet;
     public static Texture bulletTexture;
+    public static Animation cursorAnimation;
 
     public static void load(){
-        cursor1 = new Texture(Gdx.files.internal("data/Cursor.png"));
+        cursor1 = new Texture(Gdx.files.internal("data/newCursor.png"));
+        cursor2 = new Texture(Gdx.files.internal("data/newCursor2.png"));
         bulletTexture = new Texture(Gdx.files.internal("data/bullet.png"));
-        cursor = new TextureRegion(cursor1, 0, 0, 350, 350);
+        cursorA = new TextureRegion(cursor1, 0, 0, 350, 350);
+        cursorB = new TextureRegion(cursor2, 0,0, 350,350);
         bullet = new TextureRegion(bulletTexture, 0,0, 350, 350);
 
-        cursor.flip(false, true);
+        cursorA.flip(false, true);
+        cursorB.flip(false, true);
+
     }
 
     public static void dispose(){
         cursor1.dispose();
+        cursor2.dispose();
         bulletTexture.dispose();
     }
 

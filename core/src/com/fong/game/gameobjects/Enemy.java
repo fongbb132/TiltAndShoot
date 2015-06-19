@@ -21,7 +21,7 @@ public class Enemy {
         velocity = new Vector2(velX, velY);
         position = new Vector2(posX+10, posY+10);
         isExisted = true;
-        myCircle = new Circle(position.x+10*GameWorld.gameWidth/1196, position.y+10*GameWorld.gameWidth/1196, 1);
+        myCircle = new Circle(position.x+10*GameWorld.gameWidth/1196, position.y+10*GameWorld.gameHeight/768, 1);
     }
 
     public void update(float delta, float posX, float posY){
@@ -39,9 +39,10 @@ public class Enemy {
 
     }
 
-    public void isOverlap(Circle c){
+    public boolean isOverlap(Circle c){
         if(myCircle.overlaps(c))
             isExisted = false;
+        return isExisted;
     }
 
     public boolean isExisted(){

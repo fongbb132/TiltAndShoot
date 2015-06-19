@@ -15,7 +15,10 @@ public class Tilt {
     private Vector2 position;
     private float rotation;
     private Circle myCircle;
+    private boolean isPress;
+    private float time;
 
+    public static float sensitivity=500;
     public static float AcCorrectionX=0, AcCorrectionY=0;
     public Tilt() {
         this.rotation = 0;
@@ -23,6 +26,12 @@ public class Tilt {
         this.velocity = new Vector2(0,0);
         this.position = new Vector2(Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()/2);
         myCircle = new Circle(position.x+35*GameWorld.gameWidth/1196, position.y+35*GameWorld.gameHeight/768, 35*GameWorld.gameWidth/1196);
+        isPress = false;
+    }
+
+    public void setPosition(){
+        this.position.set(Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()/2);
+        this.velocity.set(0,0);
     }
 
     public float getX(){
@@ -43,10 +52,13 @@ public class Tilt {
     }
 
     public void update(float delta){
-        float accelY = Gdx.input.getAccelerometerX()-AcCorrectionX;
-        float accelX = Gdx.input.getAccelerometerY()-AcCorrectionY;
 
-        acceleration.set(accelX*500, accelY*500);
+        time+=delta;
+
+        float accelY = Gdx.input.getAccelerometerX()-AcCorrectionY;
+        float accelX = Gdx.input.getAccelerometerY()-AcCorrectionX;
+
+        acceleration.set(accelX*sensitivity, accelY*sensitivity);
 
         velocity.add(acceleration.cpy().scl(delta));
 
@@ -79,6 +91,14 @@ public class Tilt {
         }
 
         myCircle.set(position.x, position.y, 35*GameWorld.gameHeight/768);
+    }
+
+    public void setIsPressed(boolean b){
+        isPress = b;
+    }
+
+    public boolean getIsPressed(){
+        return isPress;
     }
 
     public Circle getCircle() {

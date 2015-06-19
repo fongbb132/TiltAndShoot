@@ -28,12 +28,19 @@ public class MiniAbsorbBall {
     public void update(float delta){
         time+=delta;
         rotation = (rotation+3)%360;
-        if(Math.sqrt((double)(position.x-oriX)*(position.x-oriX)+(position.y-oriY)*(position.y-oriY))<150*GameWorld.gameHeight/768){
-            position.add(velocity.cpy().scl(delta));
-            circle.set(position.x, position.y, 25*GameWorld.gameHeight/768);
+
+
+        if (position.x < 1 || position.x > GameWorld.gameWidth-140) {
+            velocity.x = -velocity.x;
+        }
+        if (position.y < 1 || position.y > GameWorld.gameHeight) {
+            velocity.y = -velocity.y;
         }
 
-        if(time>6.5){
+        position.add(velocity.cpy().scl(delta));
+        circle.set(position.x, position.y, 25*GameWorld.gameHeight/768);
+
+        if(time>5){
             isExisted = false;
         }
 
