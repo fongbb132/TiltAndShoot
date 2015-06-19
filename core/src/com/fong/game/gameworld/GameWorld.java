@@ -27,6 +27,8 @@ public class GameWorld {
         READY, RUNNING, GAMEOVER, HIGHSCORE,SETACC,SETSENSATIVITY
     }
 
+    public static float seekBarX = 200*gameWidth/1196 + gameWidth/2;
+
     private int tracking;
     private Tilt tilt;
     private GameState currentState;
@@ -101,6 +103,10 @@ public class GameWorld {
         }else if(isInBorder(Gdx.input.getX(), Gdx.input.getY(),
                 10*GameWorld.gameWidth/1196, 10 *GameWorld.gameHeight/768, 200*GameWorld.gameWidth/1196,100*GameWorld.gameHeight/768)){
             currentState = GameState.READY;
+        }else if(isInBorder(Gdx.input.getX(), Gdx.input.getY(), 310*gameWidth/1196, 10 *GameWorld.gameHeight/768,
+                800*GameWorld.gameWidth/1196,100*GameWorld.gameHeight/768)){
+            seekBarX = Gdx.input.getX();
+            Tilt.sensitivity = (seekBarX-310)/400;
         }
         tilt2.update(delta);
 
@@ -320,14 +326,6 @@ public class GameWorld {
                     }
                 }
             }
-
-            /*
-            weaponBalls.get(i).setShot(bullets.get(numBullet));
-                    if(weaponBalls.get(i).isShot){
-                        bullets.get(numBullet).setIsExisted();
-                    }
-             */
-
         }
     }
 

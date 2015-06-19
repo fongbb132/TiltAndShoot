@@ -5,6 +5,15 @@ GameRenderer is for display
 GameWorld is where all the works are
 
 
+-First Page
+ - Green Box goes to the setting page
+    - white box is the one go back to last page
+    - blue, green bar are the seekbar for sensitivity
+    - blue box is the one to adjust the accelemometer
+ - Blue box goes to the game
+ - red box will go to the game score
+
+
 user can shoot the balls then it becomes weaponball and is stored on the
 weaponList on the right side. User can hit it to use it.
 
@@ -17,4 +26,5 @@ for now)
 - more constraints will be add
 - adjustment for accelerometer and speed will be add
 - scores and high score will be added
--
+
+

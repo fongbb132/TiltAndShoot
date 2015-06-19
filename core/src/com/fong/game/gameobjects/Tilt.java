@@ -18,7 +18,7 @@ public class Tilt {
     private boolean isPress;
     private float time;
 
-    public static float sensitivity=500;
+    public static float sensitivity=1;
     public static float AcCorrectionX=0, AcCorrectionY=0;
     public Tilt() {
         this.rotation = 0;
@@ -58,7 +58,7 @@ public class Tilt {
         float accelY = Gdx.input.getAccelerometerX()-AcCorrectionY;
         float accelX = Gdx.input.getAccelerometerY()-AcCorrectionX;
 
-        acceleration.set(accelX*sensitivity, accelY*sensitivity);
+        acceleration.set(accelX*500*sensitivity, accelY*500*sensitivity);
 
         velocity.add(acceleration.cpy().scl(delta));
 

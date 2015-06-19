@@ -18,7 +18,6 @@ public class SetAccRenderer {
 
 
     private float gameHeight = Gdx.graphics.getHeight();
-    private float gameWidth = Gdx.graphics.getWidth();
     private GameWorld gameWorld;
     private ShapeRenderer shapeRenderer;
     private OrthographicCamera cam;
@@ -27,6 +26,7 @@ public class SetAccRenderer {
     private TextureRegion cursor1;
 
     public SetAccRenderer(GameWorld world) {
+
         this.gameWorld = world;
         cam = new OrthographicCamera();
         //first argument: whether the orthographic projection is used or not
@@ -59,7 +59,16 @@ public class SetAccRenderer {
         shapeRenderer.setColor(Color.WHITE);
         shapeRenderer.rect(10 * GameWorld.gameWidth / 1196, 10 * GameWorld.gameHeight / 768, 200 * GameWorld.gameWidth / 1196, 100 * GameWorld.gameHeight / 768);
         shapeRenderer.setColor(Color.BLUE);
-        shapeRenderer.rect(10*GameWorld.gameWidth/1196, GameWorld.gameHeight - 110 *GameWorld.gameHeight/768, 200*GameWorld.gameWidth/1196,100*GameWorld.gameHeight/768);
+        shapeRenderer.rect(10 * GameWorld.gameWidth / 1196, GameWorld.gameHeight - 110 * GameWorld.gameHeight / 768, 200 * GameWorld.gameWidth / 1196, 100 * GameWorld.gameHeight / 768);
+        shapeRenderer.end();
+
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+        shapeRenderer.setColor(Color.BLUE);
+        shapeRenderer.rect(310 * GameWorld.gameWidth / 1196, 50 * GameWorld.gameHeight / 768, GameWorld.seekBarX - 310 * GameWorld.gameWidth / 1196, 10);
+        shapeRenderer.setColor(Color.GREEN);
+        shapeRenderer.rect(GameWorld.seekBarX * GameWorld.gameWidth / 1196, 50 * GameWorld.gameHeight / 768, 1110 * GameWorld.gameWidth / 1196 - GameWorld.seekBarX, 10);
+        shapeRenderer.setColor(Color.YELLOW);
+        shapeRenderer.circle(GameWorld.seekBarX, 55* GameWorld.gameHeight / 768,5);
         shapeRenderer.end();
 
         batcher.begin();

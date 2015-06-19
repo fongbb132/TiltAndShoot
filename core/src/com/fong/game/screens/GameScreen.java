@@ -18,7 +18,6 @@ public class GameScreen implements Screen {
     private SetAccRenderer setAccRenderer;
 
     private float runTime = 0;
-    private static final String TAG = "GameScreen";
 
     public GameScreen(){
 
@@ -36,7 +35,6 @@ public class GameScreen implements Screen {
     }
     @Override
     public void show() {
-        Gdx.app.log(TAG, "show called");
     }
 
     @Override
@@ -60,7 +58,6 @@ public class GameScreen implements Screen {
 
     @Override
     public void pause() {
-        Gdx.app.log(TAG, "pause called");
 
     }
 
