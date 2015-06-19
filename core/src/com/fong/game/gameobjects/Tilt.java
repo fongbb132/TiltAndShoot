@@ -15,6 +15,8 @@ public class Tilt {
     private Vector2 position;
     private float rotation;
     private Circle myCircle;
+
+    public static float AcCorrectionX=0, AcCorrectionY=0;
     public Tilt() {
         this.rotation = 0;
         this.acceleration = new Vector2(0,0);
@@ -41,8 +43,8 @@ public class Tilt {
     }
 
     public void update(float delta){
-        float accelY = Gdx.input.getAccelerometerX();
-        float accelX = Gdx.input.getAccelerometerY();
+        float accelY = Gdx.input.getAccelerometerX()-AcCorrectionX;
+        float accelX = Gdx.input.getAccelerometerY()-AcCorrectionY;
 
         acceleration.set(accelX*500, accelY*500);
 

@@ -58,8 +58,7 @@ public class GameWorld {
     public void update(float delta){
         switch (currentState){
             case READY:
-
-                updateRunning(delta);
+                updateReady(delta);
                 //updateReady(delta);
                 break;
 
@@ -72,7 +71,19 @@ public class GameWorld {
     }
 
     private void updateReady(float delta) {
+        float inputX = Gdx.input.getX();
+        float inputY = Gdx.input.getY();
+        if(isInBorder(inputX, inputY, gameWidth / 2 - 150 * gameWidth / 1196, gameHeight / 2, 300 * gameWidth / 1196, 100 * gameHeight / 768)){
+            currentState = GameState.RUNNING;
+        }
+    }
 
+    public GameState getCurrentState(){
+        return currentState;
+    }
+
+    public void setGameState(GameState gameState){
+        currentState = gameState;
     }
 
 
@@ -240,7 +251,7 @@ public class GameWorld {
         return currentState == GameState.HIGHSCORE;
     }
 
-    public boolean isInBorder(int x, int y, int fromX, int fromY, int width, int height){
+    public boolean isInBorder(float x, float y, float fromX, float fromY, float width, float height){
         if(x>=fromX && x<=fromX + width && y>=fromY && y<= fromY+height &&Gdx.input.isTouched())
             return true;
         else

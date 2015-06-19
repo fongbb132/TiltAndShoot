@@ -33,7 +33,7 @@ public class MiniAbsorbBall {
             circle.set(position.x, position.y, 25*GameWorld.gameHeight/768);
         }
 
-        if(time>8){
+        if(time>6.5){
             isExisted = false;
         }
 
@@ -56,7 +56,7 @@ public class MiniAbsorbBall {
 
     public boolean isInRange(Enemy enemy){
         boolean isInRange = false;
-        if(Math.sqrt((double)(position.x-enemy.getX())*(position.x-enemy.getX())-(position.y-enemy.getY())*(position.y-enemy.getY()))<50*GameWorld.gameHeight/768){
+        if(Math.sqrt((double)(position.x-enemy.getX())*(position.x-enemy.getX())-(position.y-enemy.getY())*(position.y-enemy.getY()))<40*GameWorld.gameHeight/768){
             isInRange = true;
         }
         return isInRange;

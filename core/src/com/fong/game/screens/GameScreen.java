@@ -2,6 +2,7 @@ package com.fong.game.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.fong.game.gameworld.BeginningRenderer;
 import com.fong.game.gameworld.GameRenderer;
 import com.fong.game.gameworld.GameWorld;
 import com.fong.game.InputHelpers.InputHandler;
@@ -12,6 +13,7 @@ import com.fong.game.InputHelpers.InputHandler;
 public class GameScreen implements Screen {
     private GameWorld world;
     private GameRenderer renderer;
+    private BeginningRenderer beginningRenderer;
 
     private float runTime = 0;
     private static final String TAG = "GameScreen";
@@ -24,6 +26,7 @@ public class GameScreen implements Screen {
 
         world = new GameWorld(midPointY);
         renderer = new GameRenderer(world, (int)gameHeight, midPointY);
+        beginningRenderer = new BeginningRenderer(world);
 
         Gdx.input.setInputProcessor(new InputHandler(world));
 
@@ -38,7 +41,12 @@ public class GameScreen implements Screen {
         delta/=2;
         runTime += delta;
         world.update(delta);
-        renderer.render(runTime);
+        if(world.getCurrentState()== GameWorld.GameState.READY){
+            beginningRenderer.render();
+        }
+        else if(world.getCurrentState()== GameWorld.GameState.RUNNING) {
+            renderer.render(runTime);
+        }
     }
 
     @Override
