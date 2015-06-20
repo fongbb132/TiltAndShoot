@@ -1,6 +1,9 @@
 all the resources go to android/assets/data
 all the codes are in core/src/com/fong/game
 
+Black dots -- die if hit by bullets
+
+
 GameRenderer is for display
 GameWorld is where all the works are
 

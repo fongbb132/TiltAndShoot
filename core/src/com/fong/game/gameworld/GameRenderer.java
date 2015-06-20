@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -15,7 +14,6 @@ import com.fong.game.InputHelpers.AssetLoader;
 import com.fong.game.gameobjects.MiniAbsorbBall;
 import com.fong.game.gameobjects.ShootWeaponBall;
 import com.fong.game.gameobjects.Tilt;
-import com.fong.game.gameobjects.Weapon;
 import com.fong.game.gameobjects.WeaponBall;
 
 import java.util.ArrayList;
@@ -82,12 +80,23 @@ public class GameRenderer {
         shapeRenderer.rect(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         shapeRenderer.end();
 
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         //rotation circles
-        shapeRenderer.setColor(153 / 255.0f, 153 / 255.0f, 153 / 255.0f, 0.6f);
-        shapeRenderer.circle(100 * gameWidth / 1196, GameWorld.gameHeight - (100 * gameHeight / 768), 100, 50);
-        shapeRenderer.circle(100*gameWidth/1196, GameWorld.gameHeight - (300*gameHeight/768), 100,50);
+        batcher.begin();
+        batcher.enableBlending();
+        if(myWorld.antiClock){
+            batcher.draw(AssetLoader.clock2, 0, GameWorld.gameHeight - (200*gameHeight/768),200*gameWidth/1196,200*gameHeight/768);
+        }else{
+            batcher.draw(AssetLoader.clock1, 0, GameWorld.gameHeight - (200*gameHeight/768),200*gameWidth/1196,200*gameHeight/768);
+        }
 
+        if(myWorld.clock){
+            batcher.draw(AssetLoader.antiClock2, 0, GameWorld.gameHeight - (400*gameHeight/768),200*gameWidth/1196,200*gameHeight/768);
+        }else {
+            batcher.draw(AssetLoader.antiClock1, 0, GameWorld.gameHeight - (400*gameHeight/768),200*gameWidth/1196,200*gameHeight/768);
+        }
+
+        batcher.end();
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
 
             if (!myWorld.enemies.isEmpty()) {
                 for (int i = 0; i < myWorld.enemies.size(); i++) {

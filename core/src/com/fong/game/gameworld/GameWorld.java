@@ -2,14 +2,12 @@ package com.fong.game.gameworld;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.math.Rectangle;
 import com.fong.game.gameobjects.Bullet;
 import com.fong.game.gameobjects.Enemy;
 import com.fong.game.gameobjects.GeneralEnemy;
 import com.fong.game.gameobjects.MiniAbsorbBall;
 import com.fong.game.gameobjects.ShootWeaponBall;
 import com.fong.game.gameobjects.Tilt;
-import com.fong.game.gameobjects.Weapon;
 import com.fong.game.gameobjects.WeaponBall;
 
 import java.util.ArrayList;
@@ -20,6 +18,8 @@ import java.util.ArrayList;
 public class GameWorld {
 
     public static int score=0;
+    private float timeRotA = 0;
+    private float timeRotC = 0;
     public Tilt tilt2 = new Tilt();
     public static int gameWidth = Gdx.graphics.getWidth();
     public static int gameHeight = Gdx.graphics.getHeight();
@@ -28,6 +28,8 @@ public class GameWorld {
     }
 
     public static float seekBarX = 200*gameWidth/1196 + gameWidth/2;
+    public boolean clock = false;
+    public boolean antiClock = false;
 
     private int tracking;
     private Tilt tilt;
@@ -42,7 +44,6 @@ public class GameWorld {
     public ArrayList<MiniAbsorbBall> absorbBallsList;
     private boolean isPlay = true;
     private float time;
-
 
     public GameWorld(int midPointY) {
         this.tilt = new Tilt();
@@ -73,7 +74,6 @@ public class GameWorld {
             case PAUSE:
                 updatePause(delta);
             default:
-                //updateRunning(delta);
                 break;
         }
     }
@@ -91,7 +91,6 @@ public class GameWorld {
     }
 
     private void updateReady(float delta) {
-
         this.tilt.reset();
         this.enemies = new ArrayList<Enemy>();
         bullets = new ArrayList<Bullet>();
@@ -122,7 +121,6 @@ public class GameWorld {
     private void updateSetting(float delta){
         float accX = Gdx.input.getAccelerometerY();
         float accY = Gdx.input.getAccelerometerX();
-
         if(isInBorder(Gdx.input.getX(), Gdx.input.getY(),
                 10*GameWorld.gameWidth/1196, GameWorld.gameHeight-110 *GameWorld.gameHeight/768, 200*GameWorld.gameWidth/1196,100*GameWorld.gameHeight/768)){
             Tilt.AcCorrectionX = accX;
@@ -137,17 +135,11 @@ public class GameWorld {
             Tilt.sensitivity = (seekBarX-310)/400;
         }
         tilt2.update(delta);
-
     }
 
     public GameState getCurrentState(){
         return this.currentState;
     }
-
-    public void setGameState(GameState gameState){
-        currentState = gameState;
-    }
-
 
     public boolean isReady() {
         return currentState == GameState.READY;
@@ -169,21 +161,24 @@ public class GameWorld {
 
     public void updateRunning(float delta) {
         time += delta;
+        timeRotC +=delta;
+        timeRotA +=delta;
         tracking++;
         if(delta > .15f){
             delta = .15f;
         }
-
         tilt.update(delta);
-
         for(int a = 0; a< 3; a++) {
             //rotation
-            //Gdx.app.log("Game Word",Gdx.input.getX()+" "+Gdx.input.getY()+"down");
             if (isInBorder(Gdx.input.getX(a), Gdx.input.getY(a), 0, Gdx.graphics.getHeight() - 400*gameHeight/768, 200*gameWidth/768, 200*gameHeight/768)&&Gdx.input.isTouched(a)) {
                 tilt.setRotation(5);
+                clock = true;
+                timeRotC = 0;
             }
             if (isInBorder(Gdx.input.getX(a), Gdx.input.getY(a), 0, Gdx.graphics.getHeight() - 200*gameHeight/768, 200*gameWidth/768, 200*gameHeight/768)&&Gdx.input.isTouched(a)) {
                 tilt.setRotation(-5);
+                antiClock = true;
+                timeRotA = 0;
             }
             //the weapon balls
             if (isInBorder(Gdx.input.getX(a), Gdx.input.getY(a), Gdx.graphics.getWidth() - 120*gameWidth/768, Gdx.graphics.getHeight() - 240*gameHeight/768, 140*gameWidth/768, 140*gameHeight/768)&&Gdx.input.isTouched(a)) {
@@ -253,7 +248,12 @@ public class GameWorld {
             if(time>0.1){
                 tilt.setIsPressed(false);
             }
-
+            if(timeRotA>0.05){
+                antiClock = false;
+            }
+            if(timeRotC>0.05){
+                clock = false;
+            }
 
         }
 
@@ -267,13 +267,11 @@ public class GameWorld {
             }
             enemies.add(a);
         }
-
         if(weaponBalls.size()<4 ) {
             if (MathUtils.random() < 0.4 && tracking%120==0) {
                 weaponBalls.add(new WeaponBall((float) (MathUtils.random() * 300)));
             }
         }
-
         //update Bullets
         if (!bullets.isEmpty()) {
             for (int i = 0; i < bullets.size(); i++) {
@@ -300,6 +298,7 @@ public class GameWorld {
                 shootWeaponBallArrayList.remove(numShootWeapon);
             }
         }
+
         BulletCollision(delta);
 
         weaponBallDetection(delta);
@@ -307,7 +306,6 @@ public class GameWorld {
         updateAbsorbingBalls(delta);
 
         EnemiesCollision(delta);
-
 
     }
 
@@ -348,8 +346,6 @@ public class GameWorld {
                     }
                 }
             }
-
-
             for(int numBalls = 0; numBalls<weaponBalls.size();numBalls++){
                 weaponBalls.get(numBalls).setShot(bullets.get(numBul));
                 if(weaponBalls.get(numBalls).isShot){
@@ -362,16 +358,12 @@ public class GameWorld {
     }
 
     public void EnemiesCollision(float delta){
-
         if (!enemies.isEmpty()){
             for(int i = 0;i<enemies.size();i++){
-
                 for(int numBall = 0; numBall < shootWeaponBallArrayList.size();numBall++){
                     enemies.get(i).isOverlap(shootWeaponBallArrayList.get(numBall).getCircle());
                 }
-
                 enemies.get(i).update(delta, tilt.getX(), tilt.getY());
-
                 for(int numball = 0; numball<absorbBallsList.size();numball++){
                     MiniAbsorbBall ball = absorbBallsList.get(numball);
                     Enemy enemy = enemies.get(i);
@@ -394,7 +386,6 @@ public class GameWorld {
     public void updateAbsorbingBalls(float delta){
         for(int i = 0; i < absorbBallsList.size(); i++){
             absorbBallsList.get(i).update(delta);
-
             if(!absorbBallsList.get(i).isExisted()){
                 absorbBallsList.remove(i);
                 i--;
@@ -403,7 +394,6 @@ public class GameWorld {
     }
 
     public void weaponBallDetection(float delta){
-
         if(!weaponBalls.isEmpty()){
             for(int i = 0; i<weaponBalls.size();i++){
                 weaponBalls.get(i).setHit(tilt);
@@ -433,5 +423,4 @@ public class GameWorld {
             }
         }
     }
-
 }
