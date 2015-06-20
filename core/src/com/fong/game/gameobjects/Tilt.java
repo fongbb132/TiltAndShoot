@@ -104,4 +104,14 @@ public class Tilt {
     public Circle getCircle() {
         return myCircle;
     }
+
+    public void reset() {
+        this.rotation = 0;
+        this.acceleration = new Vector2(0,0);
+        this.velocity = new Vector2(0,0);
+        this.position = new Vector2(Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()/2);
+        myCircle = new Circle(position.x+35*GameWorld.gameWidth/1196, position.y+35*GameWorld.gameHeight/768, 35*GameWorld.gameWidth/1196);
+        isPress = false;
+
+    }
 }

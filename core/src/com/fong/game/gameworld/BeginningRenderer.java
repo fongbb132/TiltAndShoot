@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.fong.game.InputHelpers.AssetLoader;
 
 /**
  * Created by wing on 6/19/15.
@@ -52,13 +53,27 @@ public class BeginningRenderer {
 
         //Start game box
         shapeRenderer.setColor(Color.BLUE);
-        shapeRenderer.rect(gameWidth / 2 - 150 * gameWidth / 1196, gameHeight/2-50*gameHeight/768, 300 * gameWidth / 1196, 100 * gameHeight / 768);
+        shapeRenderer.rect(gameWidth / 2 - 150 * gameWidth / 1196, gameHeight / 2 - 50 * gameHeight / 768, 300 * gameWidth / 1196, 100 * gameHeight / 768);
+        shapeRenderer.end();
+        batcher.begin();
+        batcher.enableBlending();
+        AssetLoader.ConsolasFont.draw(batcher, "Start", gameWidth / 2 - 150 * gameWidth / 1196, gameHeight / 2 - 50 * gameHeight / 768);
+        batcher.end();
         //Setting box
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.setColor(Color.GREEN);
-        shapeRenderer.rect(gameWidth/2 - 500 * gameWidth / 1196, gameHeight/2 -50*gameHeight/768, 300 * gameWidth / 1196, 100* gameHeight / 768);
+        shapeRenderer.rect(gameWidth / 2 - 500 * gameWidth / 1196, gameHeight / 2 - 50 * gameHeight / 768, 300 * gameWidth / 1196, 100 * gameHeight / 768);
 
         shapeRenderer.setColor(Color.RED);
-        shapeRenderer.rect(gameWidth/2 + 200 * gameWidth / 1196, gameHeight/2 -50*gameHeight/768, 300 * gameWidth / 1196, 100* gameHeight / 768);
+        shapeRenderer.rect(gameWidth / 2 + 200 * gameWidth / 1196, gameHeight / 2 - 50 * gameHeight / 768, 300 * gameWidth / 1196, 100 * gameHeight / 768);
         shapeRenderer.end();
+
+
+        batcher.begin();
+        batcher.enableBlending();
+        AssetLoader.ConsolasFont.draw(batcher, "Setting", gameWidth / 2 - 500 * gameWidth / 1196, gameHeight / 2 - 50 * gameHeight / 768);
+        AssetLoader.ConsolasFont.draw(batcher, "Records", gameWidth / 2 + 200 * gameWidth / 1196, gameHeight / 2 - 50 * gameHeight / 768);
+        batcher.end();
+
     }
 }

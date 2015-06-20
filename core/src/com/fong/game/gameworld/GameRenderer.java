@@ -1,6 +1,7 @@
 package com.fong.game.gameworld;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -63,7 +64,6 @@ public class GameRenderer {
         shapeRenderer = new ShapeRenderer();
         shapeRenderer.setProjectionMatrix(cam.combined);
 
-        font = new BitmapFont(true);
         initGameObjects();
         initAssets();
 
@@ -85,12 +85,9 @@ public class GameRenderer {
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         //rotation circles
         shapeRenderer.setColor(153 / 255.0f, 153 / 255.0f, 153 / 255.0f, 0.6f);
-        shapeRenderer.circle(100*gameWidth/1196, GameWorld.gameHeight - (100*gameHeight/768), 100,50);
+        shapeRenderer.circle(100 * gameWidth / 1196, GameWorld.gameHeight - (100 * gameHeight / 768), 100, 50);
         shapeRenderer.circle(100*gameWidth/1196, GameWorld.gameHeight - (300*gameHeight/768), 100,50);
 
-        //bullet circle
-        shapeRenderer.setColor(255 / 255.0f, 255 / 255.0f, 255 / 255.0f, 0.3f);
-        shapeRenderer.circle(GameWorld.gameWidth-60*gameWidth/1196, GameWorld.gameHeight - 60*gameHeight/768, 60*gameHeight/768, 50);
 
             if (!myWorld.enemies.isEmpty()) {
                 for (int i = 0; i < myWorld.enemies.size(); i++) {
@@ -130,27 +127,35 @@ public class GameRenderer {
 
         drawWeaponCircles();
 
-            //weapon circles
-            shapeRenderer.end();
+        //bullet circle
+        shapeRenderer.setColor(255 / 255.0f, 255 / 255.0f, 255 / 255.0f, 0.3f);
+        shapeRenderer.circle(GameWorld.gameWidth - 60 * gameWidth / 1196, GameWorld.gameHeight - 60 * gameHeight / 768, 60 * gameHeight / 768, 50);
 
-            batcher.begin();
-            batcher.enableBlending();
+        //Pause Circle
+        shapeRenderer.setColor(Color.WHITE);
+        shapeRenderer.circle(GameWorld.gameWidth-150*gameWidth/1196, 60*gameHeight/768, 50);
+        //weapon circles
+        shapeRenderer.end();
 
-            for (int num = 0; num < weaponList.size(); num++) {
-                font.draw(batcher, "x" + weaponList.get(num).size(), GameWorld.gameWidth-120, GameWorld.gameHeight-240-num * 120, 100, 100, false);
-            }
+        batcher.begin();
+        batcher.enableBlending();
 
-        font.draw(batcher, GameWorld.score+"",40 , 40, 10, 4, true);
+
+        for (int num = 0; num < weaponList.size(); num++) {
+            AssetLoader.ConsolasFont.draw(batcher, "x" + weaponList.get(num).size(), GameWorld.gameWidth - 120*GameWorld.gameWidth/1196, GameWorld.gameHeight - (240 + num * 120)*GameWorld.gameHeight/768, 100, 100, false);
+        }
+
+        AssetLoader.ConsolasFont.draw(batcher, GameWorld.score + "", 30*GameWorld.gameWidth/1196,30*GameWorld.gameHeight/768);
 
         if(!tilt.getIsPressed()) {
             batcher.draw(cursor1, tilt.getX(),
-                    tilt.getY(), 35,
-                    35 * gameHeight / 768, 70, 70 * gameHeight / 768,
+                    tilt.getY(), 35*gameWidth/1196,
+                    35 * gameHeight / 768, 70*gameWidth/1196, 70 * gameHeight / 768,
                     1, 1, tilt.getRotation());
         }else{
             batcher.draw(cursor2, tilt.getX(),
-                    tilt.getY(), 35,
-                    35 * gameHeight / 768, 70, 70 * gameHeight / 768,
+                    tilt.getY(), 35*gameWidth/1196,
+                    35 * gameHeight / 768, 70*gameWidth/1196, 70 * gameHeight / 768,
                     1, 1, tilt.getRotation());
 
         }

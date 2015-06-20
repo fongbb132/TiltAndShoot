@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -68,11 +69,14 @@ public class SetAccRenderer {
         shapeRenderer.setColor(Color.GREEN);
         shapeRenderer.rect(GameWorld.seekBarX * GameWorld.gameWidth / 1196, 50 * GameWorld.gameHeight / 768, 1110 * GameWorld.gameWidth / 1196 - GameWorld.seekBarX, 10);
         shapeRenderer.setColor(Color.YELLOW);
-        shapeRenderer.circle(GameWorld.seekBarX, 55* GameWorld.gameHeight / 768,5);
+        shapeRenderer.circle(GameWorld.seekBarX, 55 * GameWorld.gameHeight / 768, 5);
         shapeRenderer.end();
 
         batcher.begin();
         batcher.enableBlending();
+
+        AssetLoader.ConsolasFont.draw(batcher, "Back", 10 * GameWorld.gameWidth / 1196, 10 * GameWorld.gameHeight / 768);
+        AssetLoader.ConsolasFont.draw(batcher, "Adjust", 10 * GameWorld.gameWidth / 1196, GameWorld.gameHeight - 110 * GameWorld.gameHeight / 768);
 
         batcher.draw(cursor1, tilt.getX(),
                 tilt.getY(), 35,

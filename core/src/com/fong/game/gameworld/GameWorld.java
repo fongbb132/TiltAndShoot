@@ -24,7 +24,7 @@ public class GameWorld {
     public static int gameWidth = Gdx.graphics.getWidth();
     public static int gameHeight = Gdx.graphics.getHeight();
     public enum GameState{
-        READY, RUNNING, GAMEOVER, HIGHSCORE,SETACC,SETSENSATIVITY
+        READY, RUNNING, GAMEOVER, HIGHSCORE,SETACC,SETSENSATIVITY, PAUSE
     }
 
     public static float seekBarX = 200*gameWidth/1196 + gameWidth/2;
@@ -70,13 +70,40 @@ public class GameWorld {
             case SETACC:
                 updateSetting(delta);
                 break;
+            case PAUSE:
+                updatePause(delta);
             default:
                 //updateRunning(delta);
                 break;
         }
     }
 
+    private void updatePause(float delta) {
+        float inputX = Gdx.input.getX();
+        float inputY = Gdx.input.getY();
+
+        if(isInBorder(inputX, inputY, gameWidth/2-300*gameWidth/1196, gameHeight/2-100*gameHeight/768, 200*gameWidth/1196,200*gameHeight/768)){
+            currentState = GameState.READY;
+        }else if(isInBorder(inputX, inputY, gameWidth/2+100 *gameWidth/1196, gameHeight/2-100*gameHeight/768, 200*gameWidth/1196, 200*gameHeight/768)){
+            currentState = GameState.RUNNING;
+        }
+
+    }
+
     private void updateReady(float delta) {
+
+        this.tilt.reset();
+        this.enemies = new ArrayList<Enemy>();
+        bullets = new ArrayList<Bullet>();
+        this.weaponBalls = new ArrayList<WeaponBall>();
+        this.weaponList = new ArrayList<ArrayList<WeaponBall>>(5);
+        for(int i = 0; i< 5;i++){
+            ArrayList arrayList = new ArrayList();
+            weaponList.add(arrayList);
+        }
+        shootWeaponBallArrayList = new ArrayList<ShootWeaponBall>();
+        absorbBallsList = new ArrayList<MiniAbsorbBall>();
+
         float inputX = Gdx.input.getX();
         float inputY = Gdx.input.getY();
         if(isInBorder(inputX, inputY, gameWidth / 2 - 150 * gameWidth / 1196,
@@ -89,6 +116,7 @@ public class GameWorld {
                 gameHeight/2-50*gameHeight/768, 300 * gameWidth / 1196, 100 * gameHeight / 768)&&Gdx.input.isTouched()){
             currentState = GameState.SETSENSATIVITY;
         }
+
     }
 
     private void updateSetting(float delta){
@@ -145,7 +173,6 @@ public class GameWorld {
         if(delta > .15f){
             delta = .15f;
         }
-
 
         tilt.update(delta);
 
@@ -211,7 +238,12 @@ public class GameWorld {
             }
             //End of weaponballs
 
-            if (isInBorder(Gdx.input.getX(a), Gdx.input.getY(a), Gdx.graphics.getWidth() - 140 * gameWidth / 768, Gdx.graphics.getHeight() - 120 * gameHeight / 768, 140 * gameWidth / 768, 140 * gameHeight / 768)&&Gdx.input.isTouched()) {
+            //Pause bottom
+            if(isInBorder(Gdx.input.getX(a), Gdx.input.getY(a),GameWorld.gameWidth-150*gameWidth/1196, 60*gameHeight/768,100*gameWidth/ 1196, 100*gameHeight/768)){
+                currentState = GameState.PAUSE;
+            }
+
+            if (isInBorder(Gdx.input.getX(a), Gdx.input.getY(a), Gdx.graphics.getWidth() - 140 * gameWidth / 768, Gdx.graphics.getHeight() - 120 * gameHeight / 768, 140 * gameWidth / 768, 140 * gameHeight / 768)&&Gdx.input.isTouched(a)) {
                 if (tracking % 8 == 0) {
                     bullets.add(new Bullet(tilt.getRotation(), tilt.getX(), tilt.getY()));
                     tilt.setIsPressed(true);
@@ -296,7 +328,7 @@ public class GameWorld {
     }
 
     public boolean isInBorder(float x, float y, float fromX, float fromY, float width, float height){
-        if(x>=fromX && x<=fromX + width && y>=fromY && y<= fromY+height &&Gdx.input.isTouched())
+        if(x>=fromX && x<=fromX + width && y>=fromY && y<= fromY+height && Gdx.input.isTouched())
             return true;
         else
             return false;

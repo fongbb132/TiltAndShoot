@@ -56,7 +56,7 @@ public class ShootWeaponBall {
             case 1:
                 if(time<2) {
                     position.set(tilt.getX()+35*GameWorld.gameWidth/1196, tilt.getY()+35*GameWorld.gameHeight/768);
-                    circle.set(tilt.getX()+35*GameWorld.gameWidth/1196, tilt.getY()+35*GameWorld.gameHeight/768, 30*time*time*GameWorld.gameHeight/768);
+                    circle.set(tilt.getX()+35*GameWorld.gameWidth/1196, tilt.getY()+35*GameWorld.gameHeight/768,50*GameWorld.gameHeight/768 + 30*time*time*GameWorld.gameHeight/768);
                 }else if((time < 4.5 )){
                     position.set(tilt.getX()+35*GameWorld.gameWidth/1196, tilt.getY()+35*GameWorld.gameHeight/768);
                     circle.set(tilt.getX()+35*GameWorld.gameWidth/1196, tilt.getY()+35*GameWorld.gameHeight/768, circle.radius);

@@ -6,6 +6,7 @@ import com.fong.game.gameworld.BeginningRenderer;
 import com.fong.game.gameworld.GameRenderer;
 import com.fong.game.gameworld.GameWorld;
 import com.fong.game.InputHelpers.InputHandler;
+import com.fong.game.gameworld.PauseRenderer;
 import com.fong.game.gameworld.SetAccRenderer;
 
 /**
@@ -16,6 +17,7 @@ public class GameScreen implements Screen {
     private GameRenderer renderer;
     private BeginningRenderer beginningRenderer;
     private SetAccRenderer setAccRenderer;
+    private PauseRenderer pauseRenderer;
 
     private float runTime = 0;
 
@@ -29,6 +31,7 @@ public class GameScreen implements Screen {
         renderer = new GameRenderer(world, (int)gameHeight, midPointY);
         beginningRenderer = new BeginningRenderer(world);
         setAccRenderer = new SetAccRenderer(world);
+        pauseRenderer = new PauseRenderer(world);
 
         Gdx.input.setInputProcessor(new InputHandler(world));
 
@@ -49,6 +52,8 @@ public class GameScreen implements Screen {
             renderer.render(runTime);
         }else if(world.getCurrentState().equals(GameWorld.GameState.SETACC)){
             setAccRenderer.render();
+        }else if(world.getCurrentState().equals(GameWorld.GameState.PAUSE)){
+            pauseRenderer.render();
         }
     }
 
