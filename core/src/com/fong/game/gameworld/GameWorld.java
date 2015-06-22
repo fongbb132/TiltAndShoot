@@ -31,10 +31,10 @@ public class GameWorld {
     public boolean clock = false;
     public boolean antiClock = false;
 
+    private int makeRecTrack = 0;
     private int tracking;
     private Tilt tilt;
     private GameState currentState;
-    private int midPointY;
 
     public ArrayList<Bullet> bullets ;
     public ArrayList<Enemy> enemies;
@@ -42,7 +42,7 @@ public class GameWorld {
     public ArrayList<ArrayList<WeaponBall>> weaponList;
     public ArrayList<ShootWeaponBall> shootWeaponBallArrayList;
     public ArrayList<MiniAbsorbBall> absorbBallsList;
-    private boolean isPlay = true;
+    public ArrayList<Enemy> makeRec;
     private float time;
 
     public GameWorld(int midPointY) {
@@ -52,6 +52,7 @@ public class GameWorld {
         bullets = new ArrayList<Bullet>();
         this.weaponBalls = new ArrayList<WeaponBall>();
         this.weaponList = new ArrayList<ArrayList<WeaponBall>>(5);
+        makeRec = new ArrayList<Enemy>();
         for(int i = 0; i< 5;i++){
             ArrayList arrayList = new ArrayList();
             weaponList.add(arrayList);
@@ -257,7 +258,7 @@ public class GameWorld {
 
         }
 
-        if(tracking%40==0){
+        if(tracking%10==0){
             double prob = MathUtils.random();
             Enemy a;
             if(prob<0.25){
@@ -304,8 +305,11 @@ public class GameWorld {
         weaponBallDetection(delta);
 
         updateAbsorbingBalls(delta);
-
-        EnemiesCollision(delta);
+        if(enemies.size()<225||enemies.size()>300) {
+            EnemiesCollision(delta);
+        }else {
+            EnemiesCollision(delta,10,10, 15,15);
+        }
 
     }
 
@@ -383,6 +387,43 @@ public class GameWorld {
         }
     }
 
+    public void EnemiesCollision(float delta, float posX, float posY, int x, int y){
+        if (!enemies.isEmpty()){
+
+            for(int i = 0;i<enemies.size();i++){
+
+                for(int numBall = 0; numBall < shootWeaponBallArrayList.size();numBall++){
+                    enemies.get(i).isOverlap(shootWeaponBallArrayList.get(numBall).getCircle());
+                }
+                enemies.get(i).update(delta, tilt.getX(), tilt.getY());
+                for(int numball = 0; numball<absorbBallsList.size();numball++){
+                    MiniAbsorbBall ball = absorbBallsList.get(numball);
+                    Enemy enemy = enemies.get(i);
+                    if(ball.isInRange(enemies.get(i))){
+                        float velX = (enemy.getX() < ball.getPosX()+15)? Math.abs(150):-Math.abs(150);
+                        float velY = (enemy.getY()<ball.getPosY())? Math.abs(150):-Math.abs(150);
+                        enemies.get(i).setVelocity(velX, velY);
+                    }
+                    enemies.get(i).isOverlap(ball.getCircle());
+                }
+                if(!enemies.get(i).getSpecial()) {
+                    makeRec.add(enemies.get(i));
+                    enemies.get(i).setSpecial();
+                    enemies.get(i).setVelocity(300,300);
+                    enemies.get(i).setDestination(posX + ((i % x) * 20 * gameWidth / 1196), ((posY + ((int) (i / y)) * 20 * gameHeight / 768)) % 768);
+                    Gdx.app.log("GameWorld", posX + ((i % x) * 20 * gameWidth / 1196) + " " + ((posY + ((int) (i / y)) * 20 * gameHeight / 768))%768);
+                }
+
+                if(!enemies.get(i).isExisted()){
+                    enemies.remove(i);
+                    score++;
+                    i--;
+                }
+            }
+
+        }
+    }
+
     public void updateAbsorbingBalls(float delta){
         for(int i = 0; i < absorbBallsList.size(); i++){
             absorbBallsList.get(i).update(delta);
@@ -423,4 +464,6 @@ public class GameWorld {
             }
         }
     }
+
+
 }

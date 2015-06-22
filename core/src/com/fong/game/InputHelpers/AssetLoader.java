@@ -29,16 +29,20 @@ public class AssetLoader {
         antiClock2 = new Texture(Gdx.files.internal("data/anticlockwise2.png"));
         ConsolasFont = new BitmapFont(Gdx.files.internal("data/Consolas.fnt"),true);
 
-        /*
+ /*
         cursor1 = new Texture(Gdx.files.internal("android/assets/data/newCursor.png"));
         cursor2 = new Texture(Gdx.files.internal("android/assets/data/newCursor2.png"));
         bulletTexture = new Texture(Gdx.files.internal("android/assets/data/bullet.png"));
+        clock1 = new Texture(Gdx.files.internal("android/assets/data/clockwise1.png"));
+        clock2 = new Texture(Gdx.files.internal("android/assets/data/clockwise2.png"));
+        antiClock1 = new Texture(Gdx.files.internal("android/assets/data/anticlockwise1.png"));
+        antiClock2 = new Texture(Gdx.files.internal("android/assets/data/anticlockwise2.png"));
         ConsolasFont = new BitmapFont(Gdx.files.internal("android/assets/data/Consolas.fnt"),true);
         */
 
         cursorA = new TextureRegion(cursor1, 0, 0, 350, 350);
         cursorB = new TextureRegion(cursor2, 0,0, 350,350);
-        bullet = new TextureRegion(bulletTexture, 0,0, 350, 350);
+        bullet = new TextureRegion(bulletTexture, 0, 0, 350, 350);
         clockA = new TextureRegion(clock1, 0,0,350,350);
         clockB = new TextureRegion(clock2, 0, 0, 350, 350);
         antiClockA = new TextureRegion(antiClock1,0 ,0, 350, 350);

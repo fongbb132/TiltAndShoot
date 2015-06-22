@@ -68,6 +68,7 @@ public class GameRenderer {
     }
 
     public void render(float runTime) {
+        bullets = myWorld.bullets;
 
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -149,12 +150,11 @@ public class GameRenderer {
         batcher.begin();
         batcher.enableBlending();
 
-
         for (int num = 0; num < weaponList.size(); num++) {
             AssetLoader.ConsolasFont.draw(batcher, "x" + weaponList.get(num).size(), GameWorld.gameWidth - 120*GameWorld.gameWidth/1196, GameWorld.gameHeight - (240 + num * 120)*GameWorld.gameHeight/768, 100, 100, false);
         }
 
-        AssetLoader.ConsolasFont.draw(batcher, GameWorld.score + "", 30*GameWorld.gameWidth/1196,30*GameWorld.gameHeight/768);
+        AssetLoader.ConsolasFont.draw(batcher, GameWorld.score + "", 30 * GameWorld.gameWidth / 1196, 30 * GameWorld.gameHeight / 768);
 
         if(!tilt.getIsPressed()) {
             batcher.draw(cursor1, tilt.getX(),
@@ -168,14 +168,18 @@ public class GameRenderer {
                     1, 1, tilt.getRotation());
 
         }
-            if (!bullets.isEmpty()) {
-                for (int i = 0; i < bullets.size(); i++) {
-                    batcher.draw(bullet, bullets.get(i).getX(), bullets.get(i).getY(), 10*gameWidth/1196,10*gameHeight/768, 20*gameWidth/1196,20*gameHeight/768, 1, 1, 0f);
-                }
-            }
-            batcher.end();
-        }
+        batcher.end();
 
+        batcher.begin();
+        batcher.enableBlending();
+
+        if (!bullets.isEmpty()) {
+            for (int i = 0; i < bullets.size(); i++) {
+                batcher.draw(bullet, bullets.get(i).getX(), bullets.get(i).getY(), 10*gameWidth/1196,10*gameHeight/768, 20*gameWidth/1196,20*gameHeight/768, 1, 1, 0f);
+            }
+        }
+        batcher.end();
+        }
 
     private void initGameObjects(){
         tilt = myWorld.getTilt();
