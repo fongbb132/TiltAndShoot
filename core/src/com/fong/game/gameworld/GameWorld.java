@@ -2,6 +2,7 @@ package com.fong.game.gameworld;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Vector2;
 import com.fong.game.gameobjects.Bullet;
 import com.fong.game.gameobjects.Enemy;
 import com.fong.game.gameobjects.GeneralEnemy;
@@ -11,6 +12,7 @@ import com.fong.game.gameobjects.Tilt;
 import com.fong.game.gameobjects.WeaponBall;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 /**
  * Created by wing on 6/4/15.
@@ -305,12 +307,22 @@ public class GameWorld {
         weaponBallDetection(delta);
 
         updateAbsorbingBalls(delta);
-        if(enemies.size()<225||enemies.size()>300) {
-            EnemiesCollision(delta);
-        }else {
-            EnemiesCollision(delta,10,10, 15,15);
+
+        if(isAllArrived()){
+            for(int i = 0;i < enemies.size(); i++){
+                if(enemies.get(i).getSpecial()) {
+                    enemies.get(i).setSpecial(false);
+                    enemies.get(i).setVelocity(300, 300);
+                }
+            }
         }
 
+        if(enemies.size()<63||enemies.size()>80) {
+            EnemiesCollision(delta);
+        }
+        else {
+            EnemiesCollision(delta,gameWidth/2,gameHeight/2, 8,8);
+        }
     }
 
     public Tilt getTilt(){
@@ -379,7 +391,14 @@ public class GameWorld {
                     enemies.get(i).isOverlap(ball.getCircle());
                 }
                 if(!enemies.get(i).isExisted()){
-                    enemies.remove(i);
+                    Enemy temp = enemies.remove(i);
+                    if(temp.getSpecial()) {
+                        if(temp.getSpecial()) {
+                            Enemy newEnemy = new Enemy(MathUtils.random()*gameWidth,MathUtils.random()*gameHeight);
+                            newEnemy.setVelocity(300, 300);
+                            newEnemy.setDestination(temp.getX(), temp.getY());
+                        }
+                    }
                     score++;
                     i--;
                 }
@@ -395,27 +414,35 @@ public class GameWorld {
                 for(int numBall = 0; numBall < shootWeaponBallArrayList.size();numBall++){
                     enemies.get(i).isOverlap(shootWeaponBallArrayList.get(numBall).getCircle());
                 }
-                enemies.get(i).update(delta, tilt.getX(), tilt.getY());
+
+                if(!enemies.get(i).getSpecial()) {
+                    enemies.get(i).setSpecial(true);
+                    enemies.get(i).setVelocity(300,300);
+                    enemies.get(i).setDestination(posX + ((i % x) * 15 * gameWidth / 1196), ((posY + ((int) (i / y)) * 15 * gameHeight / 768)) % 768);
+
+                }
+
                 for(int numball = 0; numball<absorbBallsList.size();numball++){
                     MiniAbsorbBall ball = absorbBallsList.get(numball);
                     Enemy enemy = enemies.get(i);
                     if(ball.isInRange(enemies.get(i))){
                         float velX = (enemy.getX() < ball.getPosX()+15)? Math.abs(150):-Math.abs(150);
-                        float velY = (enemy.getY()<ball.getPosY())? Math.abs(150):-Math.abs(150);
+                        float velY = (enemy.getY() < ball.getPosY()+15)? Math.abs(150):-Math.abs(150);
+                        enemies.get(i).setSpecial(false);
                         enemies.get(i).setVelocity(velX, velY);
                     }
                     enemies.get(i).isOverlap(ball.getCircle());
                 }
-                if(!enemies.get(i).getSpecial()) {
-                    makeRec.add(enemies.get(i));
-                    enemies.get(i).setSpecial();
-                    enemies.get(i).setVelocity(300,300);
-                    enemies.get(i).setDestination(posX + ((i % x) * 20 * gameWidth / 1196), ((posY + ((int) (i / y)) * 20 * gameHeight / 768)) % 768);
-                    Gdx.app.log("GameWorld", posX + ((i % x) * 20 * gameWidth / 1196) + " " + ((posY + ((int) (i / y)) * 20 * gameHeight / 768))%768);
-                }
+
+                enemies.get(i).update(delta, tilt.getX(), tilt.getY());
 
                 if(!enemies.get(i).isExisted()){
-                    enemies.remove(i);
+                    Enemy temp = enemies.remove(i);
+                    if(temp.getSpecial()) {
+                        Enemy newEnemy = new Enemy(MathUtils.random()*gameWidth,MathUtils.random()*gameHeight);
+                        newEnemy.setVelocity(300, 300);
+                        newEnemy.setDestination(temp.getX(), temp.getY());
+                    }
                     score++;
                     i--;
                 }
@@ -465,5 +492,14 @@ public class GameWorld {
         }
     }
 
-
+    public boolean isAllArrived(){
+        for(int i = 0; i< enemies.size(); i++){
+            if(enemies.get(i).getSpecial()){
+                if(!enemies.get(i).getArrive()){
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
 }

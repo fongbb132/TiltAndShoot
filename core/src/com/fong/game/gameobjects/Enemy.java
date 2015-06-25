@@ -14,11 +14,11 @@ public class Enemy {
     public Vector2 velocity, position, destination;
     private boolean isExisted;
     public Circle myCircle;
-    private float velX = MathUtils.random()*200;
-    private float velY = MathUtils.random()*200;
     private boolean isSpecial;
     private boolean isArrive;
     public Enemy(float posX, float posY){
+        float velX = MathUtils.random()*200;
+        float velY = MathUtils.random()*200;
         velocity = new Vector2(velX, velY);
         position = new Vector2(posX+10, posY+10);
         isExisted = true;
@@ -29,15 +29,18 @@ public class Enemy {
 
     public void update(float delta, float posX, float posY){
         if(!isSpecial) {
-            velocity.x = (position.x < posX + 15) ? Math.abs(velocity.x) : -Math.abs(velocity.x);
-            velocity.y = (position.y < posY + 15) ? Math.abs(velocity.y) : -Math.abs(velocity.y);
+            if(!isArrive) {
+                velocity.x = (position.x < posX + 15) ? Math.abs(velocity.x) : -Math.abs(velocity.x);
+                velocity.y = (position.y < posY + 15) ? Math.abs(velocity.y) : -Math.abs(velocity.y);
+            }
+            position.add(velocity.cpy().scl(delta));
         }else{
-            if(destination.x-1<getX()&&getX()<destination.x+1){
+            if(destination.x-1.5<getX()&&getX()<destination.x+1.5){
                 velocity.x = 0;
             }else {
                 velocity.x = (position.x<destination.x) ? Math.abs(velocity.x) : -Math.abs(velocity.x);
             }
-            if(destination.y-1<getY()&&getY()<destination.y+1) {
+            if(destination.y-1.5<getY()&&getY()<destination.y+1.5) {
                 velocity.y = 0;
             }
             else {
@@ -45,7 +48,9 @@ public class Enemy {
             }
         }
 
-        if(destination!=null&&myCircle.contains(destination.x, destination.y)){
+        position.add(velocity.cpy().scl(delta));
+
+        if(destination!=null && velocity.x==0 && velocity.y==0){
             isArrive = true;
         }
 
@@ -57,7 +62,6 @@ public class Enemy {
         }
 
         myCircle.set(position.x+10*GameWorld.gameWidth/1196, position.y+10*GameWorld.gameHeight/768, 10*GameWorld.gameHeight/768);
-        position.add(velocity.cpy().scl(delta));
 
     }
 
@@ -90,8 +94,8 @@ public class Enemy {
         return velocity;
     }
 
-    public void setSpecial(){
-        this.isSpecial = true;
+    public void setSpecial(boolean b){
+        this.isSpecial = b;
     }
 
     public void setIsArrive(){
@@ -104,5 +108,9 @@ public class Enemy {
 
     public boolean getSpecial(){
         return isSpecial;
+    }
+
+    public Vector2 getDestination(){
+        return destination;
     }
 }
