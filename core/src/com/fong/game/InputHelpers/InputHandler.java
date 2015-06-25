@@ -34,9 +34,6 @@ public class InputHandler implements InputProcessor{
             gameWorld.start();
         }
 
-        if(gameWorld.isGameOver()||gameWorld.isHighScore()){
-            gameWorld.restart();
-        }
         return true;
     }
 

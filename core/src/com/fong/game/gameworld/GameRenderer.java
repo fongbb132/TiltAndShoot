@@ -143,8 +143,13 @@ public class GameRenderer {
 
         //Pause Circle
         shapeRenderer.setColor(Color.WHITE);
-        shapeRenderer.circle(GameWorld.gameWidth-150*gameWidth/1196, 60*gameHeight/768, 50);
+        shapeRenderer.circle(GameWorld.gameWidth - 150 * gameWidth / 1196, 60 * gameHeight / 768, 50);
         //weapon circles
+        shapeRenderer.end();
+
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+        shapeRenderer.setColor(Color.BLUE);
+        shapeRenderer.circle(tilt.getCircle().x,tilt.getCircle().y, tilt.getCircle().radius);
         shapeRenderer.end();
 
         batcher.begin();
@@ -156,6 +161,7 @@ public class GameRenderer {
 
         AssetLoader.ConsolasFont.draw(batcher, GameWorld.score + "", 30 * GameWorld.gameWidth / 1196, 30 * GameWorld.gameHeight / 768);
 
+
         if(!tilt.getIsPressed()) {
             batcher.draw(cursor1, tilt.getX(),
                     tilt.getY(), 35*gameWidth/1196,
@@ -166,20 +172,18 @@ public class GameRenderer {
                     tilt.getY(), 35*gameWidth/1196,
                     35 * gameHeight / 768, 70*gameWidth/1196, 70 * gameHeight / 768,
                     1, 1, tilt.getRotation());
-
         }
         batcher.end();
 
         batcher.begin();
         batcher.enableBlending();
-
         if (!bullets.isEmpty()) {
             for (int i = 0; i < bullets.size(); i++) {
                 batcher.draw(bullet, bullets.get(i).getX(), bullets.get(i).getY(), 10*gameWidth/1196,10*gameHeight/768, 20*gameWidth/1196,20*gameHeight/768, 1, 1, 0f);
             }
         }
         batcher.end();
-        }
+    }
 
     private void initGameObjects(){
         tilt = myWorld.getTilt();

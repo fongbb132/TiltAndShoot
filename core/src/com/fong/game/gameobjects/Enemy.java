@@ -22,7 +22,7 @@ public class Enemy {
         float velX = MathUtils.random()*200;
         float velY = MathUtils.random()*200;
         velocity = new Vector2(velX, velY);
-        position = new Vector2(posX+10, posY+10);
+        position = new Vector2(posX, posY);
         isExisted = true;
         myCircle = new Circle(position.x+10*GameWorld.gameWidth/1196, position.y+10*GameWorld.gameHeight/768, 1);
         isSpecial = false;
@@ -38,7 +38,7 @@ public class Enemy {
         if(!canKill){
             velocity.set(0,0);
         }else if(time<0.6){
-            velocity.set(5,5);
+            velocity.set(70,70);
         }else {
             if (!isSpecial) {
                 if (!isArrive) {

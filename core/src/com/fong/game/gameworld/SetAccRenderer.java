@@ -1,10 +1,10 @@
 package com.fong.game.gameworld;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -16,7 +16,6 @@ import com.fong.game.gameobjects.Tilt;
  * Created by wing on 6/19/15.
  */
 public class SetAccRenderer {
-
 
     private float gameHeight = Gdx.graphics.getHeight();
     private GameWorld gameWorld;
@@ -79,8 +78,8 @@ public class SetAccRenderer {
         AssetLoader.ConsolasFont.draw(batcher, "Adjust", 10 * GameWorld.gameWidth / 1196, GameWorld.gameHeight - 110 * GameWorld.gameHeight / 768);
 
         batcher.draw(cursor1, tilt.getX(),
-                tilt.getY(), 35,
-                35 * gameHeight / 768, 70, 70 * gameHeight / 768,
+                tilt.getY(), 35*GameWorld.gameWidth/1196,
+                35 * gameHeight / 768, 70* GameWorld.gameWidth/1196, 70 * gameHeight / 768,
                 1, 1, tilt.getRotation());
         batcher.end();
 

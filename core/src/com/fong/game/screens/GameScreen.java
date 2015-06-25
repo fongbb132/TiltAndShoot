@@ -3,6 +3,7 @@ package com.fong.game.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.fong.game.gameworld.BeginningRenderer;
+import com.fong.game.gameworld.GameOverRenderer;
 import com.fong.game.gameworld.GameRenderer;
 import com.fong.game.gameworld.GameWorld;
 import com.fong.game.InputHelpers.InputHandler;
@@ -18,8 +19,10 @@ public class GameScreen implements Screen {
     private BeginningRenderer beginningRenderer;
     private SetAccRenderer setAccRenderer;
     private PauseRenderer pauseRenderer;
+    private GameOverRenderer gameOverRenderer;
 
     private float runTime = 0;
+    private float timeRec = 0;
 
     public GameScreen(){
 
@@ -32,6 +35,7 @@ public class GameScreen implements Screen {
         beginningRenderer = new BeginningRenderer(world);
         setAccRenderer = new SetAccRenderer(world);
         pauseRenderer = new PauseRenderer(world);
+        gameOverRenderer = new GameOverRenderer(world);
 
         Gdx.input.setInputProcessor(new InputHandler(world));
 
@@ -42,18 +46,25 @@ public class GameScreen implements Screen {
 
     @Override
     public void render(float delta) {
-        delta/=2;
         runTime += delta;
         world.update(delta);
         if(world.getCurrentState().equals(GameWorld.GameState.READY)){
             beginningRenderer.render();
+            runTime = 0;
         }
         else if(world.getCurrentState().equals(GameWorld.GameState.RUNNING) ) {
             renderer.render(runTime);
+            timeRec = runTime;
         }else if(world.getCurrentState().equals(GameWorld.GameState.SETACC)){
             setAccRenderer.render();
         }else if(world.getCurrentState().equals(GameWorld.GameState.PAUSE)){
             pauseRenderer.render();
+        }else if(world.getCurrentState().equals(GameWorld.GameState.GAMEOVER)){
+            if(runTime-timeRec<1) {
+                renderer.render(delta);
+            }else {
+                gameOverRenderer.render(delta);
+            }
         }
     }
 

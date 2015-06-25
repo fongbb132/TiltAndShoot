@@ -8,7 +8,8 @@ import com.fong.game.gameworld.GameWorld;
 public class GeneralEnemy extends Enemy {
     public GeneralEnemy(float posX, float posY) {
         super(posX, posY);
-        this.velocity.set(5,5);
+        this.velocity.set(30,30);
+        time = 0;
     }
 
     @Override
@@ -18,7 +19,7 @@ public class GeneralEnemy extends Enemy {
         if(!canKill){
             velocity.set(0,0);
         }else if(time<0.6){
-            velocity.set(5,5);
+            velocity.set(30,30);
         }else {
             if (!getSpecial()) {
                 position.add(velocity.cpy().scl(delta));

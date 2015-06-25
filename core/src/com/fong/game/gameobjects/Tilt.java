@@ -25,7 +25,7 @@ public class Tilt {
         this.acceleration = new Vector2(0,0);
         this.velocity = new Vector2(0,0);
         this.position = new Vector2(Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()/2);
-        myCircle = new Circle(position.x+35*GameWorld.gameWidth/1196, position.y+35*GameWorld.gameHeight/768, 35*GameWorld.gameWidth/1196);
+        myCircle = new Circle(position.x+35*GameWorld.gameWidth/1196, position.y+35*GameWorld.gameHeight/768, 30*GameWorld.gameHeight/768);
         isPress = false;
     }
 
@@ -90,7 +90,7 @@ public class Tilt {
             velocity.y = 0;
         }
 
-        myCircle.set(position.x, position.y, 35*GameWorld.gameHeight/768);
+        myCircle.set(position.x+35*GameWorld.gameWidth/1196, position.y+35*GameWorld.gameHeight/768, 30*GameWorld.gameHeight/768);
     }
 
     public void setIsPressed(boolean b){
@@ -113,5 +113,9 @@ public class Tilt {
         myCircle = new Circle(position.x+35*GameWorld.gameWidth/1196, position.y+35*GameWorld.gameHeight/768, 35*GameWorld.gameWidth/1196);
         isPress = false;
         time = 0;
+    }
+
+    public void setVelocity(float i, float i1) {
+        velocity.set(0,0);
     }
 }

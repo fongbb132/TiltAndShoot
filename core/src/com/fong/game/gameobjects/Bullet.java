@@ -16,7 +16,7 @@ public class Bullet {
     private boolean isExisted;
 
     public Bullet(float angle, float posX, float posY) {
-        int v = 600;
+        int v = 800;
         isExisted = true;
         int accX = (MathUtils.cos(angle)>0)?-4:4;
         int accY = (MathUtils.sin(angle)>0)?-4:4;
@@ -29,7 +29,7 @@ public class Bullet {
 
     public void update(float delta) {
         position.add(velocity.cpy().scl(delta));
-        if(position.x>Gdx.graphics.getWidth()-100||position.x < -1||position.y> Gdx.graphics.getHeight()||position.y<-1){
+        if(position.x>Gdx.graphics.getWidth()-100||position.x < -1||position.y> Gdx.graphics.getHeight()+10||position.y<-1){
             isExisted = false;
         }
         circle.set(position.x, position.y, 10* GameWorld.gameHeight/768);

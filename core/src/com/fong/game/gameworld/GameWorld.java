@@ -35,7 +35,7 @@ public class GameWorld {
     private int tracking;
     private Tilt tilt;
     public GameState currentState;
-
+    public float gameOverTime=0;
     public ArrayList<Bullet> bullets ;
     public ArrayList<Enemy> enemies;
     public ArrayList<WeaponBall> weaponBalls;
@@ -43,6 +43,7 @@ public class GameWorld {
     public ArrayList<ShootWeaponBall> shootWeaponBallArrayList;
     public ArrayList<MiniAbsorbBall> absorbBallsList;
     private float time;
+    private int horrizontal = 0;
 
     public GameWorld(int midPointY) {
         this.tilt = new Tilt();
@@ -65,6 +66,7 @@ public class GameWorld {
                 updateReady(delta);
                 break;
             case RUNNING:
+                gameOverTime = 0;
                 updateRunning(delta);
                 break;
             case SETACC:
@@ -75,13 +77,27 @@ public class GameWorld {
                 break;
             case GAMEOVER:
                 updateGameOver(delta);
+                break;
             default:
                 break;
         }
     }
 
     private void updateGameOver(float delta) {
-        
+        gameOverTime= gameOverTime + delta;
+        if(gameOverTime>1){
+            float inX = Gdx.input.getX();
+            float inY = Gdx.input.getY();
+            if(isInBorder(inX, inY, GameWorld.gameWidth / 2 - 250 * gameWidth / 1196, GameWorld.gameHeight / 2, 200 * gameWidth / 1196, 200 * gameHeight / 768)){
+                currentState = GameState.READY;
+            }
+
+            if(isInBorder(inX, inY, GameWorld.gameWidth / 2 + 50 * gameWidth / 1196, GameWorld.gameHeight/2, 200*gameWidth/1196, 200*gameHeight/768)){
+                updateReady(delta);
+                currentState = GameState.RUNNING;
+            }
+        }
+
     }
 
     private void updatePause(float delta) {
@@ -89,7 +105,9 @@ public class GameWorld {
         float inputY = Gdx.input.getY();
 
         if(isInBorder(inputX, inputY, gameWidth/2-300*gameWidth/1196, gameHeight/2-100*gameHeight/768, 200*gameWidth/1196,200*gameHeight/768)){
-            currentState = GameState.READY;
+            if(Gdx.input.justTouched()) {
+                currentState = GameState.READY;
+            }
         }else if(isInBorder(inputX, inputY, gameWidth/2+100 *gameWidth/1196, gameHeight/2-100*gameHeight/768, 200*gameWidth/1196, 200*gameHeight/768)){
             currentState = GameState.RUNNING;
         }
@@ -118,7 +136,9 @@ public class GameWorld {
             currentState = GameState.RUNNING;
         }else if(isInBorder(inputX, inputY, gameWidth/2 - 500 * gameWidth / 1196,
                 gameHeight/2-50*gameHeight/768, 300 * gameWidth / 1196, 100 * gameHeight / 768)&&Gdx.input.isTouched()){
-            currentState = GameState.SETACC;
+            if(Gdx.input.justTouched()) {
+                currentState = GameState.SETACC;
+            }
         }else if(isInBorder(inputX, inputY, gameWidth/2 - 500 * gameWidth / 1196,
                 gameHeight/2-50*gameHeight/768, 300 * gameWidth / 1196, 100 * gameHeight / 768)&&Gdx.input.isTouched()){
             currentState = GameState.SETSENSATIVITY;
@@ -253,7 +273,7 @@ public class GameWorld {
                     time = 0;
                 }
             }
-            if(time>0.1){
+            if(time>0.3){
                 tilt.setIsPressed(false);
             }
             if(timeRotA>0.05){
@@ -297,13 +317,20 @@ public class GameWorld {
             }
         }
 
-        int c = (int)time/10;
+        BulletCollision(delta);
+
+        weaponBallDetection(delta);
+
+        updateAbsorbingBalls(delta);
+
+        int c = (int)(time/10);
         double prob = MathUtils.random();
         switch (c){
             case 0:
                 Enemy a;
                 if(prob<0.02){
                     a = new GeneralEnemy((float)MathUtils.random()*GameWorld.gameWidth-140*gameWidth/1196, (float)MathUtils.random()*GameWorld.gameHeight);
+                    a.setVelocity(30,30);
                     enemies.add(a);
                 }
                 EnemiesCollision(delta);
@@ -311,17 +338,19 @@ public class GameWorld {
             case 1:
                 if(prob<0.08) {
                     Enemy b = new GeneralEnemy((float) MathUtils.random() * GameWorld.gameWidth - 140 * gameWidth / 1196, (float) MathUtils.random() * GameWorld.gameHeight);
+                    b.setVelocity(40,40);
                     enemies.add(b);
                 }
                 EnemiesCollision(delta);
                 break;
             case 2:
                 Enemy b=null;
-                if(prob<0.1) {
+                if(prob<0.05) {
                     b = new GeneralEnemy((float) MathUtils.random() * GameWorld.gameWidth - 140 * gameWidth / 1196, (float) MathUtils.random() * GameWorld.gameHeight);
-
-                }else if(prob<0.2){
+                    b.setVelocity(120,120);
+                }else if(prob<0.4){
                     b = new Enemy((float) MathUtils.random() * GameWorld.gameWidth - 140 * gameWidth / 1196, (float) MathUtils.random() * GameWorld.gameHeight);
+                    b.setVelocity(200,200);
                 }
                 if(b!=null) {
                     enemies.add(b);
@@ -329,6 +358,20 @@ public class GameWorld {
                 EnemiesCollision(delta);
                 break;
             case 3:
+                if(horrizontal==0) {
+                    for (int num = 0; num < 15; num++) {
+                        Enemy enemy = new Enemy(20 * gameWidth / 1196 + num * gameWidth / 15, 20 * gameHeight / 768);
+                        enemy.setVelocity(0, 50);
+                        enemies.add(enemy);
+                        Enemy enemy1 = new Enemy(20 * gameWidth / 1196 + num * gameWidth / 15, gameHeight - 20 * gameHeight / 768);
+                        enemy1.setVelocity(0, -50);
+                        enemies.add(enemy1);
+                    }
+                    horrizontal++;
+                }
+                EnemiesCollision(delta);
+                break;
+            case 4:
                 Enemy d = null;
                 if(prob<0.15) {
                     d = new GeneralEnemy((float) MathUtils.random() * GameWorld.gameWidth - 140 * gameWidth / 1196, (float) MathUtils.random() * GameWorld.gameHeight);
@@ -345,40 +388,83 @@ public class GameWorld {
                 else {
                     EnemiesCollision(delta,gameWidth/2-80*gameWidth/1196,gameHeight/2-80*gameHeight/768, 8,8);
                 }
-                break;
-            case 4:
-                EnemiesCollision(delta);
+                if(isAllArrived()){
+                    for(int i = 0;i < enemies.size(); i++){
+                        if(enemies.get(i).getSpecial()) {
+                            enemies.get(i).setSpecial(false);
+                            enemies.get(i).setVelocity(300, 300);
+                        }
+                    }
+                }
+                horrizontal = 0;
                 break;
             case 5:
+                if(horrizontal==0) {
+                    for (int num = 0; num < 20; num++) {
+                        Enemy enemy = new Enemy(20 * gameWidth / 1196 + num * gameWidth / 20, 20 * gameHeight / 768);
+                        enemy.setVelocity(0, 80);
+                        Enemy enemy2 = new Enemy(20*gameWidth/1196, 20*gameHeight/768+num*gameHeight/20);
+                        enemy2.setVelocity(80, 0);
+                        enemies.add(enemy2);
+                        enemies.add(enemy);
+                        Enemy enemy1 = new Enemy(20 * gameWidth / 1196 + num * gameWidth / 20, gameHeight - 20 * gameHeight / 768);
+                        enemy1.setVelocity(0, -80);
+                        Enemy enemy3 = new Enemy(gameWidth - 20*gameWidth/1196, 20*gameHeight/768+num*gameHeight/20);
+                        enemy3.setVelocity(-80, 0);
+                        enemies.add(enemy3);
+                        enemies.add(enemy1);
+                    }
+                    horrizontal++;
+                }
                 EnemiesCollision(delta);
                 break;
             case 6:
+                Enemy ab=null;
+                if(prob<0.05) {
+                    ab = new GeneralEnemy((float) MathUtils.random() * GameWorld.gameWidth - 140 * gameWidth / 1196, (float) MathUtils.random() * GameWorld.gameHeight);
+                    ab.setVelocity(120,120);
+                }else if(prob<0.4){
+                    ab = new Enemy((float) MathUtils.random() * GameWorld.gameWidth - 140 * gameWidth / 1196, (float) MathUtils.random() * GameWorld.gameHeight);
+                    ab.setVelocity(200,200);
+                }
+                if(ab!=null) {
+                    enemies.add(ab);
+                }
                 EnemiesCollision(delta);
                 break;
             case 7:
-                EnemiesCollision(delta);
-                break;
-            case 8:
+                Enemy fd = null;
+                if(prob<0.15) {
+                    fd = new GeneralEnemy((float) MathUtils.random() * GameWorld.gameWidth - 140 * gameWidth / 1196, (float) MathUtils.random() * GameWorld.gameHeight);
+
+                }else if(prob<0.3){
+                    fd = new Enemy((float) MathUtils.random() * GameWorld.gameWidth - 140 * gameWidth / 1196, (float) MathUtils.random() * GameWorld.gameHeight);
+                }
+                if(fd!=null) {
+                    enemies.add(fd);
+                }
+                if(enemies.size()<37||enemies.size()>80) {
+                    EnemiesCollision(delta);
+                }
+                else {
+                    EnemiesCollision(delta,gameWidth/2-80*gameWidth/1196,gameHeight/2-80*gameHeight/768, 8,8);
+                }
+                if(isAllArrived()){
+                    for(int i = 0;i < enemies.size(); i++){
+                        if(enemies.get(i).getSpecial()) {
+                            Enemy g = enemies.get(i);
+                            float angle = MathUtils.atan2(g.getDestination().y-gameHeight/2, g.getDestination().x-gameWidth/2);
+                            enemies.get(i).setSpecial(false);
+                            enemies.get(i).setVelocity(300*MathUtils.cos(angle), 300*MathUtils.sin(angle));
+                        }
+                    }
+                }
                 EnemiesCollision(delta);
                 break;
             default:
+                c = 0;
                 EnemiesCollision(delta);
                 break;
-        }
-
-        BulletCollision(delta);
-
-        weaponBallDetection(delta);
-
-        updateAbsorbingBalls(delta);
-
-        if(isAllArrived()){
-            for(int i = 0;i < enemies.size(); i++){
-                if(enemies.get(i).getSpecial()) {
-                    enemies.get(i).setSpecial(false);
-                    enemies.get(i).setVelocity(300, 300);
-                }
-            }
         }
 
     }
@@ -433,26 +519,31 @@ public class GameWorld {
 
     public void EnemiesCollision(float delta){
         if (!enemies.isEmpty()){
-            for(int i = 0;i<enemies.size();i++){
-                for(int numBall = 0; numBall < shootWeaponBallArrayList.size();numBall++){
+            for(int i = 0;i<enemies.size();i++) {
+                for (int numBall = 0; numBall < shootWeaponBallArrayList.size(); numBall++) {
                     enemies.get(i).isOverlap(shootWeaponBallArrayList.get(numBall).getCircle());
                 }
                 enemies.get(i).update(delta, tilt.getX(), tilt.getY());
-                for(int numball = 0; numball<absorbBallsList.size();numball++){
+                for (int numball = 0; numball < absorbBallsList.size(); numball++) {
                     MiniAbsorbBall ball = absorbBallsList.get(numball);
                     Enemy enemy = enemies.get(i);
-                    if(ball.isInRange(enemies.get(i))){
-                        float velX = (enemy.getX() < ball.getPosX()+15)? Math.abs(150):-Math.abs(150);
-                        float velY = (enemy.getY()<ball.getPosY())? Math.abs(150):-Math.abs(150);
+                    if (ball.isInRange(enemies.get(i))) {
+                        float velX = (enemy.getX() < ball.getPosX() + 15) ? Math.abs(150) : -Math.abs(150);
+                        float velY = (enemy.getY() < ball.getPosY()) ? Math.abs(150) : -Math.abs(150);
                         enemies.get(i).setVelocity(velX, velY);
                     }
                     enemies.get(i).isOverlap(ball.getCircle());
                 }
-                if(!enemies.get(i).isExisted()){
+
+                if (enemies.get(i).isExisted() && enemies.get(i).isCanKill() &&tilt.getCircle().overlaps(enemies.get(i).myCircle)) {
+                    tilt.setVelocity(0,0);
+                    currentState = GameState.GAMEOVER;
+                }
+                if (!enemies.get(i).isExisted()) {
                     Enemy temp = enemies.remove(i);
-                    if(temp.getSpecial()) {
-                        if(temp.getSpecial()) {
-                            Enemy newEnemy = new Enemy(MathUtils.random()*gameWidth,MathUtils.random()*gameHeight);
+                    if (temp.getSpecial()) {
+                        if (temp.getSpecial()) {
+                            Enemy newEnemy = new Enemy(MathUtils.random() * gameWidth, MathUtils.random() * gameHeight);
                             newEnemy.setVelocity(300, 300);
                             newEnemy.setDestination(temp.getX(), temp.getY());
                         }
@@ -460,16 +551,12 @@ public class GameWorld {
                     score++;
                     i--;
                 }
-                if(enemies.get(i).isOverlap(tilt.getCircle())){
-                    currentState = GameState.GAMEOVER;
-                }
             }
         }
     }
 
     public void EnemiesCollision(float delta, float posX, float posY, int x, int y){
         if (!enemies.isEmpty()){
-
             for(int i = 0;i<enemies.size();i++){
 
                 for(int numBall = 0; numBall < shootWeaponBallArrayList.size();numBall++){
@@ -496,6 +583,11 @@ public class GameWorld {
                 }
 
                 enemies.get(i).update(delta, tilt.getX(), tilt.getY());
+
+                if (enemies.get(i).isExisted() && enemies.get(i).isCanKill() && tilt.getCircle().overlaps(enemies.get(i).myCircle)) {
+                    tilt.setVelocity(0,0);
+                    currentState = GameState.GAMEOVER;
+                }
 
                 if(!enemies.get(i).isExisted()){
                     Enemy temp = enemies.remove(i);
@@ -545,7 +637,7 @@ public class GameWorld {
                         list.add(ball);
                     }
                     if(ball.isHit){
-                        shootWeaponBallArrayList.add(new ShootWeaponBall(ball.getType(), tilt.getX(), tilt.getY(),tilt));
+                        shootWeaponBallArrayList.add(new ShootWeaponBall(ball.getType(), tilt.getX()+35*gameWidth/1196, tilt.getY()+35*gameHeight/768,tilt));
                     }
                     i--;
                 }

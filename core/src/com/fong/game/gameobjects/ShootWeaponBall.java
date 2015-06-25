@@ -80,7 +80,7 @@ public class ShootWeaponBall {
                         circle.radius = -1;
                         break;
                     }
-                    circle.set(position.x, position.y, 140 * (time-1.5f)*GameWorld.gameHeight/768);
+                    circle.set(position.x, position.y, 100 * (time-1.5f)*GameWorld.gameHeight/768);
                 }
                 break;
             case 3:
@@ -111,7 +111,6 @@ public class ShootWeaponBall {
                     circle.set(position.x, position.y,25*GameWorld.gameHeight/768);
                 }else {
                     isExploded = true;
-                    Gdx.app.log("ShootWeaponBall", "Ball");
                     circle.radius = -1;
                 }
                 position.add(velocity.cpy().scl(delta));
