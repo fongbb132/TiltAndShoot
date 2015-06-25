@@ -32,11 +32,9 @@ public class GameWorld {
     public static float seekBarX = 200*gameWidth/1196 + gameWidth/2;
     public boolean clock = false;
     public boolean antiClock = false;
-
-    private int makeRecTrack = 0;
     private int tracking;
     private Tilt tilt;
-    private GameState currentState;
+    public GameState currentState;
 
     public ArrayList<Bullet> bullets ;
     public ArrayList<Enemy> enemies;
@@ -44,7 +42,6 @@ public class GameWorld {
     public ArrayList<ArrayList<WeaponBall>> weaponList;
     public ArrayList<ShootWeaponBall> shootWeaponBallArrayList;
     public ArrayList<MiniAbsorbBall> absorbBallsList;
-    public ArrayList<Enemy> makeRec;
     private float time;
 
     public GameWorld(int midPointY) {
@@ -54,7 +51,6 @@ public class GameWorld {
         bullets = new ArrayList<Bullet>();
         this.weaponBalls = new ArrayList<WeaponBall>();
         this.weaponList = new ArrayList<ArrayList<WeaponBall>>(5);
-        makeRec = new ArrayList<Enemy>();
         for(int i = 0; i< 5;i++){
             ArrayList arrayList = new ArrayList();
             weaponList.add(arrayList);
@@ -76,9 +72,16 @@ public class GameWorld {
                 break;
             case PAUSE:
                 updatePause(delta);
+                break;
+            case GAMEOVER:
+                updateGameOver(delta);
             default:
                 break;
         }
+    }
+
+    private void updateGameOver(float delta) {
+        
     }
 
     private void updatePause(float delta) {
@@ -105,6 +108,8 @@ public class GameWorld {
         }
         shootWeaponBallArrayList = new ArrayList<ShootWeaponBall>();
         absorbBallsList = new ArrayList<MiniAbsorbBall>();
+        time = 0;
+        score = 0;
 
         float inputX = Gdx.input.getX();
         float inputY = Gdx.input.getY();
@@ -260,18 +265,8 @@ public class GameWorld {
 
         }
 
-        if(tracking%10==0){
-            double prob = MathUtils.random();
-            Enemy a;
-            if(prob<0.25){
-                a = new Enemy((float)MathUtils.random()*GameWorld.gameWidth-140, (float)MathUtils.random()*GameWorld.gameHeight);
-            }else{
-                a = new GeneralEnemy((float)MathUtils.random()*GameWorld.gameWidth-140, (float)MathUtils.random()*GameWorld.gameHeight);
-            }
-            enemies.add(a);
-        }
         if(weaponBalls.size()<4 ) {
-            if (MathUtils.random() < 0.4 && tracking%120==0) {
+            if (MathUtils.random() < 0.01) {
                 weaponBalls.add(new WeaponBall((float) (MathUtils.random() * 300)));
             }
         }
@@ -302,6 +297,75 @@ public class GameWorld {
             }
         }
 
+        int c = (int)time/10;
+        double prob = MathUtils.random();
+        switch (c){
+            case 0:
+                Enemy a;
+                if(prob<0.02){
+                    a = new GeneralEnemy((float)MathUtils.random()*GameWorld.gameWidth-140*gameWidth/1196, (float)MathUtils.random()*GameWorld.gameHeight);
+                    enemies.add(a);
+                }
+                EnemiesCollision(delta);
+                break;
+            case 1:
+                if(prob<0.08) {
+                    Enemy b = new GeneralEnemy((float) MathUtils.random() * GameWorld.gameWidth - 140 * gameWidth / 1196, (float) MathUtils.random() * GameWorld.gameHeight);
+                    enemies.add(b);
+                }
+                EnemiesCollision(delta);
+                break;
+            case 2:
+                Enemy b=null;
+                if(prob<0.1) {
+                    b = new GeneralEnemy((float) MathUtils.random() * GameWorld.gameWidth - 140 * gameWidth / 1196, (float) MathUtils.random() * GameWorld.gameHeight);
+
+                }else if(prob<0.2){
+                    b = new Enemy((float) MathUtils.random() * GameWorld.gameWidth - 140 * gameWidth / 1196, (float) MathUtils.random() * GameWorld.gameHeight);
+                }
+                if(b!=null) {
+                    enemies.add(b);
+                }
+                EnemiesCollision(delta);
+                break;
+            case 3:
+                Enemy d = null;
+                if(prob<0.15) {
+                    d = new GeneralEnemy((float) MathUtils.random() * GameWorld.gameWidth - 140 * gameWidth / 1196, (float) MathUtils.random() * GameWorld.gameHeight);
+
+                }else if(prob<0.3){
+                    d = new Enemy((float) MathUtils.random() * GameWorld.gameWidth - 140 * gameWidth / 1196, (float) MathUtils.random() * GameWorld.gameHeight);
+                }
+                if(d!=null) {
+                    enemies.add(d);
+                }
+                if(enemies.size()<63||enemies.size()>80) {
+                    EnemiesCollision(delta);
+                }
+                else {
+                    EnemiesCollision(delta,gameWidth/2-80*gameWidth/1196,gameHeight/2-80*gameHeight/768, 8,8);
+                }
+                break;
+            case 4:
+                EnemiesCollision(delta);
+                break;
+            case 5:
+                EnemiesCollision(delta);
+                break;
+            case 6:
+                EnemiesCollision(delta);
+                break;
+            case 7:
+                EnemiesCollision(delta);
+                break;
+            case 8:
+                EnemiesCollision(delta);
+                break;
+            default:
+                EnemiesCollision(delta);
+                break;
+        }
+
         BulletCollision(delta);
 
         weaponBallDetection(delta);
@@ -317,12 +381,6 @@ public class GameWorld {
             }
         }
 
-        if(enemies.size()<63||enemies.size()>80) {
-            EnemiesCollision(delta);
-        }
-        else {
-            EnemiesCollision(delta,gameWidth/2,gameHeight/2, 8,8);
-        }
     }
 
     public Tilt getTilt(){
@@ -401,6 +459,9 @@ public class GameWorld {
                     }
                     score++;
                     i--;
+                }
+                if(enemies.get(i).isOverlap(tilt.getCircle())){
+                    currentState = GameState.GAMEOVER;
                 }
             }
         }

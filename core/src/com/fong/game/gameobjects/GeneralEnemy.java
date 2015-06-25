@@ -1,6 +1,5 @@
 package com.fong.game.gameobjects;
 
-import com.badlogic.gdx.Gdx;
 import com.fong.game.gameworld.GameWorld;
 
 /**
@@ -14,20 +13,26 @@ public class GeneralEnemy extends Enemy {
 
     @Override
     public void update(float delta, float posX, float posY) {
-
-        if(!getSpecial()) {
-            position.add(velocity.cpy().scl(delta));
-        }else{
-            if(destination.x-1.5<getX()&&getX()<destination.x+1.5){
-                velocity.x = 0;
-            }else {
-                velocity.x = (position.x<destination.x) ? Math.abs(velocity.x) : -Math.abs(velocity.x);
-            }
-            if(destination.y-1.5<getY()&&getY()<destination.y+1.5) {
-                velocity.y = 0;
-            }
-            else {
-                velocity.y = (position.y<destination.y) ? Math.abs(velocity.y) : -Math.abs(velocity.y);
+        addTime(delta);
+        canKill = time>0.5;
+        if(!canKill){
+            velocity.set(0,0);
+        }else if(time<0.6){
+            velocity.set(5,5);
+        }else {
+            if (!getSpecial()) {
+                position.add(velocity.cpy().scl(delta));
+            } else {
+                if (destination.x - 1.5 < getX() && getX() < destination.x + 1.5) {
+                    velocity.x = 0;
+                } else {
+                    velocity.x = (position.x < destination.x) ? Math.abs(velocity.x) : -Math.abs(velocity.x);
+                }
+                if (destination.y - 1.5 < getY() && getY() < destination.y + 1.5) {
+                    velocity.y = 0;
+                } else {
+                    velocity.y = (position.y < destination.y) ? Math.abs(velocity.y) : -Math.abs(velocity.y);
+                }
             }
         }
         position.add(velocity.cpy().scl(delta));

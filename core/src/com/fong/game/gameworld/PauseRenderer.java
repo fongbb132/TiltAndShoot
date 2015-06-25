@@ -2,6 +2,7 @@ package com.fong.game.gameworld;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -36,6 +37,15 @@ public class PauseRenderer {
     }
 
     public void render(){
+        Gdx.gl.glClearColor(0, 0, 0, 1);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        //begin shapeRender
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+        //Background Color
+        shapeRenderer.setColor(55 / 255.0f, 80 / 255.0f, 60 / 255.0f, 1);
+        shapeRenderer.rect(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        shapeRenderer.end();
+
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.setColor(Color.WHITE);
         shapeRenderer.rect(gameWidth / 2 - 300 * gameWidth / 1196, gameHeight / 2 - 100 * gameHeight / 768, 200 * gameWidth / 1196, 200 * gameHeight / 768);
