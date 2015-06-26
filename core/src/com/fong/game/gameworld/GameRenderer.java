@@ -96,12 +96,22 @@ public class GameRenderer {
             batcher.draw(AssetLoader.antiClock1, 0, GameWorld.gameHeight - (400*gameHeight/768),200*gameWidth/1196,200*gameHeight/768);
         }
 
+        if(myWorld.time<0.2){
+            batcher.draw(AssetLoader.shoot2, Gdx.graphics.getWidth() - 140, Gdx.graphics.getHeight() - 140, 140, 140);
+        }else {
+            batcher.draw(AssetLoader.shoot1, Gdx.graphics.getWidth() - 140, Gdx.graphics.getHeight() - 140, 140, 140);
+        }
+
         batcher.end();
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
 
             if (!myWorld.enemies.isEmpty()) {
                 for (int i = 0; i < myWorld.enemies.size(); i++) {
-                    shapeRenderer.setColor(130 / 255.0f, 30 / 255.0f, 160 / 255.0f, 1);
+                    if(myWorld.enemies.get(i).canKill) {
+                        shapeRenderer.setColor(130 / 255.0f, 30 / 255.0f, 160 / 255.0f, 1);
+                    }else {
+                        shapeRenderer.setColor(Color.WHITE);
+                    }
                     shapeRenderer.rect(myWorld.enemies.get(i).getX(), myWorld.enemies.get(i).getY(), 20*gameWidth/1196, 20*gameHeight/768);
                 }
             }
@@ -136,11 +146,11 @@ public class GameRenderer {
         drawAbsorbingBalls();
 
         drawWeaponCircles();
-
+/*
         //bullet circle
         shapeRenderer.setColor(255 / 255.0f, 255 / 255.0f, 255 / 255.0f, 0.3f);
         shapeRenderer.circle(GameWorld.gameWidth - 60 * gameWidth / 1196, GameWorld.gameHeight - 60 * gameHeight / 768, 60 * gameHeight / 768, 50);
-
+*/
         //Pause Circle
         shapeRenderer.setColor(Color.WHITE);
         shapeRenderer.circle(GameWorld.gameWidth - 150 * gameWidth / 1196, 60 * gameHeight / 768, 50);

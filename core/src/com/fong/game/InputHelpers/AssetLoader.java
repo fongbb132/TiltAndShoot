@@ -13,8 +13,8 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
  */
 public class AssetLoader {
     public static BitmapFont ConsolasFont;
-    public static Texture cursor1,cursor2,clock1, clock2, antiClock1, antiClock2;
-    public static TextureRegion cursorA,cursorB, bullet, clockA, clockB, antiClockA, antiClockB;
+    public static Texture cursor1,cursor2,clock1, clock2, antiClock1, antiClock2, shoot1, shoot2;
+    public static TextureRegion cursorA,cursorB, bullet, clockA, clockB, antiClockA, antiClockB, shootA, shootB;
     public static Texture bulletTexture;
     public static Animation cursorAnimation;
 
@@ -28,6 +28,8 @@ public class AssetLoader {
         antiClock1 = new Texture(Gdx.files.internal("data/anticlockwise1.png"));
         antiClock2 = new Texture(Gdx.files.internal("data/anticlockwise2.png"));
         ConsolasFont = new BitmapFont(Gdx.files.internal("data/Consolas.fnt"),true);
+        shoot1 = new Texture(Gdx.files.internal("data/shootButton1.png"));
+        shoot2 = new Texture(Gdx.files.internal("data/shootButton2.png"));
 
  /*
         cursor1 = new Texture(Gdx.files.internal("android/assets/data/newCursor.png"));
@@ -47,6 +49,8 @@ public class AssetLoader {
         clockB = new TextureRegion(clock2, 0, 0, 350, 350);
         antiClockA = new TextureRegion(antiClock1,0 ,0, 350, 350);
         antiClockB = new TextureRegion(antiClock2, 0, 0, 350, 350);
+        shootA = new TextureRegion(shoot1, 0,0,350,350);
+        shootB = new TextureRegion(shoot2, 0,0, 350, 350);
 
 
         cursorA.flip(false, true);
@@ -64,6 +68,9 @@ public class AssetLoader {
         clock2.dispose();
         antiClock1.dispose();
         antiClock2.dispose();
+        shoot1.dispose();
+        shoot2.dispose();
+
     }
 
     public static void setHighScore(int val){

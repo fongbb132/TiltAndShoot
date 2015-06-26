@@ -33,7 +33,7 @@ public class Enemy {
 
     public void update(float delta, float posX, float posY){
         time+=delta;
-        canKill = time>0.5;
+        canKill = time>2;
 
         if(!canKill){
             velocity.set(0,0);

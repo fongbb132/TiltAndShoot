@@ -42,7 +42,7 @@ public class GameWorld {
     public ArrayList<ArrayList<WeaponBall>> weaponList;
     public ArrayList<ShootWeaponBall> shootWeaponBallArrayList;
     public ArrayList<MiniAbsorbBall> absorbBallsList;
-    private float time;
+    public float time;
     private int horrizontal = 0;
 
     public GameWorld(int midPointY) {
@@ -266,7 +266,7 @@ public class GameWorld {
                 currentState = GameState.PAUSE;
             }
 
-            if (isInBorder(Gdx.input.getX(a), Gdx.input.getY(a), Gdx.graphics.getWidth() - 140 * gameWidth / 768, Gdx.graphics.getHeight() - 120 * gameHeight / 768, 140 * gameWidth / 768, 140 * gameHeight / 768)&&Gdx.input.isTouched(a)) {
+            if(isInBorder(Gdx.input.getX(a), Gdx.input.getY(a), Gdx.graphics.getWidth() - 140 * gameWidth / 768, Gdx.graphics.getHeight() - 120 * gameHeight / 768, 140 * gameWidth / 768, 140 * gameHeight / 768)&&Gdx.input.isTouched(a)) {
                 if (tracking % 8 == 0) {
                     bullets.add(new Bullet(tilt.getRotation(), tilt.getX(), tilt.getY()));
                     tilt.setIsPressed(true);

@@ -15,7 +15,7 @@ public class GeneralEnemy extends Enemy {
     @Override
     public void update(float delta, float posX, float posY) {
         addTime(delta);
-        canKill = time>0.5;
+        canKill = time>2;
         if(!canKill){
             velocity.set(0,0);
         }else if(time<0.6){

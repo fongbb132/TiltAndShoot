@@ -77,7 +77,7 @@ public class Tilt {
             position.x = 2;
             velocity.x = 0;
         }
-        if(position.x> GameWorld.gameWidth-140) {
+        if(position.x> GameWorld.gameWidth-140*GameWorld.gameWidth/1196) {
             position.x = GameWorld.gameWidth-140;
             velocity.x = 0;
         }
@@ -85,7 +85,7 @@ public class Tilt {
             position.y = 2;
             velocity.y = 0;
         }
-        if(position.y > GameWorld.gameHeight-40) {
+        if(position.y > GameWorld.gameHeight-40*GameWorld.gameHeight/768) {
             position.y = GameWorld.gameHeight-40;
             velocity.y = 0;
         }
