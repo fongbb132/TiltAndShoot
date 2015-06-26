@@ -18,8 +18,8 @@ public class GeneralEnemy extends Enemy {
         canKill = time>2;
         if(!canKill){
             velocity.set(0,0);
-        }else if(time<0.6){
-            velocity.set(30,30);
+        }else if(time<2.1){
+            velocity.set(40,40);
         }else {
             if (!getSpecial()) {
                 position.add(velocity.cpy().scl(delta));

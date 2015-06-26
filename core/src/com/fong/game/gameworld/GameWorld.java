@@ -3,6 +3,7 @@ package com.fong.game.gameworld;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
+import com.fong.game.InputHelpers.AssetLoader;
 import com.fong.game.gameobjects.Bullet;
 import com.fong.game.gameobjects.Enemy;
 import com.fong.game.gameobjects.GeneralEnemy;
@@ -26,7 +27,7 @@ public class GameWorld {
     public static int gameWidth = Gdx.graphics.getWidth();
     public static int gameHeight = Gdx.graphics.getHeight();
     public enum GameState{
-        READY, RUNNING, GAMEOVER, HIGHSCORE,SETACC,SETSENSATIVITY, PAUSE
+        READY, RUNNING, GAMEOVER, HIGHSCORE,SETACC, PAUSE
     }
 
     public static float seekBarX = 200*gameWidth/1196 + gameWidth/2;
@@ -78,13 +79,32 @@ public class GameWorld {
             case GAMEOVER:
                 updateGameOver(delta);
                 break;
+            case HIGHSCORE:
+                updateHighScore(delta);
+                break;
             default:
                 break;
         }
     }
 
+    public void updateHighScore(float delta){
+        float inX = Gdx.input.getX();
+        float inY = Gdx.input.getY();
+        if(isInBorder(inX, inY, GameWorld.gameWidth / 2 - 250 * gameWidth / 1196, GameWorld.gameHeight / 2, 200 * gameWidth / 1196, 200 * gameHeight / 768)){
+            currentState = GameState.READY;
+        }
+
+        if(isInBorder(inX, inY, GameWorld.gameWidth / 2 + 50 * gameWidth / 1196, GameWorld.gameHeight/2, 200*gameWidth/1196, 200*gameHeight/768)){
+            updateReady(delta);
+            currentState = GameState.RUNNING;
+        }
+    }
+
     private void updateGameOver(float delta) {
         gameOverTime= gameOverTime + delta;
+        if(score> AssetLoader.getHighScore()){
+            AssetLoader.setHighScore(score);
+        }
         if(gameOverTime>1){
             float inX = Gdx.input.getX();
             float inY = Gdx.input.getY();
@@ -139,9 +159,9 @@ public class GameWorld {
             if(Gdx.input.justTouched()) {
                 currentState = GameState.SETACC;
             }
-        }else if(isInBorder(inputX, inputY, gameWidth/2 - 500 * gameWidth / 1196,
+        }else if(isInBorder(inputX, inputY, gameWidth / 2 + 200 * gameWidth / 1196,
                 gameHeight/2-50*gameHeight/768, 300 * gameWidth / 1196, 100 * gameHeight / 768)&&Gdx.input.isTouched()){
-            currentState = GameState.SETSENSATIVITY;
+            currentState = GameState.HIGHSCORE;
         }
 
     }
@@ -156,6 +176,7 @@ public class GameWorld {
             tilt2.setPosition();
         }else if(isInBorder(Gdx.input.getX(), Gdx.input.getY(),
                 10*GameWorld.gameWidth/1196, 10 *GameWorld.gameHeight/768, 200*GameWorld.gameWidth/1196,100*GameWorld.gameHeight/768)){
+            AssetLoader.setControl(Tilt.sensitivity, Tilt.AcCorrectionX, Tilt.AcCorrectionY);
             currentState = GameState.READY;
         }else if(isInBorder(Gdx.input.getX(), Gdx.input.getY(), 310*gameWidth/1196, 10 *GameWorld.gameHeight/768,
                 800*GameWorld.gameWidth/1196,100*GameWorld.gameHeight/768)){

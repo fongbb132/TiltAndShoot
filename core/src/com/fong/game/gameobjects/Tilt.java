@@ -18,8 +18,8 @@ public class Tilt {
     private boolean isPress;
     private float time;
 
-    public static float sensitivity=1;
-    public static float AcCorrectionX=0, AcCorrectionY=0;
+    public static float sensitivity;
+    public static float AcCorrectionX, AcCorrectionY;
     public Tilt() {
         this.rotation = 0;
         this.acceleration = new Vector2(0,0);
@@ -78,7 +78,7 @@ public class Tilt {
             velocity.x = 0;
         }
         if(position.x> GameWorld.gameWidth-140*GameWorld.gameWidth/1196) {
-            position.x = GameWorld.gameWidth-140;
+            position.x = GameWorld.gameWidth-140*GameWorld.gameWidth/1196;
             velocity.x = 0;
         }
         if(position.y < 2 ) {
@@ -86,7 +86,7 @@ public class Tilt {
             velocity.y = 0;
         }
         if(position.y > GameWorld.gameHeight-40*GameWorld.gameHeight/768) {
-            position.y = GameWorld.gameHeight-40;
+            position.y = GameWorld.gameHeight-40*GameWorld.gameHeight/768;
             velocity.y = 0;
         }
 

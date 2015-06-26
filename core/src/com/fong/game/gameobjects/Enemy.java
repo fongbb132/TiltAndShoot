@@ -37,8 +37,8 @@ public class Enemy {
 
         if(!canKill){
             velocity.set(0,0);
-        }else if(time<0.6){
-            velocity.set(70,70);
+        }else if(time<2.1){
+            velocity.set(40,40);
         }else {
             if (!isSpecial) {
                 if (!isArrive) {

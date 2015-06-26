@@ -8,6 +8,7 @@ import com.fong.game.gameworld.GameRenderer;
 import com.fong.game.gameworld.GameWorld;
 import com.fong.game.InputHelpers.InputHandler;
 import com.fong.game.gameworld.PauseRenderer;
+import com.fong.game.gameworld.RecordRender;
 import com.fong.game.gameworld.SetAccRenderer;
 
 /**
@@ -20,7 +21,7 @@ public class GameScreen implements Screen {
     private SetAccRenderer setAccRenderer;
     private PauseRenderer pauseRenderer;
     private GameOverRenderer gameOverRenderer;
-
+    private RecordRender recordRender;
     private float runTime = 0;
     private float timeRec = 0;
 
@@ -36,6 +37,7 @@ public class GameScreen implements Screen {
         setAccRenderer = new SetAccRenderer(world);
         pauseRenderer = new PauseRenderer(world);
         gameOverRenderer = new GameOverRenderer(world);
+        recordRender = new RecordRender(world);
 
         Gdx.input.setInputProcessor(new InputHandler(world));
 
@@ -65,11 +67,14 @@ public class GameScreen implements Screen {
             }else {
                 gameOverRenderer.render(delta);
             }
+        }else if(world.getCurrentState().equals(GameWorld.GameState.HIGHSCORE)){
+            recordRender.render(runTime);
         }
     }
 
     @Override
     public void resize(int width, int height) {
+
     }
 
     @Override

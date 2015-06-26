@@ -159,12 +159,13 @@ public class GameRenderer {
 
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.setColor(Color.BLUE);
-        shapeRenderer.circle(tilt.getCircle().x,tilt.getCircle().y, tilt.getCircle().radius);
+        shapeRenderer.circle(tilt.getCircle().x, tilt.getCircle().y, tilt.getCircle().radius);
         shapeRenderer.end();
 
         batcher.begin();
         batcher.enableBlending();
 
+        AssetLoader.ConsolasFont.getData().setScale(2,2);
         for (int num = 0; num < weaponList.size(); num++) {
             AssetLoader.ConsolasFont.draw(batcher, "x" + weaponList.get(num).size(), GameWorld.gameWidth - 120*GameWorld.gameWidth/1196, GameWorld.gameHeight - (240 + num * 120)*GameWorld.gameHeight/768, 100, 100, false);
         }

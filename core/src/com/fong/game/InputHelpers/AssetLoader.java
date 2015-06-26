@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.fong.game.gameobjects.Tilt;
 
 /**
  * Created by wing on 6/5/15.
@@ -17,6 +18,7 @@ public class AssetLoader {
     public static TextureRegion cursorA,cursorB, bullet, clockA, clockB, antiClockA, antiClockB, shootA, shootB;
     public static Texture bulletTexture;
     public static Animation cursorAnimation;
+    public static Preferences preferences;
 
     public static void load(){
 
@@ -57,6 +59,32 @@ public class AssetLoader {
         cursorB.flip(false, true);
 
         ConsolasFont.getData().setScale(2);
+
+        preferences = Gdx.app.getPreferences("TiltAndShoot");
+        if(!preferences.contains("highScore")){
+            preferences.putInteger("highScore", 0);
+        }
+
+        if(!preferences.contains("Sensitivity")){
+            Tilt.sensitivity = 1;
+            preferences.putFloat("Sensitivity", Tilt.sensitivity);
+        }else {
+            Tilt.sensitivity = preferences.getFloat("Sensitivity");
+        }
+
+        if(!preferences.contains("AccX")){
+            Tilt.AcCorrectionX = 0;
+            preferences.putFloat("AccX", Tilt.AcCorrectionX);
+        }else {
+            Tilt.AcCorrectionX = preferences.getFloat("AccX");
+        }
+
+        if(!preferences.contains("AccY")){
+            Tilt.AcCorrectionY = 0;
+            preferences.putFloat("AccY", Tilt.AcCorrectionY);
+        }else {
+            Tilt.AcCorrectionY = preferences.getFloat("AccY");
+        }
     }
 
     public static void dispose(){
@@ -74,10 +102,18 @@ public class AssetLoader {
     }
 
     public static void setHighScore(int val){
+        preferences.putInteger("highScore", val);
+        preferences.flush();
+    }
 
+    public static void setControl(float sens, float accX, float accY){
+        preferences.putFloat("Sensitivity", sens);
+        preferences.putFloat("AccX", accX);
+        preferences.putFloat("AccY", accY);
+        preferences.flush();
     }
 
     public static int getHighScore(){
-        return 0;
+        return preferences.getInteger("highScore");
     }
 }
