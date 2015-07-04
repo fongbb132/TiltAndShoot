@@ -72,7 +72,7 @@ public class ShootWeaponBall {
                     circle.set(position.x, position.y, 35*GameWorld.gameHeight/768);
                     if(time > 1.3){
                         float angle = tilt.getRotation();
-                        this.velocity = new Vector2((450* MathUtils.cos((float) (angle / 180 * Math.PI))), 450*(MathUtils.sin(((float)(angle / 180 * Math.PI)))));
+                        this.velocity = new Vector2((450* MathUtils.cos((float) (angle / 180 * Math.PI))), 300*(MathUtils.sin(((float)(angle / 180 * Math.PI)))));
                     }
                 }else {
                     position.add(velocity.cpy().scl(delta));

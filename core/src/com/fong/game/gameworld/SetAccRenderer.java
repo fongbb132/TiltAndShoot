@@ -18,6 +18,7 @@ import com.fong.game.gameobjects.Tilt;
 public class SetAccRenderer {
 
     private float gameHeight = Gdx.graphics.getHeight();
+    private float gameWidth = GameWorld.gameWidth;
     private GameWorld gameWorld;
     private ShapeRenderer shapeRenderer;
     private OrthographicCamera cam;
@@ -65,8 +66,12 @@ public class SetAccRenderer {
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.setColor(Color.BLUE);
         shapeRenderer.rect(310 * GameWorld.gameWidth / 1196, 50 * GameWorld.gameHeight / 768, GameWorld.seekBarX - 310 * GameWorld.gameWidth / 1196, 10);
+        if(GameWorld.isButton){
+            shapeRenderer.setColor(Color.WHITE);
+        }
+        shapeRenderer.rect(10 * gameWidth / 1196, gameHeight / 2, 200 * gameWidth / 1196, 100 * gameHeight / 768);
         shapeRenderer.setColor(Color.GREEN);
-        shapeRenderer.rect(GameWorld.seekBarX * GameWorld.gameWidth / 1196, 50 * GameWorld.gameHeight / 768, 1110 * GameWorld.gameWidth / 1196 - GameWorld.seekBarX, 10);
+        shapeRenderer.rect(GameWorld.seekBarX, 50 * GameWorld.gameHeight / 768, 1110 * GameWorld.gameWidth / 1196 - GameWorld.seekBarX, 10);
         shapeRenderer.setColor(Color.YELLOW);
         shapeRenderer.circle(GameWorld.seekBarX, 55 * GameWorld.gameHeight / 768, 5);
         shapeRenderer.end();
@@ -76,13 +81,19 @@ public class SetAccRenderer {
 
         AssetLoader.ConsolasFont.draw(batcher, "Back", 10 * GameWorld.gameWidth / 1196, 10 * GameWorld.gameHeight / 768);
         AssetLoader.ConsolasFont.draw(batcher, "Adjust", 10 * GameWorld.gameWidth / 1196, GameWorld.gameHeight - 110 * GameWorld.gameHeight / 768);
-
+        if(GameWorld.isButton){
+            if(gameWorld.fixButtonX>0&&gameWorld.fixButtonY>0){
+                batcher.draw(AssetLoader.buttonBackground, gameWorld.fixButtonX-180, gameWorld.fixButtonY-180, 360, 360);
+                batcher.draw(AssetLoader.button,gameWorld.buttonX-70, gameWorld.buttonY-70, 140,140 );
+            }
+            AssetLoader.ConsolasFont.draw(batcher, "Tilting",0,gameHeight/2);
+        }else {
+            AssetLoader.ConsolasFont.draw(batcher, "Button",0,gameHeight/2);
+        }
         batcher.draw(cursor1, tilt.getX(),
                 tilt.getY(), 35*GameWorld.gameWidth/1196,
                 35 * gameHeight / 768, 70* GameWorld.gameWidth/1196, 70 * gameHeight / 768,
                 1, 1, tilt.getRotation());
         batcher.end();
-
-
     }
 }

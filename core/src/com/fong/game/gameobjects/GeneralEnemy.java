@@ -1,5 +1,6 @@
 package com.fong.game.gameobjects;
 
+import com.badlogic.gdx.math.MathUtils;
 import com.fong.game.gameworld.GameWorld;
 
 /**
@@ -18,8 +19,16 @@ public class GeneralEnemy extends Enemy {
         canKill = time>2;
         if(!canKill){
             velocity.set(0,0);
-        }else if(time<2.1){
-            velocity.set(40,40);
+        }else if(time<3.1){
+            int speedX = MathUtils.random(40);
+            int speedY = MathUtils.random(40);
+            if(speedX%2==0){
+                speedX = -speedX;
+            }
+            if(speedY%2==0){
+                speedY = -speedY;
+            }
+            velocity.set(speedX, speedY);
         }else {
             if (!getSpecial()) {
                 position.add(velocity.cpy().scl(delta));

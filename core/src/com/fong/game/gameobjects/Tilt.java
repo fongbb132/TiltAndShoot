@@ -11,16 +11,20 @@ import com.fong.game.gameworld.GameWorld;
 public class Tilt {
 
     private Vector2 acceleration;
-    private Vector2 velocity;
+    public Vector2 velocity;
     private Vector2 position;
     private float rotation;
     private Circle myCircle;
     private boolean isPress;
     private float time;
+    public float accelY;
+    public float accelX;
 
     public static float sensitivity;
     public static float AcCorrectionX, AcCorrectionY;
     public Tilt() {
+        this.accelX = 0;
+        this.accelY = 0;
         this.rotation = 0;
         this.acceleration = new Vector2(0,0);
         this.velocity = new Vector2(0,0);
@@ -51,16 +55,23 @@ public class Tilt {
         rotation%=360;
     }
 
+    public void setAngle(float angle){
+        this.rotation = angle;
+    }
+
     public void update(float delta){
 
         time+=delta;
 
-        float accelY = Gdx.input.getAccelerometerX()-AcCorrectionY;
-        float accelX = Gdx.input.getAccelerometerY()-AcCorrectionX;
+        if(!GameWorld.isButton){
 
-        acceleration.set(accelX*500*sensitivity, accelY*500*sensitivity);
+            accelY = Gdx.input.getAccelerometerX()-AcCorrectionY;
+            accelX = Gdx.input.getAccelerometerY()-AcCorrectionX;
 
-        velocity.add(acceleration.cpy().scl(delta));
+            acceleration.set(accelX*250*sensitivity, accelY*500*sensitivity);
+
+            velocity.add(acceleration.cpy().scl(delta));
+        }
 
         if(velocity.y>2500)
             velocity.y = 2500;
@@ -116,6 +127,6 @@ public class Tilt {
     }
 
     public void setVelocity(float i, float i1) {
-        velocity.set(0,0);
+        velocity.set(i,i1);
     }
 }

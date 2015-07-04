@@ -8,13 +8,14 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.fong.game.gameobjects.Tilt;
+import com.fong.game.gameworld.GameWorld;
 
 /**
  * Created by wing on 6/5/15.
  */
 public class AssetLoader {
     public static BitmapFont ConsolasFont;
-    public static Texture cursor1,cursor2,clock1, clock2, antiClock1, antiClock2, shoot1, shoot2;
+    public static Texture cursor1,cursor2,clock1, clock2, antiClock1, antiClock2, shoot1, shoot2, buttonBackground, button;
     public static TextureRegion cursorA,cursorB, bullet, clockA, clockB, antiClockA, antiClockB, shootA, shootB;
     public static Texture bulletTexture;
     public static Animation cursorAnimation;
@@ -32,7 +33,8 @@ public class AssetLoader {
         ConsolasFont = new BitmapFont(Gdx.files.internal("data/Consolas.fnt"),true);
         shoot1 = new Texture(Gdx.files.internal("data/shootButton1.png"));
         shoot2 = new Texture(Gdx.files.internal("data/shootButton2.png"));
-
+        buttonBackground = new Texture(Gdx.files.internal("data/ButtonBackground.png"));
+        button = new Texture(Gdx.files.internal("data/Button.png"));
  /*
         cursor1 = new Texture(Gdx.files.internal("android/assets/data/newCursor.png"));
         cursor2 = new Texture(Gdx.files.internal("android/assets/data/newCursor2.png"));
@@ -85,6 +87,13 @@ public class AssetLoader {
         }else {
             Tilt.AcCorrectionY = preferences.getFloat("AccY");
         }
+
+        if(!preferences.contains("isButton")){
+            GameWorld.isButton = false;
+            preferences.putBoolean("isButton", GameWorld.isButton);
+        }else {
+            GameWorld.isButton = preferences.contains("isButton");
+        }
     }
 
     public static void dispose(){
@@ -98,6 +107,8 @@ public class AssetLoader {
         antiClock2.dispose();
         shoot1.dispose();
         shoot2.dispose();
+        button.dispose();
+        buttonBackground.dispose();
 
     }
 
@@ -115,5 +126,10 @@ public class AssetLoader {
 
     public static int getHighScore(){
         return preferences.getInteger("highScore");
+    }
+
+    public static void setIsButton(boolean b){
+        preferences.putBoolean("isButton", b);
+        preferences.flush();
     }
 }

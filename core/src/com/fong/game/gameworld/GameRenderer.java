@@ -84,27 +84,42 @@ public class GameRenderer {
         //rotation circles
         batcher.begin();
         batcher.enableBlending();
-        if(myWorld.antiClock){
-            batcher.draw(AssetLoader.clock2, 0, GameWorld.gameHeight - (200*gameHeight/768),200*gameWidth/1196,200*gameHeight/768);
-        }else{
-            batcher.draw(AssetLoader.clock1, 0, GameWorld.gameHeight - (200*gameHeight/768),200*gameWidth/1196,200*gameHeight/768);
-        }
+        //Moving button
 
-        if(myWorld.clock){
-            batcher.draw(AssetLoader.antiClock2, 0, GameWorld.gameHeight - (400*gameHeight/768),200*gameWidth/1196,200*gameHeight/768);
+        if(!GameWorld.isButton){
+            if(myWorld.antiClock){
+                batcher.draw(AssetLoader.clock2, 0, GameWorld.gameHeight - (200*gameHeight/768),200*gameWidth/1196,200*gameHeight/768);
+            }else{
+                batcher.draw(AssetLoader.clock1, 0, GameWorld.gameHeight - (200*gameHeight/768),200*gameWidth/1196,200*gameHeight/768);
+            }
+
+            if(myWorld.clock){
+                batcher.draw(AssetLoader.antiClock2, 0, GameWorld.gameHeight - (400*gameHeight/768),200*gameWidth/1196,200*gameHeight/768);
+            }else {
+                batcher.draw(AssetLoader.antiClock1, 0, GameWorld.gameHeight - (400*gameHeight/768),200*gameWidth/1196,200*gameHeight/768);
+            }
+
+            if(myWorld.time<0.2){
+                batcher.draw(AssetLoader.shoot2, Gdx.graphics.getWidth() - 140, Gdx.graphics.getHeight() - 140, 140, 140);
+            }else {
+                batcher.draw(AssetLoader.shoot1, Gdx.graphics.getWidth() - 140, Gdx.graphics.getHeight() - 140, 140, 140);
+            }
         }else {
-            batcher.draw(AssetLoader.antiClock1, 0, GameWorld.gameHeight - (400*gameHeight/768),200*gameWidth/1196,200*gameHeight/768);
+            if(myWorld.fixButtonX>0&&myWorld.fixButtonY>0){
+                batcher.draw(AssetLoader.buttonBackground, myWorld.fixButtonX-180, myWorld.fixButtonY-180, 360, 360);
+                batcher.draw(AssetLoader.button,myWorld.buttonX-70, myWorld.buttonY-70, 140,140 );
+            }
         }
-
-        if(myWorld.time<0.2){
-            batcher.draw(AssetLoader.shoot2, Gdx.graphics.getWidth() - 140, Gdx.graphics.getHeight() - 140, 140, 140);
-        }else {
-            batcher.draw(AssetLoader.shoot1, Gdx.graphics.getWidth() - 140, Gdx.graphics.getHeight() - 140, 140, 140);
-        }
-
         batcher.end();
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
 
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+        if(GameWorld.isButton) {
+            //rotation and shoot
+            shapeRenderer.setColor(Color.WHITE);
+            shapeRenderer.circle(GameWorld.gameWidth - 280, GameWorld.gameHeight - 140, 140, 45);
+            shapeRenderer.setColor(Color.GREEN);
+            shapeRenderer.circle(GameWorld.gameWidth - 280, GameWorld.gameHeight - 140, 70, 45);
+        }
             if (!myWorld.enemies.isEmpty()) {
                 for (int i = 0; i < myWorld.enemies.size(); i++) {
                     if(myWorld.enemies.get(i).canKill) {
@@ -154,12 +169,7 @@ public class GameRenderer {
         //Pause Circle
         shapeRenderer.setColor(Color.WHITE);
         shapeRenderer.circle(GameWorld.gameWidth - 150 * gameWidth / 1196, 60 * gameHeight / 768, 50);
-        //weapon circles
-        shapeRenderer.end();
 
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        shapeRenderer.setColor(Color.BLUE);
-        shapeRenderer.circle(tilt.getCircle().x, tilt.getCircle().y, tilt.getCircle().radius);
         shapeRenderer.end();
 
         batcher.begin();

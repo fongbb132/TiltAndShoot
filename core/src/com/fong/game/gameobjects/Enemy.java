@@ -37,8 +37,16 @@ public class Enemy {
 
         if(!canKill){
             velocity.set(0,0);
-        }else if(time<2.1){
-            velocity.set(40,40);
+        }else if(time<3.1){
+            int speedX = MathUtils.random(40);
+            int speedY = MathUtils.random(40);
+            if(speedX%2==0){
+                speedX = -speedX;
+            }
+            if(speedY%2==0){
+                speedY = -speedY;
+            }
+            velocity.set(speedX, speedY);
         }else {
             if (!isSpecial) {
                 if (!isArrive) {
