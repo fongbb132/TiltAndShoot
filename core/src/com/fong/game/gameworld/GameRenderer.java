@@ -31,8 +31,6 @@ public class GameRenderer {
 
     private Tilt tilt;
 
-    private TextureRegion bg, grass;
-    private Animation birdAnimation;
     private TextureRegion cursor1,cursor2,bullet;
 
     private ArrayList<Bullet> bullets;
@@ -40,7 +38,6 @@ public class GameRenderer {
     private int gameHeight, gameWidth;
     private ArrayList<ArrayList<WeaponBall>> weaponList;
     private ArrayList<MiniAbsorbBall> absorbBallArrayList;
-    private BitmapFont font;
 
     public GameRenderer(GameWorld world, int gameHeight, int midPointY) {
 
@@ -106,20 +103,19 @@ public class GameRenderer {
             }
         }else {
             if(myWorld.fixButtonX>0&&myWorld.fixButtonY>0){
-                batcher.draw(AssetLoader.buttonBackground, myWorld.fixButtonX-180, myWorld.fixButtonY-180, 360, 360);
+                batcher.draw(AssetLoader.buttonBackground, myWorld.fixButtonX-140, myWorld.fixButtonY-140, 280, 280);
                 batcher.draw(AssetLoader.button,myWorld.buttonX-70, myWorld.buttonY-70, 140,140 );
+            }
+
+            if(myWorld.fixShootButtonX>0) {
+                batcher.draw(AssetLoader.buttonBackground, myWorld.fixShootButtonX-140, myWorld.fixShootButtonY-140, 280, 280);
+                batcher.draw(AssetLoader.button,myWorld.shootButtonX-70, myWorld.shootButtonY-70, 140, 140);
             }
         }
         batcher.end();
 
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        if(GameWorld.isButton) {
-            //rotation and shoot
-            shapeRenderer.setColor(Color.WHITE);
-            shapeRenderer.circle(GameWorld.gameWidth - 280, GameWorld.gameHeight - 140, 140, 45);
-            shapeRenderer.setColor(Color.GREEN);
-            shapeRenderer.circle(GameWorld.gameWidth - 280, GameWorld.gameHeight - 140, 70, 45);
-        }
+
             if (!myWorld.enemies.isEmpty()) {
                 for (int i = 0; i < myWorld.enemies.size(); i++) {
                     if(myWorld.enemies.get(i).canKill) {
@@ -161,11 +157,6 @@ public class GameRenderer {
         drawAbsorbingBalls();
 
         drawWeaponCircles();
-/*
-        //bullet circle
-        shapeRenderer.setColor(255 / 255.0f, 255 / 255.0f, 255 / 255.0f, 0.3f);
-        shapeRenderer.circle(GameWorld.gameWidth - 60 * gameWidth / 1196, GameWorld.gameHeight - 60 * gameHeight / 768, 60 * gameHeight / 768, 50);
-*/
         //Pause Circle
         shapeRenderer.setColor(Color.WHITE);
         shapeRenderer.circle(GameWorld.gameWidth - 150 * gameWidth / 1196, 60 * gameHeight / 768, 50);
@@ -174,14 +165,22 @@ public class GameRenderer {
 
         batcher.begin();
         batcher.enableBlending();
+        if (!bullets.isEmpty()) {
+            for (int i = 0; i < bullets.size(); i++) {
+                batcher.draw(bullet, bullets.get(i).getX(), bullets.get(i).getY(), 10*gameWidth/1196,10*gameHeight/768, 20*gameWidth/1196,20*gameHeight/768, 1, 1, 0f);
+            }
+        }
+        batcher.end();
 
-        AssetLoader.ConsolasFont.getData().setScale(2,2);
+        batcher.begin();
+        batcher.enableBlending();
+
+        AssetLoader.ConsolasFont.getData().setScale(2, 2);
         for (int num = 0; num < weaponList.size(); num++) {
             AssetLoader.ConsolasFont.draw(batcher, "x" + weaponList.get(num).size(), GameWorld.gameWidth - 120*GameWorld.gameWidth/1196, GameWorld.gameHeight - (240 + num * 120)*GameWorld.gameHeight/768, 100, 100, false);
         }
 
         AssetLoader.ConsolasFont.draw(batcher, GameWorld.score + "", 30 * GameWorld.gameWidth / 1196, 30 * GameWorld.gameHeight / 768);
-
 
         if(!tilt.getIsPressed()) {
             batcher.draw(cursor1, tilt.getX(),
@@ -196,14 +195,6 @@ public class GameRenderer {
         }
         batcher.end();
 
-        batcher.begin();
-        batcher.enableBlending();
-        if (!bullets.isEmpty()) {
-            for (int i = 0; i < bullets.size(); i++) {
-                batcher.draw(bullet, bullets.get(i).getX(), bullets.get(i).getY(), 10*gameWidth/1196,10*gameHeight/768, 20*gameWidth/1196,20*gameHeight/768, 1, 1, 0f);
-            }
-        }
-        batcher.end();
     }
 
     private void initGameObjects(){
@@ -211,7 +202,6 @@ public class GameRenderer {
     }
 
     private void initAssets(){
-        //bg = AssetLoader.bg;
         cursor1 = AssetLoader.cursorA;
         cursor2 = AssetLoader.cursorB;
         bullet = AssetLoader.bullet;

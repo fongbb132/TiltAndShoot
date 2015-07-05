@@ -31,6 +31,8 @@ public class GameWorld {
 
     public float buttonX,fixButtonX;
     public float buttonY,fixButtonY;
+    public float shootButtonX, fixShootButtonX;
+    public float shootButtonY, fixShootButtonY;
     public static float seekBarX = 200*gameWidth/1196 + gameWidth/2;
     public boolean clock = false;
     public boolean antiClock = false;
@@ -44,17 +46,22 @@ public class GameWorld {
     public ArrayList<ArrayList<WeaponBall>> weaponList;
     public ArrayList<ShootWeaponBall> shootWeaponBallArrayList;
     public ArrayList<MiniAbsorbBall> absorbBallsList;
-    public float time;
+    public float time,ButtonTime;
     public float EnemyTime=0;
     private int horrizontal = 0;
     private float settingTime = 0;
     public static boolean isButton;
 
     public GameWorld(int midPointY) {
+        this.shootButtonX = -400;
+        this.shootButtonY = -400;
+        this.fixShootButtonX = -400;
+        this.fixShootButtonY = -400;
         fixButtonX = -400;
         fixButtonY = -400;
         buttonX = -400;
         buttonY = -400;
+        this.ButtonTime = 0;
         this.tilt = new Tilt();
         this.enemies = new ArrayList<Enemy>();
         currentState = GameState.READY;
@@ -213,7 +220,6 @@ public class GameWorld {
                 if(isInBorder(inputX, inputY, 0, 0, gameWidth / 2, gameHeight)&&Gdx.input.isTouched(a)){
 
                     if(time>0.1&&Gdx.input.isTouched(a)){
-                        Gdx.app.log("GameWorld", "in");
                         fixButtonX = inputX;
                         fixButtonY = inputY;
                     }
@@ -266,6 +272,7 @@ public class GameWorld {
     }
 
     public void updateRunning(float delta) {
+        ButtonTime += delta;
         EnemyTime += delta/2;
         time += delta;
         timeRotC +=delta;
@@ -275,7 +282,7 @@ public class GameWorld {
             delta = .15f;
         }
         tilt.update(delta);
-        for(int a = 0; a< 3; a++) {
+        for(int a = 0; a< 5; a++) {
 
             if(!isButton){
                 //rotation
@@ -367,20 +374,36 @@ public class GameWorld {
                 float inputX = Gdx.input.getX(a);
                 float inputY = Gdx.input.getY(a);
 
-                if(inCircle(angle, inputX, inputY, gameWidth - 280, gameHeight - 140, 140)&&Gdx.input.isTouched(a)){
+                if(isInBorder(inputX, inputY, gameWidth/2, 0, gameWidth/2, gameHeight)&&Gdx.input.isTouched(a)){
 
-                    tilt.setAngle(angle/MathUtils.PI*180);
+                    if(time>0.05&&Gdx.input.isTouched(a)){
+                        fixShootButtonX = inputX;
+                        fixShootButtonY = inputY;
+                    }
+
+                    if(inCircle(angle, inputX, inputY, fixShootButtonX, fixShootButtonY, 180)&&Gdx.input.isTouched(a)){
+                        shootButtonX = inputX;
+                        shootButtonY = inputY;
+                        float an = getAngle(inputX, inputY, fixShootButtonX, fixShootButtonY);
+                        tilt.setAngle(an/MathUtils.PI*180);
+                        time = 0;
+                    }
 
                     if (tracking % 5 == 0) {
                         bullets.add(new Bullet(tilt.getRotation(), tilt.getX(), tilt.getY()));
                         tilt.setIsPressed(true);
-                        time = 0;
                     }
+                }
+
+                if(time>0.05){
+                    fixShootButtonX = -400;
+                    fixShootButtonY = -400;
                 }
 
                 if(isInBorder(inputX, inputY, 0, 0, gameWidth / 2, gameHeight)&&Gdx.input.isTouched(a)){
 
-                    if(time>0.1&&Gdx.input.isTouched(a)){
+                    //set the button location when the screen is pressed initially
+                    if(ButtonTime>0.1&&Gdx.input.isTouched(a)){
                         fixButtonX = inputX;
                         fixButtonY = inputY;
                     }
@@ -390,17 +413,17 @@ public class GameWorld {
                         buttonY = inputY;
                         tilt.velocity.x = (inputX-fixButtonX)*7;
                         tilt.velocity.y = (inputY-fixButtonY)*7;
-                        time = 0;
+                        ButtonTime = 0;
                     }
 
                     if(tilt.velocity.x!=0&&tilt.velocity.y!=0&&inCircle(angle, inputX, inputY,fixButtonX, fixButtonY, 360)&&Gdx.input.isTouched(a)){
                         tilt.velocity.x = (inputX-fixButtonX)*5;
                         tilt.velocity.y = (inputY-fixButtonY)*5;
-                        time = 0;
+                        ButtonTime = 0;
                     }
                 }
 
-                if(time>0.1){
+                if(ButtonTime>0.1){
                     fixButtonX = -400;
                     fixButtonY = -400;
                     tilt.velocity.set(0,0);
@@ -811,11 +834,4 @@ public class GameWorld {
         return angle;
     }
 
-    public float getButtonX(){
-        return buttonX;
-    }
-
-    public float getButtonY(){
-        return buttonY;
-    }
 }
