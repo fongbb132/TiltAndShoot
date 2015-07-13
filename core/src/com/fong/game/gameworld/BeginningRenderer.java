@@ -49,30 +49,11 @@ public class BeginningRenderer {
         shapeRenderer.rect(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         shapeRenderer.end();
 
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-
-        //Start game box
-        shapeRenderer.setColor(Color.BLUE);
-        shapeRenderer.rect(gameWidth / 2 - 150 * gameWidth / 1196, gameHeight / 2 - 50 * gameHeight / 768, 300 * gameWidth / 1196, 100 * gameHeight / 768);
-        shapeRenderer.end();
         batcher.begin();
         batcher.enableBlending();
-        AssetLoader.ConsolasFont.draw(batcher, "Start", gameWidth / 2 - 150 * gameWidth / 1196, gameHeight / 2 - 50 * gameHeight / 768);
-        batcher.end();
-        //Setting box
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        shapeRenderer.setColor(Color.GREEN);
-        shapeRenderer.rect(gameWidth / 2 - 500 * gameWidth / 1196, gameHeight / 2 - 50 * gameHeight / 768, 300 * gameWidth / 1196, 100 * gameHeight / 768);
-
-        shapeRenderer.setColor(Color.RED);
-        shapeRenderer.rect(gameWidth / 2 + 200 * gameWidth / 1196, gameHeight / 2 - 50 * gameHeight / 768, 300 * gameWidth / 1196, 100 * gameHeight / 768);
-        shapeRenderer.end();
-
-
-        batcher.begin();
-        batcher.enableBlending();
-        AssetLoader.ConsolasFont.draw(batcher, "Setting", gameWidth / 2 - 500 * gameWidth / 1196, gameHeight / 2 - 50 * gameHeight / 768);
-        AssetLoader.ConsolasFont.draw(batcher, "Records", gameWidth / 2 + 200 * gameWidth / 1196, gameHeight / 2 - 50 * gameHeight / 768);
+        batcher.draw(AssetLoader.settingButton, gameWidth / 2 - 500 * gameWidth / 1196, gameHeight / 2 - 50 * gameHeight / 768, 300, 100, 0, 0, 616, 216, false, true);
+        batcher.draw(AssetLoader.playButton,gameWidth / 2 - 150 * gameWidth / 1196, gameHeight / 2 - 50 * gameHeight / 768,300,100,0,0,616,216,false,true);
+        batcher.draw(AssetLoader.recordButton,gameWidth / 2 + 200 * gameWidth / 1196, gameHeight / 2 - 50 * gameHeight / 768,300,100,0,0,616,216,false,true);
         batcher.end();
 
     }

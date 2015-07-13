@@ -16,9 +16,11 @@ import com.fong.game.gameworld.GameWorld;
 public class AssetLoader {
     public static BitmapFont ConsolasFont;
     public static Texture cursor1,cursor2,clock1, clock2, antiClock1, antiClock2, shoot1, shoot2, buttonBackground, button;
-    public static TextureRegion cursorA,cursorB, bullet, clockA, clockB, antiClockA, antiClockB, shootA, shootB;
+    public static Texture homeButton, pauseButton, startButton,enemy, enemyRunning;
+    public static TextureRegion cursorA,cursorB, bullet, clockA, clockB, antiClockA, antiClockB, shootA, shootB,homeButtonTexture;
+    public static Texture settingButton,playButton, recordButton;
     public static Texture bulletTexture;
-    public static Animation cursorAnimation;
+    public static Texture backButton,tiltButton, buttonButton, adjustButton;
     public static Preferences preferences;
 
     public static void load(){
@@ -35,6 +37,19 @@ public class AssetLoader {
         shoot2 = new Texture(Gdx.files.internal("data/shootButton2.png"));
         buttonBackground = new Texture(Gdx.files.internal("data/ButtonBackground.png"));
         button = new Texture(Gdx.files.internal("data/Button.png"));
+        homeButton = new Texture(Gdx.files.internal("data/homeButton.png"));
+        pauseButton = new Texture(Gdx.files.internal("data/pauseButton.png"));
+        startButton = new Texture(Gdx.files.internal("data/startButton.png"));
+        enemy = new Texture(Gdx.files.internal("data/enemy.png"));
+        enemyRunning = new Texture(Gdx.files.internal("data/enemyRunning.png"));
+        settingButton = new Texture(Gdx.files.internal("data/SettingButton.png"));
+        playButton = new Texture(Gdx.files.internal("data/PlayButton.png"));
+        recordButton = new Texture(Gdx.files.internal("data/RecordButton.png"));
+        backButton = new Texture(Gdx.files.internal("data/BackButton.png"));
+        adjustButton = new Texture(Gdx.files.internal("data/AdjustButton.png"));
+        tiltButton = new Texture(Gdx.files.internal("data/tiltButton.png"));
+        buttonButton = new Texture(Gdx.files.internal("data/ButtonButton.png"));
+
  /*
         cursor1 = new Texture(Gdx.files.internal("android/assets/data/newCursor.png"));
         cursor2 = new Texture(Gdx.files.internal("android/assets/data/newCursor2.png"));
@@ -55,12 +70,14 @@ public class AssetLoader {
         antiClockB = new TextureRegion(antiClock2, 0, 0, 350, 350);
         shootA = new TextureRegion(shoot1, 0,0,350,350);
         shootB = new TextureRegion(shoot2, 0,0, 350, 350);
+        homeButtonTexture = new TextureRegion(homeButton, 0, 0, 380,370);
 
 
         cursorA.flip(false, true);
         cursorB.flip(false, true);
+        homeButtonTexture.flip(false, true);
 
-        ConsolasFont.getData().setScale(2);
+        ConsolasFont.getData().setScale(0.5f);
 
         preferences = Gdx.app.getPreferences("TiltAndShoot");
         if(!preferences.contains("highScore")){
@@ -109,7 +126,16 @@ public class AssetLoader {
         shoot2.dispose();
         button.dispose();
         buttonBackground.dispose();
-
+        startButton.dispose();
+        pauseButton.dispose();
+        homeButton.dispose();
+        settingButton.dispose();
+        playButton.dispose();
+        recordButton.dispose();
+        backButton.dispose();
+        tiltButton.dispose();
+        adjustButton.dispose();
+        buttonButton.dispose();
     }
 
     public static void setHighScore(int val){

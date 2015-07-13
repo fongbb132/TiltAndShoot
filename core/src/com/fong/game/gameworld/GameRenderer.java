@@ -115,17 +115,6 @@ public class GameRenderer {
         batcher.end();
 
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-
-            if (!myWorld.enemies.isEmpty()) {
-                for (int i = 0; i < myWorld.enemies.size(); i++) {
-                    if(myWorld.enemies.get(i).canKill) {
-                        shapeRenderer.setColor(130 / 255.0f, 30 / 255.0f, 160 / 255.0f, 1);
-                    }else {
-                        shapeRenderer.setColor(Color.WHITE);
-                    }
-                    shapeRenderer.rect(myWorld.enemies.get(i).getX(), myWorld.enemies.get(i).getY(), 20*gameWidth/1196, 20*gameHeight/768);
-                }
-            }
             if (!weaponBalls.isEmpty()) {
                 for (int i = 0; i < weaponBalls.size(); i++) {
 
@@ -157,17 +146,25 @@ public class GameRenderer {
         drawAbsorbingBalls();
 
         drawWeaponCircles();
-        //Pause Circle
-        shapeRenderer.setColor(Color.WHITE);
-        shapeRenderer.circle(GameWorld.gameWidth - 150 * gameWidth / 1196, 60 * gameHeight / 768, 50);
 
         shapeRenderer.end();
 
         batcher.begin();
         batcher.enableBlending();
+        batcher.draw(AssetLoader.pauseButton, GameWorld.gameWidth-250*gameWidth/1196, 40*gameHeight/768,100*gameWidth/ 1196, 100*gameHeight/768);
         if (!bullets.isEmpty()) {
             for (int i = 0; i < bullets.size(); i++) {
                 batcher.draw(bullet, bullets.get(i).getX(), bullets.get(i).getY(), 10*gameWidth/1196,10*gameHeight/768, 20*gameWidth/1196,20*gameHeight/768, 1, 1, 0f);
+            }
+        }
+
+        if (!myWorld.enemies.isEmpty()) {
+            for (int i = 0; i < myWorld.enemies.size(); i++) {
+                if(myWorld.enemies.get(i).canKill) {
+                    batcher.draw(AssetLoader.enemyRunning, myWorld.enemies.get(i).getX(), myWorld.enemies.get(i).getY(), 20 * gameWidth / 1196, 20 * gameHeight / 768);
+                }else {
+                    batcher.draw(AssetLoader.enemy, myWorld.enemies.get(i).getX(), myWorld.enemies.get(i).getY(), 20 * gameWidth / 1196, 20 * gameHeight / 768);
+                }
             }
         }
         batcher.end();
@@ -175,7 +172,7 @@ public class GameRenderer {
         batcher.begin();
         batcher.enableBlending();
 
-        AssetLoader.ConsolasFont.getData().setScale(2, 2);
+        AssetLoader.ConsolasFont.getData().setScale(1.5f);
         for (int num = 0; num < weaponList.size(); num++) {
             AssetLoader.ConsolasFont.draw(batcher, "x" + weaponList.get(num).size(), GameWorld.gameWidth - 120*GameWorld.gameWidth/1196, GameWorld.gameHeight - (240 + num * 120)*GameWorld.gameHeight/768, 100, 100, false);
         }

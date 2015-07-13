@@ -63,18 +63,19 @@ public class GameOverRenderer {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        //Background Color
         shapeRenderer.setColor(55 / 255.0f, 80 / 255.0f, 60 / 255.0f, 1);
         shapeRenderer.rect(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        shapeRenderer.setColor(Color.GREEN);
-        shapeRenderer.rect(GameWorld.gameWidth / 2 - 250 * gameWidth / 1196, GameWorld.gameHeight / 2, 200 * gameWidth / 1196, 200 * gameHeight / 768);
-        shapeRenderer.setColor(Color.BLUE);
-        shapeRenderer.rect(GameWorld.gameWidth / 2 + 50 * gameWidth / 1196, GameWorld.gameHeight / 2, 200 * gameWidth / 1196, 200 * gameHeight / 768);
         shapeRenderer.end();
 
         batcher.begin();
         batcher.enableBlending();
-        AssetLoader.ConsolasFont.getData().setScale(3,3);
+        batcher.draw(AssetLoader.homeButton, gameWidth / 2 - 300 * gameWidth / 1196, gameHeight / 2 - 100 * gameHeight / 768, 200 * gameWidth / 1196, 200 * gameHeight / 768,0,0,380,311,false, true);
+        batcher.draw(AssetLoader.startButton, gameWidth/2+100 *gameWidth/1196, gameHeight/2-100*gameHeight/768, 200*gameWidth/1196, 200*gameHeight/768);
+        batcher.end();
+
+        batcher.begin();
+        batcher.enableBlending();
+        AssetLoader.ConsolasFont.getData().setScale(1.5f);
         AssetLoader.ConsolasFont.draw(batcher, myWorld.getScore() + "", GameWorld.gameWidth / 2, GameWorld.gameHeight / 2 - 300 * gameHeight / 768);
         AssetLoader.ConsolasFont.draw(batcher,"High Score: "+AssetLoader.getHighScore()+"", GameWorld.gameWidth/2-200*gameWidth/1196, GameWorld.gameHeight/2-150*gameHeight/768);
         batcher.end();

@@ -352,7 +352,7 @@ public class GameWorld {
             //End of weaponballs
 
             //Pause bottom
-            if(isInBorder(Gdx.input.getX(a), Gdx.input.getY(a),GameWorld.gameWidth-150*gameWidth/1196, 60*gameHeight/768,100*gameWidth/ 1196, 100*gameHeight/768)){
+            if(isInBorder(Gdx.input.getX(a), Gdx.input.getY(a),GameWorld.gameWidth-250*gameWidth/1196, 40*gameHeight/768,100*gameWidth/ 1196, 100*gameHeight/768)){
                 currentState = GameState.PAUSE;
             }
 
